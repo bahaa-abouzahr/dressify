@@ -1,0 +1,65 @@
+@import "tailwindcss";
+
+@theme {
+  --breakpoint-xs: 30rem;
+  --breakpoint-md: 910px;
+  --breakpoint-md2: 760px;
+  /* --breakpoint-ls: 1000px; */
+  /* --breakpoint-2xl: 100rem; */
+  /* --breakpoint-3xl: 120rem; */
+}
+
+:root {
+  --gray-text: ##e5e7eb;
+  --orange-main: #ff7d1a;
+  --orange-secondary: #faa96c;
+}
+
+
+body {
+  font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 
+               'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: #111; /* optional default text color */
+  padding-inline: calc(var(--spacing) * 20);
+  margin-block: calc(var(--spacing) * 10);
+  background-color: rgb(240, 240, 233);
+  
+}
+
+
+.nav {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  transition: transform 0.3s ease-in-out;
+}
+
+.nav::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 3px;
+  background: var(--orange-main); /* your color */
+  transition: width 0.3s ease;
+  
+}
+
+.nav:hover::after {
+  width: 100%;
+}
+
+.nav:hover {
+  font-weight: bold;
+  transform: scale(1.1)
+}
+
+.category-button {
+  width: 100%;
+  text-align: left;
+  text-underline-offset: 4px;
+}
+.category-button:hover {
+  text-decoration-line: underline;
+}
