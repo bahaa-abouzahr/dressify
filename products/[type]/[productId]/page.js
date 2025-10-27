@@ -1,20 +1,22 @@
+import AddToCart from "@/app/_components/AddToCart";
 import { getProduct } from "@/app/_lib/data-service";
 import Image from "next/image";
-
 import { BsCart3 } from "react-icons/bs";
 import { FaMinus, FaPlus } from "react-icons/fa";
 
-// export async function generateMetadata({ params }) {
-//   const { productId } = params;
-//   const { name } = await getProduct(productId);
-//   return {title: `Product ${name}`}
-// }
+export async function generateMetadata({ params }) {
+  const { productId } = await params;
+  const { itemName } = await getProduct(productId);
+  return {title: `${itemName}`}
+}
 
 export default async function page({ params }) {
-
   const { productId } = await params;
+
   const {itemName, description, itemsize, photos, price, quantity_available} = await getProduct(productId);
 
+  // SIZE NOT ADDED YET!!!
+  
   return (
     <div className="lg:grid lg:grid-cols-2 flex flex-col lg:gap-20 mx-auto lg:items-center lg:w-[90%] w-[50%]">
       
@@ -59,23 +61,8 @@ export default async function page({ params }) {
           <p className="font-bold text-2xl">${price}</p> 
         </div>
 
-        <div className="grid grid-rows-2 lg:grid-cols-[1fr_2fr] items-center lg:w-[70%] gap-2 text-l">
-          <div className="flex items-center justify-between bg-gray-300 p-2 rounded-md text-[var(--orange-main)] font-bold">
-            <button className="hover:text-[var(--orange-secondary)]">
-              <FaMinus />
-            </button>
-            <p className="text-black text-md">0</p>
-            <button className="hover:text-[var(--orange-secondary)]">
-              <FaPlus />
-            </button>
-          </div>
-          <button className="flex gap-3 items-center justify-center bg-[var(--orange-main)] 
-            p-2 rounded-md text-white font-bold 
-            shadow-[0_10px_20px_-5px_rgba(255,125,26,0.8)] 
-            ">
-            {<BsCart3 />} Add to Cart
-          </button>
-        </div>
+        <AddToCart productId={productId} price={price} />
+
       </div>
     </div>
   )

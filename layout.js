@@ -1,10 +1,6 @@
-import Link from 'next/link'
-import './globals.css'
-import Image from 'next/image'
-import { BsCart3 } from "react-icons/bs";
+import './globals.css';
 
-
-import Header from './_components/Header';
+import Navigation from './_components/Navigation';
 
 export const metadata = {
   title: {
@@ -18,8 +14,8 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className="relative min-h-screen mx-auto max-w-6xl max-md:text-sm max-md2:text-xs ">
-        <Header />
+      <body className="relative min-h-screen mx-auto max-w-6xl max-md:text-sm max-md2:text-xs">
+        <Navigation />
 
         <main className='mx-auto w-full mt-10'>
           { children }

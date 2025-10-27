@@ -1,11 +1,14 @@
-import ProductsList from "../_components/ProductsList"
-import SideNavigation from "../_components/SideNavigation"
+import { usePathname, useRouter } from "next/navigation"
 
-function page({ searchParams }) {
+
+function page() {
+  const pathName = usePathname();
+  const router = useRouter();
+ 
+  console.log(pathName);
   return (
-    <div className="grid grid-cols-[7rem_1fr] h-full gap-4">
-      <SideNavigation />
-      <ProductsList searchParams={searchParams}/>
+    <div>
+      
     </div>
   )
 }

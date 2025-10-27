@@ -13,12 +13,12 @@ export async function getAllProducts() {
   return data;
 }
 
-export async function getProducts(product) {
-  console.log(product);
+export async function getProducts(category) {
+
   const {data, error } = await supabase
     .from("products")
     .select('*')
-    .eq('type', product)
+    .eq('type', category)
 
   if(error) {
     console.error(error);
@@ -26,6 +26,20 @@ export async function getProducts(product) {
   }
 
   return data;
+}
+
+export async function getCartProducts(ids) {
+  const {data, error } = await supabase
+    .from("products")
+    .select("*")
+    .in("id", ids)
+
+    if(error) {
+      console.error(error);
+      notFound();
+    }
+
+    return data;
 }
 
 export async function getProduct(id) {

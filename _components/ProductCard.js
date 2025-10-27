@@ -1,11 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 
-function ProductCard({ product }) {
+function ProductCard({ product, filter }) {
   const {id, itemName, type, photos, price} = product;
 
   return (
-    <Link href={`/products/${id}`} className="relative aspect-square hover:border-4 hover:border-[var(--orange-main)] overflow-hidden">
+    <Link 
+      href={filter === 'all' ? `/products/all/${id}` : `/products/${filter}/${id}`} 
+      className="relative aspect-square hover:border-4 hover:border-[var(--orange-main)] overflow-hidden"
+    >
       <Image 
         src={photos[0]}
         fill
