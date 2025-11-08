@@ -16,7 +16,7 @@ function TypeFilter() {
   }
 
   return (
-    <div className="border border-[var(--orange-main)]">
+    <div className="border border-[var(--orange-main)] flex shrink">
       <Button filter='all' handleFilter={handleFilter} activeFilter={activeFilter}>All Categories</Button>
       <Button filter='men' handleFilter={handleFilter} activeFilter={activeFilter}>Men</Button>
       <Button filter='women' handleFilter={handleFilter} activeFilter={activeFilter}>Women</Button>
@@ -28,7 +28,7 @@ function TypeFilter() {
 function Button({ filter, handleFilter, activeFilter, children}) {
   return (
     <button 
-      className={`px-5 py-2 text-[var(--gray-text)] hover:bg-[var(--cream-secondary)] ${filter === activeFilter ? 'bg-[var(--cream-secondary)]' : ''}`}
+      className={`px-4 py-2 max-[640px]:text-[10px] text-[var(--gray-text)] hover:bg-[var(--cream-secondary)] cursor-pointer ${filter === activeFilter ? 'bg-[var(--cream-secondary)]' : ''}`}
       onClick={() => handleFilter(filter)}
     >
       {children}

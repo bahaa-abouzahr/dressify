@@ -1,15 +1,28 @@
+import Image from "next/image";
 import Link from "next/link"
 
-async function CartPreviewItem({ product, item }) {
-  console.log(product);
+import { FaRegTrashAlt } from "react-icons/fa";
 
+function CartPreviewItem({ product }) {
+  const {productName, productId, price, quantity, photoThumbnail} = product;
+  
   return (
-    <div>
-      <Link href={`/products/all/${item.productId}`} 
-        className="category-link"
+    <div className="grid grid-cols-[2fr_1fr_1fr_auto] items-center w-full">
+      <Link href={`/products/all/${product.productId}`} 
+        className="font-medium"
       >
-        {product.name} : {product.price}$ x {item.quantity}
+        {productName}
       </Link>
+      <Image
+        src={photoThumbnail} 
+        alt={productName}
+        width="40"
+        height="40"
+        sizes="(max-width: 768px) 100vw, 50vw"
+        className="object-cover object-top"
+      />
+      <span>{price}$ x {quantity}</span>
+      <button><FaRegTrashAlt /></button>
     </div>
   )
 }

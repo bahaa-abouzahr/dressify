@@ -1,46 +1,26 @@
 "use client"
 
-import { useEffect, useState } from "react";
 import CartPreviewItem from "./CartPreviewItem";
-import { getCartProducts } from "../_lib/data-service";
+import { useCart } from "./CartContext";
 
 function CartPreview() {
-  const [cart, setCart] = useState([]);
-  const [products, setProducts] = useState([]);
-
-
-  // Retrieving from Session Storage
-  useEffect(() => {
-    const fetchCartProducts = async () => {
-
-      const savedCart = sessionStorage.getItem("cart");
-      if (!savedCart) return;
-      
-      const cartData = JSON.parse(savedCart)
-      setCart(cartData);
-      
-      // Fetching Product details for all items
-      const ids = cartData.map(item => item.productId);
-      
-      if(ids.length) {
-        const data = await getCartProducts(ids)
-        setProducts(data);
-      }
-    };
-
-    fetchCartProducts();
-  }, [])
+  const { cart } = useCart();
 
   if (!cart.length) return <span> Cart is Empty</span>;
 
   return (
-    <div className="flex flex-col w-20">
-      {cart.map(item => {
+    <div className="flex flex-col gap-5 px-2 py-1">
+      <span className="flex items-center justify-center font-bold w-full border-b-2 border-o">Shopping Cart</span>
+      <div className="flex flex-col justify-end items-center gap-3">
+        {cart.map(product => {
 
-        const product = products.find(product => product.id === item.productId);
-        console.log(product);
-        return product ? <CartPreviewItem product={product} item={item} key={item.productId} /> : null
-      })}
+          return product ? 
+            <CartPreviewItem product={product} key={product.productId} /> 
+            //: null
+            : <div key={item.productId}>Loading...</div>
+        })}
+      </div>
+
     </div>
   )
 }
