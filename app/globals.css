@@ -1,26 +1,95 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --breakpoint-xs: 480px;
+  --breakpoint-sm: 620px;
+  --breakpoint-md: 910px;
+  --breakpoint-md2: 760px;
+  /* --breakpoint-ls: 1000px; */
+  /* --breakpoint-2xl: 100rem; */
+  /* --breakpoint-3xl: 120rem; */
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+@layer components {
+  .spinner {
+    margin: 3.2rem auto 1.6rem;
+    width: 60px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 8px solid #1B2631;
+    border-right-color: #B7C7D7;
+    animation: rotate 1s infinite linear;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  .spinner-mini {
+    margin: 0;
+    width: 20px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    border: 2px solid #B7C7D7;
+    border-right-color: transparent;
+    animation: rotate 1s infinite linear;
+  }
+
+  @keyframes rotate {
+    to {
+      transform: rotate(1turn);
+    }
   }
 }
 
+:root {
+  --gray-text: #6B7280;
+  --orange-main: #ff7d1a;
+  --orange-secondary: #faa96c;
+  --cream-main: rgb(240, 240, 233);
+  --cream-secondary: rgb(220, 220, 210);
+}
+
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 
+               'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: #111; /* optional default text color */
+  margin-block: calc(var(--spacing) * 10);
+  background-color: rgb(240, 240, 233);
+  
+}
+
+
+.nav {
+  position: relative;
+  display: inline-block;
+  text-decoration: none;
+  transition: transform 0.3s ease-in-out;
+}
+
+.nav::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 0;
+  height: 2px;
+  background: var(--orange-main); /* your color */
+  transition: width 0.3s ease;
+  
+}
+
+.nav:hover::after {
+  width: 100%;
+}
+
+.nav:hover {
+  font-weight: bold;
+  transform: scale(1.1)
+}
+
+.category-link {
+  width: 100%;
+  text-align: left;
+  text-underline-offset: 4px;
+}
+.category-link:hover {
+  text-decoration-line: underline;
 }
