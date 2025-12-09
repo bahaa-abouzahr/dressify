@@ -6,14 +6,21 @@ import { useState } from "react"
 import AccountPreview from "./AccountPreview"
 import Preview from "./Preview"
 import { usePreviewState } from "./PreviewStateContext"
+import { useRouter } from "next/navigation"
+
+// import { useNavigate } from "react-router-dom"
 
 function AccountMenu({ session }) {
-  const { profileToggle, setProfileToggle, setNavigationToggle, setCartToggle } = usePreviewState();
+  const { profileToggle, setProfileToggle, setNavigationToggle, setCartToggle, setWishlistToggle } = usePreviewState();
+
+  // const navigate = useNavigate(); // React Router
+  const router = useRouter(); // App Router
 
   function toggleOpen() {
     setProfileToggle(!profileToggle)
     setCartToggle(false);
     setNavigationToggle(false);
+    setWishlistToggle(false);
   }
   
   return (
@@ -24,6 +31,7 @@ function AccountMenu({ session }) {
           width={30}
           height={30}
           alt={session.user.name}
+          onDoubleClick={() => router.push('/account')}
           className='hover:border-[1.5px] hover:scale-120 rounded-full border-[var(--orange-secondary)]'
           referrerPolicy="no-referrer"
         />

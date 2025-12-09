@@ -1,6 +1,6 @@
 "use client"
 
-function Preview({children, width, previewObject}) {
+function Preview({children, width, translate= 55}) {
 
   return (
     <div className={
@@ -8,7 +8,7 @@ function Preview({children, width, previewObject}) {
       }
       style={{
         width: `${width}rem`,
-        transform: `translateX(-${previewObject === "cart" ? 75 : 55}%)`,
+        transform: `translateX(-${translate}%)`,
     }}  
     >
       {children}

@@ -36,11 +36,6 @@ function AddToCart({ session, productName, productId, price, photos }) {
     }
   }
 
-  function handleClearCart(){
-    if(session) deleteDbCart();
-    clearCart();
-  }
-
   function handlePlus(){
     setQuantity(quantity + 1);
   }
@@ -53,7 +48,7 @@ function AddToCart({ session, productName, productId, price, photos }) {
 
   return (
     <div className="grid grid-rows-2 lg:grid-cols-[1fr_2fr] items-center max-w-xs gap-2 text-l">
-      <div className="flex items-center justify-between bg-gray-300 p-2 rounded-md text-[var(--orange-main)] font-bold">
+      <div className="flex items-center justify-between max-w-[13rem] bg-gray-300 p-2 rounded-md text-[var(--orange-main)] font-bold">
         <button onClick={() => handleMinus()} className="cursor-pointer hover:text-[var(--orange-secondary)]">
           <FaMinus />
         </button>
@@ -65,13 +60,12 @@ function AddToCart({ session, productName, productId, price, photos }) {
       <button 
         onClick={handleAddToCart} 
         disabled={loading} 
-        className="cursor-pointer flex gap-3 items-center justify-center bg-[var(--orange-main)] 
+        className="cursor-pointer flex gap-3 items-center justify-center max-w-[13rem] bg-[var(--orange-main)] 
           p-2 rounded-md text-white font-bold disabled:opacity-50 disabled:cursor-not-allowed
         "
       >
         {<BsCart3 />}{loading ? "Adding..." : " Add to Cart" }
       </button>
-      <button onClick={() => handleClearCart()}>Clear Cart</button>
     </div>
   )
 }

@@ -4,7 +4,7 @@ import { usePreviewState } from "./PreviewStateContext"
 
 // to change between previews smoothly with one click and not letting overlays block the buttons
 function ClientOverlay() {
-  const { cartToggle, setCartToggle, profileToggle, setProfileToggle } = usePreviewState();
+  const { cartToggle, setCartToggle, profileToggle, setProfileToggle, wishlistToggle, setWishlistToggle } = usePreviewState();
 
   return (
     <>
@@ -13,6 +13,9 @@ function ClientOverlay() {
       )}
       {profileToggle && (
         <div className="fixed inset-0 z-20" onClick={() => setProfileToggle(false)}></div>
+      )}
+      {wishlistToggle && (
+        <div className="fixed inset-0 z-20" onClick={() => setWishlistToggle(false)}></div>
       )}
     </>
   )

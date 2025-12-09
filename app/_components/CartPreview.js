@@ -12,6 +12,13 @@ const { cartToggle, setCartToggle } = usePreviewState();
   if (!cart.length) 
     return (
       <div className="flex flex-col text-center gap-1">
+        <button 
+          onClick={() => setCartToggle(false)}
+          className="absolute top-3 right-0.5 text-[15px]"
+        >
+          <IoMdClose />
+        </button>
+
         <span className="text-sm text-[var(--gray-text)] font-bold">
           Your Cart is Empty
         </span>
@@ -44,7 +51,7 @@ const { cartToggle, setCartToggle } = usePreviewState();
 
       <Link 
         href="/Cart"
-        className=" flex justify-center font-semibold text-sm"
+        className="flex justify-center font-semibold text-sm"
       
       >
         <span className="border-b-2 border-transparent hover:border-current transition-all">

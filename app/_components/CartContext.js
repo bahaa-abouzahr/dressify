@@ -8,6 +8,7 @@ export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
   const [products, setProducts] = useState([]);
   const [initialized, setInitialized] = useState(false);
+  
 
   // // flag to protect from repetitive Guest Cart syncing
   // const [hasSyncedGuestCart, setHasSyncedGuestCart] = useState(false);

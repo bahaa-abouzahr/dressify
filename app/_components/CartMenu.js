@@ -12,7 +12,7 @@ function CartMenu({ session, dbCart }) {
   const [width, setWidth] = useState(null)
 
   const { cart, setCart } = useCart();
-  const { cartToggle, setCartToggle, setNavigationToggle, setProfileToggle } = usePreviewState();
+  const { cartToggle, setCartToggle, setNavigationToggle, setProfileToggle, setWishlistToggle } = usePreviewState();
 
   // setting react cart to cart from db
   useEffect(() => {
@@ -33,6 +33,7 @@ function CartMenu({ session, dbCart }) {
     setCartToggle(!cartToggle);
     setProfileToggle(false);
     setNavigationToggle(false);
+    setWishlistToggle(false);
   }
 
   return (
@@ -46,7 +47,7 @@ function CartMenu({ session, dbCart }) {
           {/* <div className="fixed inset-0 z-10" onClick={() => setCartToggle(false)}></div> */}
           
           <div className="absolute">
-            <Preview width={width} previewObject={"cart"} zIndex={60}>
+            <Preview width={width} translate={75} zIndex={60}>
               <CartPreview cart={cart} session={session} />
             </Preview>
 

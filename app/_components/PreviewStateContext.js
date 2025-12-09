@@ -8,6 +8,7 @@ export function PreviewStateProvider({ children }) {
   const [profileToggle, setProfileToggle] = useState(false);
   const [cartToggle, setCartToggle] = useState(false);
   const [navigationToggle, setNavigationToggle] = useState(false);
+  const [wishlistToggle, setWishlistToggle] = useState(false);
 
   return (
     <PreviewStateContext.Provider 
@@ -18,6 +19,8 @@ export function PreviewStateProvider({ children }) {
         setCartToggle, 
         navigationToggle, 
         setNavigationToggle,
+        wishlistToggle,
+        setWishlistToggle,
       }}>
       {children}
     </PreviewStateContext.Provider>

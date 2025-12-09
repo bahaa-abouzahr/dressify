@@ -19,7 +19,6 @@ function CartPreviewItem({ product, session }) {
     }
     else
       deleteCartItem(product_id);
-    
   }
   
   return (
@@ -33,7 +32,7 @@ function CartPreviewItem({ product, session }) {
           alt={productName}
           width={40}
           height={40}
-          className="object-cover object-top w-10 h-10"
+          className="object-cover object-top w-10 h-10 hover:scale-120"
         />
       </Link>
 
@@ -46,7 +45,7 @@ function CartPreviewItem({ product, session }) {
 
       <span>{price}$ x {quantity}</span>
 
-      <button onClick={() => handleDeleteCartItem(product_id)}><FaRegTrashAlt /></button>
+      <button className="cursor-pointer" onClick={() => handleDeleteCartItem(product_id)}><FaRegTrashAlt /></button>
     </div>
   )
 }

@@ -13,13 +13,14 @@ function AccountPreview() {
 
   return (
     <>
-      <div className="flex flex-col">
+      <div className="flex flex-col gap-1">
         <Link href="/account" className="category-link">Your Profile</Link>
         <Link href="/account/orders" className="category-link">Orders</Link>
+
+        <form action={signOutAction}>
+          <button type="submit" onClick={() => handleSignOut()} className="category-link">Sign Out</button>
+        </form>
       </div>
-      <form action={signOutAction}>
-        <button type="submit" onClick={() => handleSignOut()} className="category-link">Sign Out</button>
-      </form>
     </>
   )
 }
