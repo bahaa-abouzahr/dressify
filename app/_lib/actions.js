@@ -96,10 +96,42 @@ export async function syncCartAfterSignIn(reactCart) {
   return dbCartAfter;
 }
 
+
+export async function addToWishlist(productId) {
+  const session = await auth();
+  const userId = session.user.userId
+  if(!session) throw new Error('You must be logged in')
+
+  const wishlistItem = {
+    product_id:productId,
+    user_id:userId
+  }
+
+  const { error } = await supabase
+    .from('wishlist')
+    .insert([wishlistItem])
+
+  if (error) throw new Error('Item could not be added to your wishlist')
+}
+
+export async function deleteFromWishlist(productId) {
+  const session = await auth();
+  const userId = session.user.userId
+  if(!session) throw new Error('You must be logged in')
+
+  const { error } = await supabase
+    .from('wishlist')
+    .delete()
+    .eq("user_id", userId)
+    .eq("product_id", productId)
+
+  if (error) throw new Error('Item could not be deleted from your wishlist')
+}
+
 export async function signInAction() {
   await signIn('google', {redirectTo: '/account'});
 }
 
 export async function signOutAction() {
-  await signOut({redirectTo: '/products/men/1'});
+  await signOut({redirectTo: '/'});
 }

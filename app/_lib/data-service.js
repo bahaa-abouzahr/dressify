@@ -1,5 +1,6 @@
 import { notFound } from "next/navigation";
 import { supabase } from "./supabase";
+import { auth } from "./auth";
 
 export async function getUser(email) {
   const {data, error } = await supabase
@@ -10,7 +11,6 @@ export async function getUser(email) {
 
     return data;
 }
-
 
 export async function createUser(newUser) {
   const { data, error } = await supabase.from('users').insert([newUser]);
@@ -89,6 +89,46 @@ export async function getProduct(id) {
     .select('*')
     .eq('id', id)
     .single();
+
+    if(error) {
+      console.error(error);
+      notFound();
+    }
+
+    return data;
+}
+
+
+export async function getWishlist(session) {
+  const userId = session.user.userId;
+  if(!session) throw new Error('You must be logged in')
+
+  const { data, error } = await supabase
+    .from("wishlist")
+    .select(`
+        product_id,
+        wishlistItem:products (id, created_at, photos, price, productName)
+      `)
+    .eq('user_id', userId)
+
+    if(error) {
+      console.error(error);
+      notFound();
+    }
+
+    return data;
+}
+
+export async function getWishlistItem(session, productId) {
+  const userId = session.user.userId;
+  if(!session) throw new Error('You must be logged in')
+
+  const { data, error } = await supabase
+    .from("wishlist")
+    .select('*')
+    .eq('product_id', productId)
+    .eq('user_id', userId)
+    .maybeSingle();
 
     if(error) {
       console.error(error);

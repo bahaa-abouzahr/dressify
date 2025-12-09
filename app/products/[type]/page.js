@@ -1,4 +1,3 @@
-
 import ProductsList from "@/app/_components/ProductsList"
 import SideNavigation from "@/app/_components/SideNavigation"
 import CategoryFilter from "@/app/_components/CategoryFilter";

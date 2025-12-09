@@ -11,34 +11,10 @@ async function page() {
   
   return (
     <div>
-      Signed In
+      My Profile
       <SyncGuest session={session} />
     </div>
   )
 }
 
 export default page
-
-/*
-'use client';
-import { useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
-import { useCart } from '@/context/cart';
-import { syncCartOnSignIn } from '@/actions';
-
-export default function AccountPage() {
-  const { cart, setCart } = useCart();
-
-  useEffect(() => {
-    async function syncOnce() {
-      const { data: { session } } = await supabase.auth.getSession();
-      if (!session?.user) return;
-
-      const mergedCart = await syncCartOnSignIn(session.user.id, cart);
-      setCart(mergedCart);
-    }
-
-    syncOnce();
-  }, []); // empty deps → runs only once after page load
-}
-  */

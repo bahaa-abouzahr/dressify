@@ -40,10 +40,13 @@
 
 :root {
   --gray-text: #6B7280;
+  --hover-buttons-text: #0d57a7;
+  --hover-buttons-bg: #56616d;
   --orange-main: #ff7d1a;
   --orange-secondary: #faa96c;
   --cream-main: rgb(240, 240, 233);
   --cream-secondary: rgb(220, 220, 210);
+  --button-secondary: rgb(218, 22, 22);
 }
 
 

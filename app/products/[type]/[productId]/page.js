@@ -1,4 +1,5 @@
 import AddToCart from "@/app/_components/AddToCart";
+import AddToWishlistButton from "@/app/_components/AddToWishlistButton";
 import ProductPhotos from "@/app/_components/ProductPhotos";
 import { auth } from "@/app/_lib/auth";
 
@@ -24,7 +25,7 @@ export default async function page({ params }) {
       <ProductPhotos photos={photos} productName={productName} />
 
       {/* Right Column */}
-      <div className="flex flex-col h-full md2:justify-around md:-translate-y-12 max-w-[800px] min-w-[380px] max-md2:mx-auto text-center">
+      <div className="flex flex-col h-full md2:justify-around md:-translate-y-12 max-w-[800px] min-w-[380px] mx-2 text-center">
 
         <div className="flex flex-col py-6 lg:py-12 gap-5 text-left w-full">
           <p className="text-[var(--orange-main)] font-bold text-xl text-md">Shopify</p>
@@ -33,7 +34,10 @@ export default async function page({ params }) {
           <p className="font-bold text-2xl">${price}</p> 
         </div>
 
-        <AddToCart session={session} productName={productName} productId={productId} price={price} photos={photos} />
+        <div className="flex flex-col gap-2">
+          {session ? <AddToWishlistButton productId={productId} session={session} /> : '' }
+          <AddToCart session={session} productName={productName} productId={productId} price={price} photos={photos} />
+        </div>
 
       </div>
     </div>
