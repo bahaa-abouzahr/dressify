@@ -14,7 +14,7 @@ function WishlistMenu({ session, wishlist}) {
 
   const { wishlistToggle, setWishlistToggle, setCartToggle, setNavigationToggle, setProfileToggle} = usePreviewState();
 
-  const { localWishlist, setLocalWishlist, wishlistState} = useWishlist();
+  const { localWishlist, setLocalWishlist} = useWishlist();
 
   function toggleOpen() {
     setWishlistToggle(!wishlistToggle)

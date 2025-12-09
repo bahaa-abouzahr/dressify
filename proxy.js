@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { auth } from "./app/_lib/auth";
 
-export async function middleware(request) {
+export async function proxy(request) {
   const { pathname } = request.nextUrl
 
   // Redirect products -> products/all
