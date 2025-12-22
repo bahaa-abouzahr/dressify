@@ -6,8 +6,10 @@ const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
-  const [products, setProducts] = useState([]);
+
   const [initialized, setInitialized] = useState(false);
+
+  const [totalPrice, setTotalPrice] = useState(null)
   
 
   // // flag to protect from repetitive Guest Cart syncing
@@ -55,7 +57,7 @@ export function CartProvider({ children }) {
   if (!initialized) return null;
 
   return (
-    <CartContext.Provider value={{ cart, setCart, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider value={{ cart, setCart, addToCart, removeFromCart, clearCart, totalPrice, setTotalPrice }}>
       {children}
     </CartContext.Provider>
   );

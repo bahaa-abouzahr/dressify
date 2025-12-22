@@ -29,7 +29,7 @@ if (!localWishlist.length)
       >
         <IoMdClose />
       </button>
-      <span className="text-sm text-[var(--gray-text)] font-bold">
+      <span className="text-sm text-(--gray-text) font-bold">
         Your Wishlist is Empty
       </span>
       <span className="text-xs">
@@ -57,13 +57,23 @@ if (!localWishlist.length)
       <div className="grid grid-cols-3 gap-4">
         {localWishlist.map((item, ind) => {
           if(ind < 6)
-            return <WishlistPreviewItem item={item} key={ind} ind={ind} listLength={listLength} handleDelete={handleDelete} />
-          })}
+            return (
+              <WishlistPreviewItem 
+                item={item} 
+                key={ind} 
+                ind={ind} 
+                listLength={listLength} 
+                handleDelete={handleDelete} 
+                setWishlistToggle={setWishlistToggle} 
+              />
+            )
+        })}
       </div>
 
       <Link 
         href="/account/wishlist"
         className="flex justify-center font-semibold text-sm"
+        onClick={() => setWishlistToggle(false)}
       >
         <span className="border-b-2 border-transparent hover:border-current transition-all">
           Check all Items in your wishlist

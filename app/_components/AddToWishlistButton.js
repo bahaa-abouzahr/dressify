@@ -6,11 +6,10 @@ import { useEffect, useState } from "react";
 import { getWishlist, getWishlistItem } from "../_lib/data-service";
 import { useWishlist } from "./WishlistContext";
 
-function AddToWishlistButton({ session, productId }) {
+function AddToWishlistButton({ session, productId, location }) {
 
   const [inWishlist, setInWishlist] = useState(false);
   const { localWishlist, setLocalWishlist} = useWishlist();
-
   
   // initial load to check if exists in wishlist
   useEffect(() => {
@@ -51,9 +50,9 @@ function AddToWishlistButton({ session, productId }) {
     <button 
       onClick={() => handleclick()}
       className=
-        "flex flex-row items-center justify-center gap-2 cursor-pointer w-50 h-7 mb-2 rounded-md text-sm border-1 text-[var(--button-secondary)]">
-      <span>{inWishlist ? "Remove from wishlist" : "Add to your wishlist"}</span>
-      {inWishlist ? <FaHeart /> : <FaRegHeart />}
+        {`cursor-pointer ${location === "cart" ? "hover:underline underline-offset-2" :  "flex flex-row items-center justify-center gap-2 w-50 h-7 mb-2 rounded-md text-sm border-1 text-(--button-secondary)"}`}>
+      {location ==="cart" ? <span>{inWishlist ? "Already in Wishlist" : "Save for later" }</span> : <span>{inWishlist ? "Remove from wishlist" : "Add to your wishlist"}</span> }
+      {location === "products" ? (inWishlist ? <FaHeart /> : <FaRegHeart />) : null}
     </button>
   )
 }

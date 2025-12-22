@@ -3,13 +3,14 @@ import Link from "next/link"
 import { FaRegTrashAlt } from "react-icons/fa";
 
 
-function WishlistPreviewItem({ item, ind, listLength, handleDelete }) {
+function WishlistPreviewItem({ item, ind, listLength, handleDelete, setWishlistToggle }) {
 
   return (
     <div className={`flex flex-row justify-around items-center gap-2 ${ind !== 2 && ind!==5 && ind !== (listLength - 1) ? "border-r-1 pr-2" : "" }`}>
       <Link 
         href={`/products/all/${item["product_id"]}`}
         className="relative"
+        onClick={() => setWishlistToggle(false)}
       >
         <Image 
           src={item["wishlistItem"].photos[0]}

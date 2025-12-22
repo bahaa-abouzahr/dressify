@@ -19,7 +19,7 @@ async function Navigation() {
   if(session) wishlist = await getWishlist(session);
 
   return (
-    <nav className='flex justify-between items-center my-4 border-b border-gray-200 pb-2 px-4'>
+    <nav className='flex justify-between items-center border-b border-gray-200 px-4 max-md2:sticky max-md2:top-0 max-md2:z-100 max-md2:bg-(--cream-secondary) h-16 '>
       <div className="flex gap-12 items-center max-md2:gap-6">
         <MenuToggle />
         <h3 className="font-medium text-gray-500 max-md2:font-bold max-md2:text-md">Fashion is Here!</h3>

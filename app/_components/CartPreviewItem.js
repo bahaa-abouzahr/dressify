@@ -8,7 +8,7 @@ import { deleteCartItem } from "../_lib/actions";
 import { auth } from "../_lib/auth";
 import { useCart } from "./CartContext";
 
-function CartPreviewItem({ product, session }) {
+function CartPreviewItem({ product, session, setCartToggle }) {
   const {product_id, quantity, productName, price, photos} = product;
   const { cart, setCart } = useCart();
 
@@ -25,7 +25,8 @@ function CartPreviewItem({ product, session }) {
     <div className="grid grid-cols-[1fr_2fr_1fr_auto] items-center w-full">
       <Link 
         className="relative w-10 h-10 md2:w-12 md2:h-12"
-        href={`/products/all/${product.productId}`} 
+        href={`/products/all/${product_id}`} 
+        onClick={() => setCartToggle(false)}
       >
         <Image
           src={photos[0]} 
@@ -36,8 +37,9 @@ function CartPreviewItem({ product, session }) {
         />
       </Link>
 
-      <Link href={`/products/all/${product.productId}`} 
+      <Link href={`/products/all/${product_id}`} 
         className="font-medium"
+        onClick={() => setCartToggle(false)}
       >
         {productName}
       </Link>

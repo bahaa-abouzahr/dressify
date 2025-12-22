@@ -4,6 +4,8 @@ import { auth, signIn, signOut } from "@/app/_lib/auth"
 import { supabase } from "./supabase";
 import { revalidatePath } from "next/cache";
 import { getCartProducts } from "./data-service";
+import { forEachChild } from "typescript";
+import { redirect } from "next/navigation";
 
 export async function addCartItem(productId, quantity, userId) {
   // 1) Authentication
@@ -65,13 +67,14 @@ export async function deleteCartItem(productId) {
 // Delete all Cart items
 export async function deleteDbCart() {
   const session = await auth();
-  console.log(session.user);
 
   if(!session) throw new Error('You must be logged in');
   const { error } = await supabase
     .from("cart_items")
     .delete()
     .eq("user_id", session.user.userId)
+
+  if(error) throw new Error("DB Cart couldn't be deleted: ", + error.message)
 }
 
 export async function syncCartAfterSignIn(reactCart) {
@@ -126,6 +129,89 @@ export async function deleteFromWishlist(productId) {
     .eq("product_id", productId)
 
   if (error) throw new Error('Item could not be deleted from your wishlist')
+}
+
+export async function addOrder_items(orderItems) {
+  const session = await auth();
+  if(!session) throw new Error('You must be logged in');
+
+  const { error } = await supabase
+    .from("order_items")
+    .insert(orderItems)
+
+  return error;
+}
+
+export async function checkoutAction(formData) {
+  const session = await auth();
+  if(!session) throw new Error('You must be logged in');
+
+  // 1) get needed Data
+  const user_id = session.user.userId
+  const cart = await getCartProducts(session?.user.userId)
+
+  const {firstName, lastName, number, ...shipping_address} =  Object.fromEntries(formData);
+
+  const totalItemsPrice = Number(cart.reduce((acc, cur) => acc + cur.price , 0).toFixed(2));
+  const freeDelivery = totalItemsPrice >= 50;
+  const finalPrice = freeDelivery ? Number(totalItemsPrice).toFixed(2) : Number(totalItemsPrice + 3.5).toFixed(2);
+
+  const fullName = firstName + " " + lastName
+
+  // 2) create order in orders table + retrieve order id
+  const { data, error } = await supabase
+    .from("orders")
+    .insert({
+      user_id,
+      total_price:finalPrice,
+      shipping_address,
+    })
+    .select("id")
+    .single();
+
+    if(error) throw new Error("Order couldn't be made")
+    
+    const order_id = data.id
+    console.log(order_id);
+
+  // 3) insert cart items to order_items table
+  const orderItems = cart.map(cartItem => {
+    const {product_id, quantity, productName: product_name_at_purchase, price: price_at_purchase, photos } = cartItem;
+
+    const item = {
+      order_id,
+      quantity,
+      product_name_at_purchase,
+      price_at_purchase,
+      product_id,
+      photo:photos[0]
+    }
+
+    return item;
+  })
+
+  const addItemsError = await addOrder_items(orderItems)
+
+  if(addItemsError) {
+    // rollback
+    const{error: rollbackError} = await supabase
+      .from("orders")
+      .delete()
+      .eq("id", order_id)
+  
+    if(rollbackError) 
+      throw new Error("Order items faild AND rollback failed: " + rollbackError.message);
+    
+    // rollback succeeded -> throw original error
+    throw new Error("Order was not successfull: ", + addItemsError.message)
+  } 
+
+  // 4) on success clear cart + redirect
+  
+  await deleteDbCart();
+  redirect(`/order-success/${order_id}`);
+
+
 }
 
 export async function signInAction() {

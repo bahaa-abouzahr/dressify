@@ -60,7 +60,7 @@ function AddToCart({ session, productName, productId, price, photos }) {
       <button 
         onClick={handleAddToCart} 
         disabled={loading} 
-        className="cursor-pointer flex gap-3 items-center justify-center max-w-[13rem] bg-[var(--orange-main)] 
+        className="cursor-pointer flex gap-3 items-center justify-center max-w-52 bg-(--orange-main) hover:bg-(--orange-secondary) 
           p-2 rounded-md text-white font-bold disabled:opacity-50 disabled:cursor-not-allowed
         "
       >

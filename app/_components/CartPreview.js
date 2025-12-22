@@ -19,7 +19,7 @@ const { cartToggle, setCartToggle } = usePreviewState();
           <IoMdClose />
         </button>
 
-        <span className="text-sm text-[var(--gray-text)] font-bold">
+        <span className="text-sm text-(--gray-text) font-bold">
           Your Cart is Empty
         </span>
         <span className="text-xs">
@@ -43,16 +43,16 @@ const { cartToggle, setCartToggle } = usePreviewState();
       <div className="flex flex-col justify-end items-center gap-3">
         {cart.map(product => {
           return product ? 
-            <CartPreviewItem product={product} session={session} key={product.productName} /> 
+            <CartPreviewItem product={product} session={session} setCartToggle={setCartToggle} key={product.productName} /> 
             //: null
             : <div key={item.productId}>Loading...</div>
         })}
       </div>
 
       <Link 
-        href="/Cart"
+        href="/cart"
         className="flex justify-center font-semibold text-sm"
-      
+        onClick={() => setCartToggle(false)}
       >
         <span className="border-b-2 border-transparent hover:border-current transition-all">
           Go to Cart Page

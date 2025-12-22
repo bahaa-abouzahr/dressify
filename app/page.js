@@ -16,11 +16,11 @@ export default function Page() {
           <Image 
             src={bg1}
             alt="Home-page photo"
-            className="w-[full] h-[350px] object-cover"
+            className="w-[full] md:h-[350px] h-[300px] object-cover"
           />
 
-          <div className="absolute inset-y-20 left-10 flex justify-start items-center">
-            <div className="text-white text-4xl font-bold">
+          <div className="absolute inset-y-[20] left-10 flex justify-start items-center">
+            <div className="text-white xs:text-4xl text-2xl font-bold">
               <h1>Built for Fighters.</h1>
               <h1>Made to Last.</h1>
             </div>
@@ -33,7 +33,7 @@ export default function Page() {
             Who do you want to shop for
           </h1>
           
-          <div className="grid grid-cols-3 max-md2:grid-cols-1 gap-4">
+          <div className="grid grid-cols-3 max-xs:grid-cols-1 gap-4">
             <Link 
               href="/products/all?category=women" 
               className="relative w-full h-[450px]"
@@ -42,7 +42,7 @@ export default function Page() {
               <Image 
                 src={women}
                 alt="Home-page photo"
-                className="w-[full] object-cover"
+                className="max-h-100 xs:object-cover"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
               />
@@ -59,7 +59,7 @@ export default function Page() {
               <Image 
                 src={kids}
                 alt="Home-page kids"
-                className="w-full h-full object-cover"
+                className="w-full max-h-100 xs:object-cover"
                 fill
                 sizes="(max-width: 768px) 80vw, 50vw"
               />
@@ -76,7 +76,7 @@ export default function Page() {
               <Image 
                 src={men}
                 alt="Home-page men"
-                className="w-[full] object-cover"
+                className="w-full max-h-100 xs:object-cover"
                 fill
                 sizes="(max-width: 768px) 80vw, 50vw"
               />

@@ -5,7 +5,7 @@
   --breakpoint-sm: 620px;
   --breakpoint-md: 910px;
   --breakpoint-md2: 760px;
-  /* --breakpoint-ls: 1000px; */
+  --breakpoint-ls: 1000px;
   /* --breakpoint-2xl: 100rem; */
   /* --breakpoint-3xl: 120rem; */
 }
@@ -38,8 +38,21 @@
   }
 }
 
+/* Remove number input arrows */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield; /* Firefox */
+}
+
+
 :root {
   --gray-text: #6B7280;
+  --gray-bg: #ccd2df;
   --hover-buttons-text: #0d57a7;
   --hover-buttons-bg: #56616d;
   --orange-main: #ff7d1a;
@@ -54,11 +67,10 @@ body {
   font-family: 'Poppins', system-ui, -apple-system, BlinkMacSystemFont, 
                'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
   color: #111; /* optional default text color */
-  margin-block: calc(var(--spacing) * 10);
+  /* margin-block: calc(var(--spacing) * 10); */
   background-color: rgb(240, 240, 233);
   
 }
-
 
 .nav {
   position: relative;
@@ -95,4 +107,19 @@ body {
 }
 .category-link:hover {
   text-decoration-line: underline;
+}
+
+.checkoutFormInput {
+  display: flex;
+  padding: 7px 12px;
+  border-radius: 6px;
+  background-color: var(--gray-bg);
+  border: 1px solid #ccc
+}
+
+.checkoutFormInput:focus {
+  outline:none;
+  background-color: white;
+  border-color: var(--orange-main);
+  border-radius: 6px;
 }

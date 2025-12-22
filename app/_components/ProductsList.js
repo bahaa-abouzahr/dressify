@@ -11,7 +11,7 @@ async function ProductsList({ typeFilter, categoryFilter }) {
   if(!products.length || !displayedProducts.length) return <p>No products found</p>;
 
   return (
-    <div className="grid grid-cols-1 gap-5 md2:grid-cols-2 md:grid-cols-3">
+    <div className="grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-3">
       {displayedProducts.map(product => (
         <ProductCard product={product} key={product.id} />
       ))}

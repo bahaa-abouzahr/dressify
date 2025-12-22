@@ -14,9 +14,9 @@ async function page({ params, searchParams }) {
   const typeFilter = awaitedParams.type;
 
   return (
-    <div className="grid grid-cols-[4.5rem_1fr] max-[640px]:grid-cols-[4rem_1fr] h-full gap-4 px-4">
+    <div className="grid grid-cols-[4.5rem_1fr] max-[640px]:grid-cols-[4rem_1fr] h-full gap-4 px-2 mb-10">
       <SideNavigation categoryFilter={categoryFilter} typeFilter={typeFilter} />
-      <div className="ml-2">
+      <div >
         <div className="flex justify-end mb-8" >
           <CategoryFilter />
         </div>

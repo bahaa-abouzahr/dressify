@@ -16,10 +16,10 @@ function TypeFilter() {
   }
 
   return (
-    <div className="border border-[var(--orange-main)] flex shrink">
+    <div className="border border-(--orange-main) flex shrink">
       <Button filter='all' handleFilter={handleFilter} activeFilter={activeFilter}>All Categories</Button>
-      <Button filter='men' handleFilter={handleFilter} activeFilter={activeFilter}>Men</Button>
       <Button filter='women' handleFilter={handleFilter} activeFilter={activeFilter}>Women</Button>
+      <Button filter='men' handleFilter={handleFilter} activeFilter={activeFilter}>Men</Button>
       <Button filter='kids' handleFilter={handleFilter} activeFilter={activeFilter}>Kids</Button>
     </div>
   )
