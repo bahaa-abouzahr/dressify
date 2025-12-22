@@ -7,4 +7,3 @@ function page() {
 }
 
 export default page
-Ö
