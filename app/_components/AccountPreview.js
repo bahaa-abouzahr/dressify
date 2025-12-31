@@ -22,6 +22,7 @@ function AccountPreview() {
       <div className="flex flex-col gap-1">
         <Link href="/account" className="category-link" onClick={() => handleCloseToggle()}>Your Profile</Link>
         <Link href="/account/orders" className="category-link" onClick={() => handleCloseToggle()}>Orders</Link>
+        <Link href="/account/wishlist" className="category-link" onClick={() => handleCloseToggle()}>Wishlist</Link>
 
         <form action={signOutAction}>
           <button type="submit" onClick={() => handleSignOut()} className="category-link">Sign Out</button>

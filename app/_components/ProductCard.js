@@ -9,7 +9,7 @@ function ProductCard({ product }) {
     <Link 
       // href={typeFilter === 'all' ? `/products/all/${id}` : `/products/${typeFilter}/${id}`} 
       href={`/products/${category}/${id}`} 
-      className="relative aspect-square hover:border-4 hover:border-(--orange-main) overflow-hidden "
+      className="relative aspect-square hover:border-2 hover:border-(--orange-main) overflow-hidden "
     >
       <Image 
         src={photos[0]}

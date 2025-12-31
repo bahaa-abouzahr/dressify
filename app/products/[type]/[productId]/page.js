@@ -19,13 +19,13 @@ export default async function page({ params }) {
   // SIZE NOT ADDED YET!!!
   
   return (
-    <div className="md2:grid md2:grid-cols-2 flex flex-col md2:gap-20 mx-auto mb-6 md2:items-center md2:w-[90%] w-full">
+    <div className="md2:grid md2:grid-cols-2 flex flex-col md2:gap-20 mx-auto mb-6 md2:items-center md2:w-[90%] w-full max-md2:-translate-y-10">
       
       {/* Left Column */}
       <ProductPhotos photos={photos} productName={productName} />
 
       {/* Right Column */}
-      <div className="flex flex-col h-full md2:justify-around md:-translate-y-12 max-w-[800px] min-w-[380px] mx-2 text-center">
+      <div className="flex flex-col h-full md2:justify-around md:-translate-y-12 max-w-[800px] min-w-[350px] mx-2 text-center">
 
         <div className="flex flex-col py-6 lg:py-12 gap-5 text-left w-full">
           <p className="text-(--orange-main) font-bold text-xl text-md">Shopify</p>
@@ -38,8 +38,9 @@ export default async function page({ params }) {
           {session ? <AddToWishlistButton productId={productId} session={session} location="products" /> : '' }
           <AddToCart session={session} productName={productName} productId={productId} price={price} photos={photos} />
         </div>
-
+        
       </div>
+
     </div>
   )
 }

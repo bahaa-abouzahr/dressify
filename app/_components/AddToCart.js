@@ -7,6 +7,8 @@ import { useCart } from "./CartContext"
 import { addCartItem, deleteDbCart } from "../_lib/actions"
 import { auth } from "../_lib/auth"
 import { useRouter } from "next/navigation"
+import toast from "react-hot-toast"
+import ScrollToTop from "./ScrollToTop"
 
 function AddToCart({ session, productName, productId, price, photos }) {
   const { addToCart, clearCart } = useCart();
@@ -16,18 +18,20 @@ function AddToCart({ session, productName, productId, price, photos }) {
   const router = useRouter();
   const userId = session?.user?.userId;
 
-
   async function handleAddToCart(){
     setLoading(true);
-
+    let res;
     try {
       // Add cart to state/local storage
-      if(!session)
+      if(!session){
         await addToCart(productName, productId, price, quantity, photos);
+        toast.success("Added Successfully")
+      }
       // Logged-in: add Cart Item to DB
       else {
-        await addCartItem(productId, quantity, userId)
-        
+        res = await addCartItem(productId, quantity, userId)
+        if(res.ok) toast.success("Added Successfully")
+        else toast.error(`Adding to Cart Failed: ${res}`)
       } 
     } catch(error) {
       console.error("Error adding to cart: ", error);

@@ -37,7 +37,7 @@ function ProfileNavigation() {
           <AccountNavItem key={link.name} pathName={pathName} href={link.href} >
             <Link 
               href={link.href}
-              className={`group flex gap-3 hover:text-[var(--hover-buttons-text)] `}
+              className={`group flex gap-3 hover:text-(--hover-buttons-text) `}
             >
               {link.icon}
               <span className="hidden md2:block">{link.name}</span>

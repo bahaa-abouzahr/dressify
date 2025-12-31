@@ -18,7 +18,7 @@ function CartFinalPrice({ location }) {
    {/* <div className="flex flex-col gap-3 items-start pl-3 md2:pt-10 md2:border-l-4 max-md2:border-t-4 border-(--gray-bg) md2:-translate-y-10 "> */}
       <div className="md:text-base md2:text-sm flex flex-col gap-1 mt-4 ">
         <span>Subtotal ({cart.length} items): <strong>€{totalItemsPrice}</strong></span>
-        <span className="text-xs italic">{freeDelivery ? "Eligable for free Delivery" : "Delivery fee €3.5"}</span>
+        <span className="text-xs italic">{freeDelivery ? "Eligible for free Delivery" : "Delivery fee €3.5"}</span>
         <span>Final Price: <strong>€{finalPrice}</strong></span>
       </div>
 

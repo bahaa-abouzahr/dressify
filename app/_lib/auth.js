@@ -30,7 +30,10 @@ const authConfig = {
       
       const user = await getUser(session.user.email)
       session.user.userId = user.id;
-
+      session.user.name = user.fullName
+      session.user.nationality = user.nationality;
+      session.user.countryFlag = user.countryFlag
+      
       return session;
     }
   },

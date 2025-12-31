@@ -37,14 +37,15 @@ export async function addCartItem(productId, quantity, userId) {
     } else {
       
       // 4) Insert new Cart Item
-      const { insertError } = await supabase
+      const { error:insertError } = await supabase
         .from("cart_items")
         .insert([newCartItem]);
-      if(insertError) throw new Error('Item could not be added to your cart')
+      if(insertError) return insertError.message
 
     }
 
     revalidatePath('/')
+    return {ok: true}
 }
 
 // Delete one item from Cart
@@ -59,9 +60,10 @@ export async function deleteCartItem(productId) {
     .eq("product_id", productId)
     .eq("user_id", session.user.userId)
 
-    if(error) throw new Error('Cart item could not be deleted from your cart')
+    if(error) return error.message;
 
     revalidatePath('/');
+    return {ok: true};
 }
 
 // Delete all Cart items
@@ -114,7 +116,8 @@ export async function addToWishlist(productId) {
     .from('wishlist')
     .insert([wishlistItem])
 
-  if (error) throw new Error('Item could not be added to your wishlist')
+  if (error) return error.message;
+  return {ok: true};
 }
 
 export async function deleteFromWishlist(productId) {
@@ -128,7 +131,9 @@ export async function deleteFromWishlist(productId) {
     .eq("user_id", userId)
     .eq("product_id", productId)
 
-  if (error) throw new Error('Item could not be deleted from your wishlist')
+  if (error) return error.message;
+  
+  return { ok: true};
 }
 
 export async function addOrder_items(orderItems) {
@@ -172,7 +177,6 @@ export async function checkoutAction(formData) {
     if(error) throw new Error("Order couldn't be made")
     
     const order_id = data.id
-    console.log(order_id);
 
   // 3) insert cart items to order_items table
   const orderItems = cart.map(cartItem => {
@@ -209,9 +213,40 @@ export async function checkoutAction(formData) {
   // 4) on success clear cart + redirect
   
   await deleteDbCart();
-  redirect(`/order-success/${order_id}`);
+  revalidatePath(`/order-success/${order_id}`);
 
+  return { ok: true, order_id }
 
+}
+
+export async function updateProfileAction(formData){
+  const session = await auth();
+  if(!session) throw new Error('You must be logged in');
+  const user = session.user;
+
+  console.log(session);
+  const fullName = formData.get('fullName');
+  let [nationality, countryFlag] = formData.get('nationality').split('%');
+  
+  // if updated data
+  if(user.name === fullName && user.nationality === nationality)
+    return "no change";
+
+  console.log(user.name, " ", fullName);
+  if(nationality === "") countryFlag = "";
+  const updateData = {fullName, nationality, countryFlag};
+ 
+  const { error } = await supabase
+    .from("users")
+    .update(updateData)
+    .eq('id', session.user.userId)
+  
+  // if (error) throw new Error("User Profile couldn't be updated");
+  if (error) return error.message;
+
+  // on success revalidate path, and return true
+  revalidatePath('/account')
+  return { ok: true};
 }
 
 export async function signInAction() {

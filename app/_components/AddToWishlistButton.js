@@ -5,6 +5,7 @@ import { addToWishlist, deleteFromWishlist } from "../_lib/actions";
 import { useEffect, useState } from "react";
 import { getWishlist, getWishlistItem } from "../_lib/data-service";
 import { useWishlist } from "./WishlistContext";
+import toast from "react-hot-toast";
 
 function AddToWishlistButton({ session, productId, location }) {
 
@@ -31,12 +32,24 @@ function AddToWishlistButton({ session, productId, location }) {
 
   async function handleclick() {
     if(inWishlist) {
-      await deleteFromWishlist(productId);
-      setInWishlist(false);
+      const res = await deleteFromWishlist(productId);
+      if(res.ok) {
+        setInWishlist(false);
+        toast.success("Removed to Wishlist")
+      }
+      else {
+        toast.error(`couldn't be Removed from Wishlist: , ${res}`)
+      }
     } 
     else {
-      await addToWishlist(productId);
-      setInWishlist(true)
+      const res = await addToWishlist(productId);
+      if(res.ok) {
+        setInWishlist(true)
+        toast.success("Added to Wishlist")
+      }
+      else {
+        toast.error(`couldn't be added to Wishlist: , ${res}`)
+      }
     }
 
     // to sync wishlist state and re-render the component

@@ -5,7 +5,9 @@ import ScrollToTop from './_components/ScrollToTop';
 import { CartProvider } from './_components/CartContext';
 import { PreviewStateProvider } from './_components/PreviewStateContext';
 import ClientOverlay from './_components/ClientOverlay';
-import WishlistContext, { WishlistProvider } from './_components/WishlistContext';
+import { WishlistProvider } from './_components/WishlistContext';
+
+import { Toaster } from "react-hot-toast"
 
 export const metadata = {
   title: {
@@ -33,7 +35,29 @@ export default function RootLayout({ children }) {
               <main className='mx-auto w-full mt-10'>
                 { children }
               </main>
-       
+
+            <Toaster 
+              postiion="top-center"
+              gutter={12}
+              containerStyle={{margin: "8px"}}
+              toastOptions={{
+                success: {
+                  duration: 3000
+                },
+                error: {
+                  duration: 5000
+                },
+                style: {
+                  fontSize: '16px',
+                  maxWidth: '500px',
+                  padding: '16px 24px',
+                  backgroundColor: 'var(--gray-bg)',
+                  color: 'var(--gray-text)',
+                  marginTop: '3rem',
+                }
+              }}
+            />
+
             </WishlistProvider>
           </PreviewStateProvider>
         </CartProvider>

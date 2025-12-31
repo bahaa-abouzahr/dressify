@@ -1,5 +1,4 @@
 import Link from "next/link"
-import { BsCheckLg } from "react-icons/bs"
 
 function SideNavigation({ categoryFilter, typeFilter }) {
   const categories = ["all",  "jackets", "pants", "shirts", "shoes", ]

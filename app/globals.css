@@ -5,6 +5,7 @@
   --breakpoint-sm: 620px;
   --breakpoint-md: 910px;
   --breakpoint-md2: 760px;
+  --breakpoint-md3: 700px;
   --breakpoint-ls: 1000px;
   /* --breakpoint-2xl: 100rem; */
   /* --breakpoint-3xl: 120rem; */
@@ -59,6 +60,7 @@ input[type="number"] {
   --orange-secondary: #faa96c;
   --cream-main: rgb(240, 240, 233);
   --cream-secondary: rgb(220, 220, 210);
+  --cream-input: rgb(226, 226, 221);
   --button-secondary: rgb(218, 22, 22);
 }
 
@@ -118,6 +120,24 @@ body {
 }
 
 .checkoutFormInput:focus {
+  outline:none;
+  background-color: white;
+  border-color: var(--orange-main);
+  border-radius: 6px;
+}
+
+.profileFormInput {
+  display: flex;
+  padding: 7px 12px;
+  border-radius: 6px;
+  background-color: var(--cream-input);
+  border: 1px solid #ccc;
+
+  width: 100%;
+
+}
+
+.profileFormInput:focus {
   outline:none;
   background-color: white;
   border-color: var(--orange-main);

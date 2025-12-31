@@ -6,6 +6,7 @@ import { deleteFromWishlist } from "../_lib/actions";
 import { usePreviewState } from "./PreviewStateContext";
 import { useWishlist } from "./WishlistContext";
 import WishlistPreviewItem from "./WishlistPreviewItem";
+import toast from "react-hot-toast";
 
 
 function WishlistPreview({ session }) {
@@ -16,8 +17,12 @@ const listLength = localWishlist.length;
 
 
 async function handleDelete(productId) {
-  await deleteFromWishlist(productId);
-  setLocalWishlist(w => w.filter(item => item.product_id !== productId));
+  const res = await deleteFromWishlist(productId);
+  if(res.ok) {
+    setLocalWishlist(w => w.filter(item => item.product_id !== productId));
+    toast.success("Removed from Wishlist")
+  }
+  else toast.error(`Couldn't remove from Wishlist: , ${res}`)
 }
 
 if (!localWishlist.length) 

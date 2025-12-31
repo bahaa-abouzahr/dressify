@@ -9,7 +9,12 @@ export async function getUser(email) {
     .eq('email', email)
     .single();
 
-    return data;
+  if(error) {
+    console.error(error);
+    throw new Error("User data couldn't be retrieved");
+  }
+
+  return data;
 }
 
 export async function createUser(newUser) {
@@ -107,9 +112,11 @@ export async function getWishlist(session) {
     .from("wishlist")
     .select(`
         product_id,
-        wishlistItem:products (id, created_at, photos, price, productName)
+        created_at,
+        wishlistItem:products (id, photos, price, productName)
       `)
     .eq('user_id', userId)
+    .order('created_at', {ascending: false})
 
     if(error) {
       console.error(error);
@@ -120,8 +127,8 @@ export async function getWishlist(session) {
 }
 
 export async function getWishlistItem(session, productId) {
-  const userId = session.user.userId;
   if(!session) throw new Error('You must be logged in')
+  const userId = session.user.userId;
 
   const { data, error } = await supabase
     .from("wishlist")
@@ -136,4 +143,49 @@ export async function getWishlistItem(session, productId) {
     }
 
     return data;
+}
+
+export async function getOrders(session) {
+  if(!session) throw new Error('You must be logged in')
+  const userId = session.user.userId;
+
+  const { data, error } = await supabase
+    .from('orders')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', {ascending: false})
+
+    if(error) {
+      console.error(error);
+      notFound();
+    }
+
+    return data;
+}
+
+export async function getOrderItems(session, orderId) {
+  if(!session) throw new Error('You must be logged in')
+  const userId = session.user.userId;
+
+  const { data, error } = await supabase
+    .from("order_items")
+    .select('*')
+    .eq('order_id', orderId)
+    
+  if(error) {
+    console.error(error);
+    notFound();
+  }
+
+  return data;
+}
+
+export async function getCountries(){
+  try {
+    const res = await fetch('https://restcountries.com/v2/all?fields=name,flag');
+    const countries = await res.json();
+    return countries;
+  } catch {
+    throw new Error('Could not fetch countries');
+  }
 }

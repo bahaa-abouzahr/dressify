@@ -28,7 +28,7 @@ function TypeFilter() {
 function Button({ filter, handleFilter, activeFilter, children}) {
   return (
     <button 
-      className={`px-4 py-2 max-[640px]:text-[10px] text-[var(--gray-text)] hover:bg-[var(--cream-secondary)] cursor-pointer ${filter === activeFilter ? 'bg-[var(--cream-secondary)]' : ''}`}
+      className={`px-4 py-2 max-[400px]:text-[9px] max-[640px]:text-[10px] text-(--gray-text) hover:bg-(--cream-secondary) cursor-pointer ${filter === activeFilter ? 'bg-(--cream-secondary)' : ''}`}
       onClick={() => handleFilter(filter)}
     >
       {children}

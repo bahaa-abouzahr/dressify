@@ -1,7 +1,7 @@
 "use client"
 
 import Image from "next/image"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function ProductPhotos({ photos, productName }) {
 
@@ -10,6 +10,7 @@ function ProductPhotos({ photos, productName }) {
   function handleThumbnailClick(ind) {
     setActivePhoto(ind);
   }
+
 
   return (
     <div className="flex flex-col gap-4 ">
@@ -25,12 +26,12 @@ function ProductPhotos({ photos, productName }) {
         </div>
 
         {/* Thumbnails */}
-        <div className="flex gap-4 max-md2:mx-auto max-w-md min-w-[380px]">
+        <div className={`flex gap-4 w-full max-w-full sm:max-w-[400px] md:max-w-[480px] min-w-[240px]`}>
           {photos.map((photo, ind) => (
             <div 
             key={photo}
             className={`relative w-20 h-20 rounded-lg overflow-hidden cursor-pointer 
-              aspect-square hover:border-3 hover:border-[var(--orange-main)] 
+              aspect-square hover:border-3 hover:border-(--orange-main) 
               ${activePhoto === ind ? "opacity-60" : ""}`}
             >
               <Image 

@@ -1,17 +1,19 @@
 import ProductCard from "@/app/_components/ProductCard";
 import { getAllProducts, getProducts } from "../_lib/data-service";
 
-async function ProductsList({ typeFilter, categoryFilter }) {
-
+async function ProductsList({ typeFilter, categoryFilter, search }) {
+  console.log(search);
   const products = typeFilter === "all" ? await getAllProducts() : await getProducts(typeFilter);
- 
-  const displayedProducts = categoryFilter === "all" ? products : products.filter(item => item.category === categoryFilter)
+
+  const filteredProducts = categoryFilter === "all" ? products : products.filter(item => item.category === categoryFilter)
+  console.log(filteredProducts);
+  const displayedProducts = filteredProducts.filter(product => product["productName"].toLowerCase().includes(search))
 
   // break when there are no products
-  if(!products.length || !displayedProducts.length) return <p>No products found</p>;
+  if(!products.length || !displayedProducts.length) return <p className="text-xl text-(--gray-text)">No products found</p>;
 
   return (
-    <div className="grid grid-cols-1 gap-5 xs:grid-cols-2 md:grid-cols-3">
+    <div className="grid grid-cols-1 xs:grid-cols-2 gap-5 md3:grid-cols-3 md:grid-cols-4">
       {displayedProducts.map(product => (
         <ProductCard product={product} key={product.id} />
       ))}

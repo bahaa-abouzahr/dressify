@@ -6,14 +6,8 @@ const CartContext = createContext();
 
 export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
-
   const [initialized, setInitialized] = useState(false);
-
   const [totalPrice, setTotalPrice] = useState(null)
-  
-
-  // // flag to protect from repetitive Guest Cart syncing
-  // const [hasSyncedGuestCart, setHasSyncedGuestCart] = useState(false);
   
   // Load Cart from Local Storage on mount
   useEffect(() => {

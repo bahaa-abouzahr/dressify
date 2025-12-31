@@ -7,18 +7,24 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { deleteCartItem } from "../_lib/actions";
 import { auth } from "../_lib/auth";
 import { useCart } from "./CartContext";
+import toast from "react-hot-toast";
 
 function CartPreviewItem({ product, session, setCartToggle }) {
   const {product_id, quantity, productName, price, photos} = product;
   const { cart, setCart } = useCart();
 
-  function handleDeleteCartItem(product_id) {
+  async function handleDeleteCartItem(product_id) {
+    let res;
     if(!session) {
       const updatedCart = cart.filter(cartItem => cartItem.product_id !== product_id);
       setCart(updatedCart)
+      toast.success("Removed from Cart")
     }
-    else
-      deleteCartItem(product_id);
+    else {
+      res = await deleteCartItem(product_id);
+      if(res.ok) toast.success("Removed from Cart")
+      else toast.error(`Remove Unsuccessfull: ${res}`)
+    }
   }
   
   return (

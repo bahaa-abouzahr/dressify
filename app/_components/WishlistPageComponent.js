@@ -4,6 +4,7 @@ import WishlistItemDetails from "@/app/_components/WishlistItemDetails"
 import { deleteFromWishlist } from "../_lib/actions"
 import { useWishlist } from "./WishlistContext"
 import { useEffect } from "react";
+import toast from "react-hot-toast";
 
 function WishlistPageComponent({ wishlist }) {
   const {localWishlist, setLocalWishlist} = useWishlist();
@@ -13,8 +14,14 @@ function WishlistPageComponent({ wishlist }) {
   }, [])
 
   async function handleDelete(productId){
-    await deleteFromWishlist(productId)
-    setLocalWishlist(w => w.filter(item => item.product_id !== productId))
+    const res = await deleteFromWishlist(productId)
+    
+    if(res.ok) {
+      setLocalWishlist(w => w.filter(item => item.product_id !== productId))
+      toast.success("Removed from Wishlist")
+    }
+    else
+      toast.error(`Deletion was unsuccessfull: , ${res}`)
   }
 
   if(!localWishlist.length)
@@ -26,9 +33,9 @@ function WishlistPageComponent({ wishlist }) {
     </div>)
 
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 mr-2">
       {localWishlist.map(item => {
-        return <WishlistItemDetails product={item.wishlistItem} key={item.wishlistItem.productName} handleDelete={handleDelete} />
+        return <WishlistItemDetails product={item.wishlistItem} created_at={item.created_at} key={item.wishlistItem.productName} handleDelete={handleDelete} />
       })}
     </div>
   )
