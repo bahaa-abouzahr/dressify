@@ -35,7 +35,7 @@ function ProductsSearchBar() {
         type="search"
         placeholder="Search products..."
         value={searchedValue}
-        onChange={(e) => setSearchedValue(e.target.value)}
+        onChange={(e) => setSearchedValue(e.target.value.toLocaleLowerCase())}
         className="max-[640px]:text-xs text-(--gray-text) grid-cols-2 px-3 py-2 w-full max-w-sm rounded border border-(--orange-main) focus:outline-(--orange-main)"
       />  
       
