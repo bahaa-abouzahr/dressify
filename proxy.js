@@ -1,32 +1,84 @@
 import { NextResponse } from "next/server";
-import { auth } from "./app/_lib/auth";
+import { createServerClient } from '@supabase/ssr';
 
 export async function proxy(request) {
   const { pathname } = request.nextUrl
 
+  // Create a response object
+  let response = NextResponse.next({
+    request: {
+      headers: request.headers,
+    },
+  });
+
   // Redirect products -> products/all
   if(pathname === '/products') {
-    return NextResponse.redirect(
-      new URL('/products/all', request.url)
-    )
+    return NextResponse.redirect(new URL('/products/all', request.url))
   }
 
-  // Protect account route
-  if(pathname.startsWith("/account")) {
-    const session = await auth();
+   // Protect /profile route
+  if (pathname.startsWith('/profile')) {
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_KEY,
+      {
+        cookies: {
+          get(name) {
+            return request.cookies.get(name)?.value;
+          },
+          set(name, value, options) {
+            request.cookies.set({
+              name,
+              value,
+              ...options,
+            });
+            response = NextResponse.next({
+              request: {
+                headers: request.headers,
+              },
+            });
+            response.cookies.set({
+              name,
+              value,
+              ...options,
+            });
+          },
+          remove(name, options) {
+            request.cookies.set({
+              name,
+              value: '',
+              ...options,
+            });
+            response = NextResponse.next({
+              request: {
+                headers: request.headers,
+              },
+            });
+            response.cookies.set({
+              name,
+              value: '',
+              ...options,
+            });
+          },
+        },
+      }
+    );
 
-    if(!session) {
-      return NextResponse.redirect(new URL("/login", request.url));
+    // Check if user is authenticated
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (!session) {
+      return NextResponse.redirect(new URL('/account/login', request.url));
     }
   }
 
   // Allow everything else
-  return NextResponse.next()
+  return response;
 }
 
 export const config = {
   matcher: [
     '/products', 
-    "/account/:path*"
+    "/profile/:path*"
   ]
 }

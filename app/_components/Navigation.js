@@ -2,28 +2,31 @@
 
 import Link from "next/link";
 
-import { auth } from "../_lib/auth";
-import { getCartProducts, getProductsWithIds, getWishlist } from "../_lib/data-service";
+import { getCartProducts, getWishlist } from "@/app/_lib/data-service";
 
 import AccountMenu from "./AccountMenu";
 import CartMenu from "./CartMenu";
 import MenuToggle from "./MenuToggle";
 import WishlistMenu from "./WishlistMenu";
-import { WishlistProvider } from "./WishlistContext";
+
+import { createClient } from '@/app/_lib/supabase/server';
 
 async function Navigation() {
+  const supabase = await createClient();
 
-  const session = await auth();
-  const cart = await getCartProducts(session?.user.userId)
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
+  const cart = user ? await getCartProducts(userId) : []
+
   let wishlist;
-  if(session) wishlist = await getWishlist(session);
+  if(user) wishlist = await getWishlist(userId);
 
   return (
     <nav className='flex justify-between items-center border-b border-gray-200 px-4 max-md2:sticky max-md2:top-0 max-md2:z-100 max-md2:bg-(--cream-secondary) h-16 '>
       <div className="flex gap-12 items-center max-md2:gap-6">
         <MenuToggle />
-        <h3 className="font-medium text-gray-500 max-md2:font-bold max-md2:text-md">Fashion is Here!</h3>
-        <div className='flex justify-between gap-8 text-gray-500 max-md2:hidden'>
+        <h3 className="font-medium text-(--gray-text) max-md2:font-bold max-md2:text-md">Fashion is Here!</h3>
+        <div className='flex justify-between gap-8 text-(--gray-text) max-md2:hidden'>
           <Link className='nav' href="/">Home</Link>
           <Link className='nav' href="/products/all">Collection</Link>
           <Link className='nav' href="/about">About</Link>
@@ -33,17 +36,16 @@ async function Navigation() {
 
       <div className='flex justify-between items-center gap-8 '>
 
-        {session && <WishlistMenu session={session} wishlist={wishlist} />}
+        {user && <WishlistMenu userId={userId} wishlist={wishlist} />}
 
+        <CartMenu userId={userId} dbCart={cart} />
 
-        <CartMenu session={session} dbCart={cart} />
-
-        {session?.user?.image ? (
-          <AccountMenu session={session} />
+        {user ? (
+          <AccountMenu user={user} />
         ) :
           <Link 
             className="nav text-gray-500"
-            href="/api/auth/signin"
+            href="/account/login"
           >
             Login
           </Link>

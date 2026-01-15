@@ -1,6 +1,6 @@
-import { getCountries } from "../_lib/data-service";
+import { getCountries } from "@/app/_lib/data-service";
 
-async function SelectCountry({ defaultCountry, name, id, className, session }) {
+async function SelectCountry({ defaultCountry, name, id, className }) {
   const countries = await getCountries();
 
   const flag = 

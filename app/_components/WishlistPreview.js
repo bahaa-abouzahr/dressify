@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { IoMdClose } from "react-icons/io";
-import { deleteFromWishlist } from "../_lib/actions";
+import { deleteFromWishlist } from "@/app/_lib/actions";
 import { usePreviewState } from "./PreviewStateContext";
 import { useWishlist } from "./WishlistContext";
 import WishlistPreviewItem from "./WishlistPreviewItem";
 import toast from "react-hot-toast";
 
 
-function WishlistPreview({ session }) {
+function WishlistPreview() {
 const { wishlistToggle, setWishlistToggle } = usePreviewState();
 const { localWishlist, setLocalWishlist} = useWishlist();
 
@@ -60,18 +60,17 @@ if (!localWishlist.length)
       </span>
 
       <div className="grid grid-cols-3 gap-4">
-        {localWishlist.map((item, ind) => {
-          if(ind < 6)
-            return (
-              <WishlistPreviewItem 
-                item={item} 
-                key={ind} 
-                ind={ind} 
-                listLength={listLength} 
-                handleDelete={handleDelete} 
-                setWishlistToggle={setWishlistToggle} 
-              />
-            )
+        {localWishlist.slice(0, 6).map((item, ind) => {
+          return (
+            <WishlistPreviewItem 
+              item={item} 
+              key={item.product_id} 
+              ind={ind} 
+              listLength={listLength} 
+              handleDelete={handleDelete} 
+              setWishlistToggle={setWishlistToggle} 
+            />
+          )
         })}
       </div>
 

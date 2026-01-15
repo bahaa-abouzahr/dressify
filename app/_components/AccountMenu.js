@@ -1,18 +1,17 @@
 "use client"
 
 import Image from "next/image"
-import { useState } from "react"
 
+import { useRouter } from "next/navigation"
 import AccountPreview from "./AccountPreview"
 import Preview from "./Preview"
 import { usePreviewState } from "./PreviewStateContext"
-import { useRouter } from "next/navigation"
 
-// import { useNavigate } from "react-router-dom"
+import { RxAvatar } from "react-icons/rx"
 
-function AccountMenu({ session }) {
+function AccountMenu({ user }) {
   const { profileToggle, setProfileToggle, setNavigationToggle, setCartToggle, setWishlistToggle } = usePreviewState();
-
+  const avatar = user.user_metadata.avatar_url;
   // const navigate = useNavigate(); // React Router
   const router = useRouter(); // App Router
 
@@ -24,31 +23,30 @@ function AccountMenu({ session }) {
   }
   
   return (
-    <div className="relative z-30">
+    <div className="relative z-30 flex">
       <button onClick={() => toggleOpen()}>
-        <Image 
-          src={session.user.image} 
-          width={30}
-          height={30}
-          alt={session.user.name}
-          onDoubleClick={() => router.push('/account')}
-          className='hover:border-[1.5px] hover:scale-120 rounded-full border-[var(--orange-secondary)]'
-          referrerPolicy="no-referrer"
-        />
+        {avatar ? 
+          <Image 
+            src={user.user_metadata.avatar_url} 
+            width={30}
+            height={30}
+            alt={user.user_metadata.full_name}
+            onDoubleClick={() => router.push('/profile')}
+            className='hover:border-[1.5px] hover:scale-120 rounded-full border-(--orange-secondary)'
+            referrerPolicy="no-referrer"
+          />
+          : 
+          <div className="transition-transform duration-300 hover:scale-140 text-(--gray-text) z-30 text-xl">
+            <RxAvatar />
+          </div>
+        }
       </button>
       {profileToggle && 
-        <>
-          { /* To close when clicking elswhere than the Menu */}
-          {/* <div className="fixed inset-0 z-10" onClick={() => setProfileToggle(false)}></div> */}
-
-          <div className="max-md2:fixed absolute z-50">
-            
-            <Preview width={5} zIndex={60}>
-              <AccountPreview />
-            </Preview>
-          </div>
-        </>
-
+        <div className="absolute top-full mt-1 z-50"> 
+          <Preview width={5} zIndex={60}>
+            <AccountPreview />
+          </Preview>
+        </div>
       }
     </div>
   )

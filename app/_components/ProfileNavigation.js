@@ -4,25 +4,26 @@ import { usePathname } from "next/navigation"
 
 import { UserIcon, HeartIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
 import Link from "next/link";
-import SignOutButton from "./SignOutButton";
+import SignOutProfileButton from "./SignOutProfileButton";
 import AccountNavItem from "./AccountNavItem";
+import SignOutComponent from "./SignOutComponent";
 
 const navLinks = [
   {
     name: 'Profile',
-    href: '/account',
+    href: '/profile',
     icon: <UserIcon className='h-5 w-5' />,
   },
   
   {
     name: 'Orders History',
-    href: '/account/orders',
+    href: '/profile/orders',
     icon: <ShoppingBagIcon className='h-5 w-5' />,
   },
   
   {
     name: 'Whishlist',
-    href: '/account/wishlist',
+    href: '/profile/wishlist',
     icon: <HeartIcon className="h-5 w-5" />
   },
 ]
@@ -46,7 +47,9 @@ function ProfileNavigation() {
         ))}
 
         <AccountNavItem>
-          <SignOutButton />
+          <SignOutComponent>
+            <SignOutProfileButton />
+          </SignOutComponent>
         </AccountNavItem>
 
       </ul>

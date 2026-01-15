@@ -6,7 +6,7 @@ import CartPreviewItem from "./CartPreviewItem";
 import { IoMdClose } from "react-icons/io";
 import { usePreviewState } from "./PreviewStateContext";
 
-function CartPreview({ cart, session }) {
+function CartPreview({ cart, userId }) {
 const { cartToggle, setCartToggle } = usePreviewState();
 
   if (!cart.length) 
@@ -43,7 +43,7 @@ const { cartToggle, setCartToggle } = usePreviewState();
       <div className="flex flex-col justify-end items-center gap-3">
         {cart.map(product => {
           return product ? 
-            <CartPreviewItem product={product} session={session} setCartToggle={setCartToggle} key={product.productName} /> 
+            <CartPreviewItem product={product} userId={userId} setCartToggle={setCartToggle} key={product.productName} /> 
             //: null
             : <div key={item.productId}>Loading...</div>
         })}

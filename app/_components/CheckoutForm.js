@@ -5,7 +5,7 @@ import { checkoutAction } from "../_lib/actions"
 import { useCart } from "./CartContext";
 import { redirect } from "next/navigation";
 
-function CheckoutForm() {
+function form() {
 
   async function clientAction(formData) {
     const res = await checkoutAction(formData);
@@ -30,7 +30,7 @@ function CheckoutForm() {
           <input
               name="firstName"
               required
-              className="checkoutFormInput shadow-sm"
+              className="formInput shadow-sm"
               />
         </div>
 
@@ -39,7 +39,7 @@ function CheckoutForm() {
           <input
               name="lastName"
               required
-              className="checkoutFormInput shadow-sm"
+              className="formInput shadow-sm"
               />
         </div>
 
@@ -52,7 +52,7 @@ function CheckoutForm() {
               inputMode="numeric"
               placeholder="+49 123 4567"
               pattern="^\+?[0-9 ]+$"
-              className="checkoutFormInput shadow-sm"
+              className="formInput shadow-sm"
               />
         </div>
       </div>
@@ -64,7 +64,7 @@ function CheckoutForm() {
           <input
               name="street"
               required
-              className="checkoutFormInput shadow-sm"
+              className="formInput shadow-sm"
               />
         </div>
 
@@ -72,7 +72,7 @@ function CheckoutForm() {
           <label>Additional delivery info</label>
           <input
               name="additionalInfo"
-              className="checkoutFormInput shadow-sm"
+              className="formInput shadow-sm"
               />
         </div>
 
@@ -85,7 +85,7 @@ function CheckoutForm() {
               inputMode="numeric"
               pattern="[0-9]*"
               placeholder="54321"
-              className="checkoutFormInput shadow-sm"
+              className="formInput shadow-sm"
               onInvalid={(e) => {
                 e.currentTarget.setCustomValidity("Please enter numbers only");
               }}
@@ -100,7 +100,7 @@ function CheckoutForm() {
           <input
               name="city"
               required
-              className="checkoutFormInput shadow-sm"
+              className="formInput shadow-sm"
               />
         </div>
       </div>
@@ -109,4 +109,4 @@ function CheckoutForm() {
   )
 }
 
-export default CheckoutForm
+export default form

@@ -1,5 +1,9 @@
 import Link from "next/link"
 
+export const metdata = {
+  title: 'Page not found'
+}
+
 function NotFound() {
   return (
     <main className="text-center space-y-6 mt-4 px-8 text-[var(--gray-text)]">

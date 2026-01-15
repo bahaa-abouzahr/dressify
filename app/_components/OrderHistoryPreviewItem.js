@@ -43,7 +43,7 @@ function OrderHistoryPreviewItem({ item, deliveryDate }) {
 
       </div>
 
-      <div className="flex flex-col md2:text-sm xs:text-xs text-[9px]">
+      <div className="flex flex-col text-center md2:text-sm xs:text-xs text-[9px]">
         <span>Quantity:</span>
         <strong>{quantity}</strong>
       </div>

@@ -1,14 +1,14 @@
 "use client"
 
 import Image from "next/image";
-import { updateProfileAction } from "../_lib/actions";
+import { updateProfileAction } from "@/app/_lib/actions";
 import UpdateProfileButton from "./UpdateProfileButton";
 
 import toast from "react-hot-toast";
 import { CiFlag1 } from "react-icons/ci";
 
-function UpdateProfileForm({ session, children }) {
-  const {name: fullName, email, nationality, countryFlag } = session.user;
+function UpdateProfileForm({ profileUser, children }) {
+  const {full_name: fullName, email, nationality, countryFlag } = profileUser;
 
   async function clientAction(formData) {
     const res = await updateProfileAction(formData)

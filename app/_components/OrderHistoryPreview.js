@@ -1,12 +1,17 @@
 import { format } from "date-fns";
-import { auth } from "../_lib/auth";
-import { getOrderItems } from "../_lib/data-service";
+
+import { getOrderItems } from "@/app/_lib/data-service";
 import OrderHistoryPreviewItem from "./OrderHistoryPreviewItem";
 
+import { createClient } from '@/app/_lib/supabase/server';
+
 async function OrderHistoryPreview({ order }) {
-  const session = await auth();
+
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
   const { id:orderId, created_at, total_price } = order;
-  const orderItems = await getOrderItems(session, orderId);
+  const orderItems = await getOrderItems(user.id, orderId);
 
   // Temporary delivery state, if 3 days passed, set as delivered
   const currentDate = new Date();

@@ -5,13 +5,13 @@ import Link from "next/link";
 
 import { format } from "date-fns";
 
-import { FaRegTrashAlt } from "react-icons/fa";
+import AnimatedTrashButton from "./AnimatedTrashButton";
 
 function WishlistItemDetails({ product, handleDelete, created_at }) {
   const {id, description, photos, price, productName} = product;
 
-  const date = new Date(created_at);
 
+  const date = new Date(created_at);
 
   return (
     <div className="grid grid-cols-[1fr_3fr_1fr_1fr] md2:grid-cols-[1fr_3fr_2fr_2fr_1fr] items-center gap-2 w-full md:w-[80%] h-20 border border-(--cream-secondary) rounded-2xl">
@@ -44,7 +44,7 @@ function WishlistItemDetails({ product, handleDelete, created_at }) {
 
       </div>
 
-      <button className="cursor-pointer flex justify-center" onClick={() => handleDelete(id)}><FaRegTrashAlt /></button>
+      <AnimatedTrashButton handleDelete={handleDelete} id={id} />
     </div>
   )
 }

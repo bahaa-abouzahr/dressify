@@ -2,6 +2,8 @@ import ProductsList from "@/app/_components/ProductsList"
 import SideNavigation from "@/app/_components/SideNavigation"
 import CategoryFilter from "@/app/_components/CategoryFilter";
 import ProductsSearchBar from "@/app/_components/ProductsSearchBar";
+import { Suspense } from "react";
+import Spinner from "@/app/_components/Spinner";
 
 async function page({ params, searchParams }) {
 
@@ -28,7 +30,9 @@ async function page({ params, searchParams }) {
             <CategoryFilter />
           </div>
         </div>
-        <ProductsList typeFilter={typeFilter} categoryFilter={categoryFilter} search={search} />
+        <Suspense fallback={<Spinner />} key={typeFilter}>
+          <ProductsList typeFilter={typeFilter} categoryFilter={categoryFilter} search={search} />
+        </Suspense>
 
       </div>
     </div>

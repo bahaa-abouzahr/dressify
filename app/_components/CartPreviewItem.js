@@ -1,21 +1,21 @@
 "use client"
 
 import Image from "next/image";
-import Link from "next/link"
+import Link from "next/link";
 
-import { FaRegTrashAlt } from "react-icons/fa";
-import { deleteCartItem } from "../_lib/actions";
-import { auth } from "../_lib/auth";
-import { useCart } from "./CartContext";
 import toast from "react-hot-toast";
+import { FaRegTrashAlt } from "react-icons/fa";
+import { deleteCartItem } from "@/app/_lib/actions";
+import { useCart } from "./CartContext";
+import AnimatedTrashButton from "./AnimatedTrashButton";
 
-function CartPreviewItem({ product, session, setCartToggle }) {
+function CartPreviewItem({ product, userId, setCartToggle }) {
   const {product_id, quantity, productName, price, photos} = product;
   const { cart, setCart } = useCart();
 
-  async function handleDeleteCartItem(product_id) {
+  async function handleDelete(product_id) {
     let res;
-    if(!session) {
+    if(!userId) {
       const updatedCart = cart.filter(cartItem => cartItem.product_id !== product_id);
       setCart(updatedCart)
       toast.success("Removed from Cart")
@@ -53,7 +53,7 @@ function CartPreviewItem({ product, session, setCartToggle }) {
 
       <span>{price}$ x {quantity}</span>
 
-      <button className="cursor-pointer" onClick={() => handleDeleteCartItem(product_id)}><FaRegTrashAlt /></button>
+      <AnimatedTrashButton handleDelete={handleDelete} id={product_id} />
     </div>
   )
 }

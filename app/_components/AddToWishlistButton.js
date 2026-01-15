@@ -7,7 +7,7 @@ import { getWishlist, getWishlistItem } from "../_lib/data-service";
 import { useWishlist } from "./WishlistContext";
 import toast from "react-hot-toast";
 
-function AddToWishlistButton({ session, productId, location }) {
+function AddToWishlistButton({ userId, productId, location }) {
 
   const [inWishlist, setInWishlist] = useState(false);
   const { localWishlist, setLocalWishlist} = useWishlist();
@@ -15,7 +15,7 @@ function AddToWishlistButton({ session, productId, location }) {
   // initial load to check if exists in wishlist
   useEffect(() => {
     async function load() {
-      const exists = await getWishlistItem(session, productId);
+      const exists = await getWishlistItem(userId, productId);
 
       setInWishlist(prev => {
         if(prev === exists) return prev; // to prevent re-renders
@@ -23,11 +23,11 @@ function AddToWishlistButton({ session, productId, location }) {
       });
     }
 
-    if(session) load();
-  }, [session, productId, localWishlist]);
+    if(userId) load();
+  }, [userId, productId, localWishlist]);
   
 
-  if(!session) return null;
+  if(!userId) return null;
 
 
   async function handleclick() {
@@ -53,12 +53,10 @@ function AddToWishlistButton({ session, productId, location }) {
     }
 
     // to sync wishlist state and re-render the component
-    const latestDBWishlist = await getWishlist(session)
+    const latestDBWishlist = await getWishlist(userId)
     setLocalWishlist(latestDBWishlist);
   }
 
-
-  
   return (
     <button 
       onClick={() => handleclick()}

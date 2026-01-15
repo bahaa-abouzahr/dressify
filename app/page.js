@@ -6,8 +6,7 @@ import women from "@/public/Home/women.avif"
 import kids from "@/public/Home/kids.avif"
 import men from "@/public/Home/men.avif"
 
-
-export default function Page() {
+export default async function Page() {
   
   return (
     <>

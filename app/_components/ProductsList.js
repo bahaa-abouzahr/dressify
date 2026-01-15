@@ -1,12 +1,12 @@
 import ProductCard from "@/app/_components/ProductCard";
-import { getAllProducts, getProducts } from "../_lib/data-service";
+import { getAllProducts, getProducts } from "@/app/_lib/data-service";
 
 async function ProductsList({ typeFilter, categoryFilter, search }) {
-  console.log(search);
+
   const products = typeFilter === "all" ? await getAllProducts() : await getProducts(typeFilter);
 
   const filteredProducts = categoryFilter === "all" ? products : products.filter(item => item.category === categoryFilter)
-  console.log(filteredProducts);
+
   const displayedProducts = filteredProducts.filter(product => product["productName"].toLowerCase().includes(search))
 
   // break when there are no products

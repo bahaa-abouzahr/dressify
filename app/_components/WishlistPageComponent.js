@@ -3,11 +3,12 @@
 import WishlistItemDetails from "@/app/_components/WishlistItemDetails"
 import { deleteFromWishlist } from "../_lib/actions"
 import { useWishlist } from "./WishlistContext"
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 
 function WishlistPageComponent({ wishlist }) {
   const {localWishlist, setLocalWishlist} = useWishlist();
+  const {animating, setAnimating} = useState(false)
 
   useEffect(() => {
     setLocalWishlist(wishlist);
@@ -35,7 +36,14 @@ function WishlistPageComponent({ wishlist }) {
   return (
     <div className="flex flex-col gap-4 mr-2">
       {localWishlist.map(item => {
-        return <WishlistItemDetails product={item.wishlistItem} created_at={item.created_at} key={item.wishlistItem.productName} handleDelete={handleDelete} />
+        return (
+          <WishlistItemDetails 
+            product={item.wishlistItem} 
+            created_at={item.created_at} 
+            key={item.wishlistItem.productName} 
+            handleDelete={handleDelete} 
+          />
+        )
       })}
     </div>
   )

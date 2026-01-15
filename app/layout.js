@@ -8,7 +8,9 @@ import ClientOverlay from './_components/ClientOverlay';
 import { WishlistProvider } from './_components/WishlistContext';
 
 import { Toaster } from "react-hot-toast"
+import { notFound } from 'next/navigation';
 
+notFound
 export const metadata = {
   title: {
     template: "%s - Shopify",
@@ -18,7 +20,7 @@ export const metadata = {
   "Ecommerce website for shopping cloth"
 }
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children, params }) {
   
 
   return (
@@ -30,7 +32,7 @@ export default function RootLayout({ children }) {
 
               <ScrollToTop />
 
-              <Navigation />
+              <Navigation params={params} />
               <ClientOverlay />
               <main className='mx-auto w-full mt-10'>
                 { children }

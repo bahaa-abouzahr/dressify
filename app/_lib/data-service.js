@@ -1,40 +1,25 @@
-import { notFound } from "next/navigation";
-import { supabase } from "./supabase";
-import { auth } from "./auth";
+import { createClient } from '@/app/_lib/supabase/client';
 
-export async function getUser(email) {
-  const {data, error } = await supabase
-    .from('users')
-    .select('*')
-    .eq('email', email)
-    .single();
 
-  if(error) {
-    console.error(error);
-    throw new Error("User data couldn't be retrieved");
-  }
+// export async function createUser(newUser) {
+//   const supabase = createClient();
+//   const { data, error } = await supabase.from('users').insert([newUser]);
 
-  return data;
-}
+//   if(error) {
+//     console.error(error);
+//     throw new Error('User could not be created');
+//   }
 
-export async function createUser(newUser) {
-  const { data, error } = await supabase.from('users').insert([newUser]);
-
-  if(error) {
-    console.error(error);
-    throw new Error('User could not be created');
-  }
-
-  return data;
-}
+//   return data;
+// }
 
 // get all products
 export async function getAllProducts() {
+  const supabase = createClient();
   const {data, error } = await supabase.from("products").select('*')
 
   if(error) {
     console.error(error);
-    notFound();
   }
 
   return data;
@@ -42,6 +27,7 @@ export async function getAllProducts() {
 
 // get products filtered by type (like shoes, jackets...)
 export async function getProducts(type) {
+  const supabase = createClient();
 
   const {data, error } = await supabase
     .from("products")
@@ -50,15 +36,15 @@ export async function getProducts(type) {
 
   if(error) {
     console.error(error);
-    notFound();
   }
-
   return data;
 }
 
 // getCartProducts for logged in user
 export async function getCartProducts(userId) {
   if(!userId) return null;
+
+  const supabase = createClient();
 
   const { data, error } = await supabase
     .from('cart_items')
@@ -71,7 +57,6 @@ export async function getCartProducts(userId) {
 
     if(error) {
       console.error(error);
-      notFound();
     }
 
     // flattening data structure to be consistent with state structure
@@ -86,9 +71,9 @@ export async function getCartProducts(userId) {
     return flattened;
 }
 
-
-
 export async function getProduct(id) {
+  const supabase = createClient();
+
   const {data, error } = await supabase
     .from("products")
     .select('*')
@@ -97,16 +82,17 @@ export async function getProduct(id) {
 
     if(error) {
       console.error(error);
-      notFound();
     }
 
     return data;
 }
 
 
-export async function getWishlist(session) {
-  const userId = session.user.userId;
-  if(!session) throw new Error('You must be logged in')
+export async function getWishlist(userId) {
+ 
+  if(!userId) throw new Error('You must be logged in')
+
+  const supabase = createClient();
 
   const { data, error } = await supabase
     .from("wishlist")
@@ -120,15 +106,15 @@ export async function getWishlist(session) {
 
     if(error) {
       console.error(error);
-      notFound();
     }
 
     return data;
 }
 
-export async function getWishlistItem(session, productId) {
-  if(!session) throw new Error('You must be logged in')
-  const userId = session.user.userId;
+export async function getWishlistItem(userId, productId) {
+  if(!userId) throw new Error('You must be logged in')
+
+  const supabase = createClient();
 
   const { data, error } = await supabase
     .from("wishlist")
@@ -139,15 +125,15 @@ export async function getWishlistItem(session, productId) {
 
     if(error) {
       console.error(error);
-      notFound();
     }
 
     return data;
 }
 
-export async function getOrders(session) {
-  if(!session) throw new Error('You must be logged in')
-  const userId = session.user.userId;
+export async function getOrders(userId) {
+  if(!userId) throw new Error('You must be logged in')
+
+  const supabase = createClient();
 
   const { data, error } = await supabase
     .from('orders')
@@ -157,15 +143,16 @@ export async function getOrders(session) {
 
     if(error) {
       console.error(error);
-      notFound();
+      
     }
 
     return data;
 }
 
-export async function getOrderItems(session, orderId) {
-  if(!session) throw new Error('You must be logged in')
-  const userId = session.user.userId;
+export async function getOrderItems(userId, orderId) {
+  if(!userId) throw new Error('You must be logged in')
+
+  const supabase = createClient();
 
   const { data, error } = await supabase
     .from("order_items")
@@ -174,7 +161,7 @@ export async function getOrderItems(session, orderId) {
     
   if(error) {
     console.error(error);
-    notFound();
+    
   }
 
   return data;
@@ -188,4 +175,16 @@ export async function getCountries(){
   } catch {
     throw new Error('Could not fetch countries');
   }
+}
+
+export async function getFaqQuestions() {
+  const supabase = createClient();
+  
+  const { data, error } = await supabase
+    .from("faq")
+    .select("*")
+
+    if(error) throw new Error("FAQ's couldn't be fetched");
+
+    return data;
 }

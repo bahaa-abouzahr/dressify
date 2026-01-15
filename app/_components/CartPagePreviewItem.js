@@ -31,12 +31,12 @@ function CartPagePreviewItem({ item, ind, session}) {
     `}>
       <div className="flex flex-row md2:gap-5 gap-2 ">
         <Link href={`/products/all/${product_id}`}>
-          <Image
+          <Image 
             src={item.photos[0]}
             alt={item.productName}
             height={300}
             width={300}
-            className="rounded-2xl md2:h-35 md2:w-35 h-20 w-20"
+            className="rounded-2xl md2:h-35 md2:w-35 h-20 w-20 object-cover object-top"
           />
         </Link>
 
@@ -47,7 +47,7 @@ function CartPagePreviewItem({ item, ind, session}) {
           <div className="flex gap-3 text-xs text-blue-600">
             {session ? <AddToWishlistButton productId={product_id} session={session} location={"cart"} /> : '' }
             <button 
-              className="cursor-pointer hover:underline  underline-offset-2"
+              className="cursor-pointer hover:underline underline-offset-2"
               onClick={() => handleDeleteCartItem(product_id)}
             >
               Delete

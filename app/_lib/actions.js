@@ -1,22 +1,29 @@
 "use server"
 
-import { auth, signIn, signOut } from "@/app/_lib/auth"
-import { supabase } from "./supabase";
 import { revalidatePath } from "next/cache";
+import { Resend } from "resend";
 import { getCartProducts } from "./data-service";
-import { forEachChild } from "typescript";
+
+import { createClient } from "@/app/_lib/supabase/server";
 import { redirect } from "next/navigation";
 
-export async function addCartItem(productId, quantity, userId) {
+
+const resend = new Resend(process.env.RESEND_API_KEY)
+
+export async function addCartItem(productId, quantity) {
   // 1) Authentication
-  const session = await auth();
+  const supabase = await createClient();
+  const { data: { session } } = await supabase.auth.getSession();
   if(!session) throw new Error("You must be logged in");
 
+  const userId = session?.user?.id;
+  
   const newCartItem = {
     product_id:productId,
     quantity,
     user_id:userId
   }
+  
 
   // 2) Checking if Product already in the DB Cart
 
@@ -50,15 +57,18 @@ export async function addCartItem(productId, quantity, userId) {
 
 // Delete one item from Cart
 export async function deleteCartItem(productId) {
+  const supabase = await createClient();
+  const {data: { session }} = await supabase.auth.getSession();
 
-  const session = await auth();
   if(!session) throw new Error('You must be logged in')
+
+  const userId = session?.user?.id
 
   const { error } = await supabase
     .from("cart_items")
     .delete()
     .eq("product_id", productId)
-    .eq("user_id", session.user.userId)
+    .eq("user_id", userId)
 
     if(error) return error.message;
 
@@ -68,20 +78,25 @@ export async function deleteCartItem(productId) {
 
 // Delete all Cart items
 export async function deleteDbCart() {
-  const session = await auth();
+  const supabase = await createClient();
+  const {data: { session }} = await supabase.auth.getSession();
+  const userId = session.user.id
 
   if(!session) throw new Error('You must be logged in');
   const { error } = await supabase
     .from("cart_items")
     .delete()
-    .eq("user_id", session.user.userId)
+    .eq("user_id", userId)
 
   if(error) throw new Error("DB Cart couldn't be deleted: ", + error.message)
 }
 
 export async function syncCartAfterSignIn(reactCart) {
-  const session = await auth();
-  const userId = session.user.userId
+
+  const supabase = await createClient();
+  const {data: { session }} = await supabase.auth.getSession();
+
+  const userId = session.user.id
   if(!session) throw new Error('You must be logged in')
 
   // 1) Fetch the current DB cart
@@ -92,19 +107,23 @@ export async function syncCartAfterSignIn(reactCart) {
 
     // 2) only add if not already in the db cart
     const exists = dbCartBefore.find(dbItem => dbItem.product_id === productId)
+
     if(!exists)
-      await addCartItem(productId, quantity, userId)
+      await addCartItem(productId, quantity)
   }
   
   // 3) fetch the latest db cart
   const dbCartAfter = await getCartProducts(userId);
+
   return dbCartAfter;
 }
 
 
 export async function addToWishlist(productId) {
-  const session = await auth();
-  const userId = session.user.userId
+  const supabase = await createClient();
+  const {data: { session }} = await supabase.auth.getSession();
+
+  const userId = session.user.id
   if(!session) throw new Error('You must be logged in')
 
   const wishlistItem = {
@@ -121,8 +140,10 @@ export async function addToWishlist(productId) {
 }
 
 export async function deleteFromWishlist(productId) {
-  const session = await auth();
-  const userId = session.user.userId
+  const supabase = await createClient();
+  const {data: { session }} = await supabase.auth.getSession();
+
+  const userId = session.user.id
   if(!session) throw new Error('You must be logged in')
 
   const { error } = await supabase
@@ -137,7 +158,9 @@ export async function deleteFromWishlist(productId) {
 }
 
 export async function addOrder_items(orderItems) {
-  const session = await auth();
+  const supabase = await createClient();
+  const {data: { session }} = await supabase.auth.getSession();
+
   if(!session) throw new Error('You must be logged in');
 
   const { error } = await supabase
@@ -148,11 +171,13 @@ export async function addOrder_items(orderItems) {
 }
 
 export async function checkoutAction(formData) {
-  const session = await auth();
+  const supabase = await createClient();
+  const {data: { session }} = await supabase.auth.getSession();
+
   if(!session) throw new Error('You must be logged in');
 
   // 1) get needed Data
-  const user_id = session.user.userId
+  const user_id = session.user.id
   const cart = await getCartProducts(session?.user.userId)
 
   const {firstName, lastName, number, ...shipping_address} =  Object.fromEntries(formData);
@@ -219,27 +244,46 @@ export async function checkoutAction(formData) {
 
 }
 
-export async function updateProfileAction(formData){
-  const session = await auth();
-  if(!session) throw new Error('You must be logged in');
-  const user = session.user;
+export async function getProfile(userId) {
+  if(!userId) return null;
+  const supabase = await createClient();
 
-  console.log(session);
-  const fullName = formData.get('fullName');
+  const {data, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', userId)
+    .single();
+
+  if(error) {
+    console.error(error);
+    throw new Error("User data couldn't be retrieved");
+  }
+
+  return data;
+}
+
+export async function updateProfileAction(formData){
+  const supabase = await createClient();
+  const {data: { user }} = await supabase.auth.getUser();
+
+  if(!user) throw new Error('You must be logged in');
+
+  const profileUser = await getProfile(user.id);
+
+  const full_name = formData.get('fullName');
   let [nationality, countryFlag] = formData.get('nationality').split('%');
-  
+
   // if updated data
-  if(user.name === fullName && user.nationality === nationality)
+  if(profileUser.full_name === full_name && profileUser.nationality === nationality)
     return "no change";
 
-  console.log(user.name, " ", fullName);
   if(nationality === "") countryFlag = "";
-  const updateData = {fullName, nationality, countryFlag};
+  const updateData = {full_name, nationality, countryFlag};
  
   const { error } = await supabase
-    .from("users")
+    .from("profiles")
     .update(updateData)
-    .eq('id', session.user.userId)
+    .eq('id', user.id)
   
   // if (error) throw new Error("User Profile couldn't be updated");
   if (error) return error.message;
@@ -249,10 +293,96 @@ export async function updateProfileAction(formData){
   return { ok: true};
 }
 
-export async function signInAction() {
+export async function sendContactEmail(formData) {
+  const { name, email, number, message } = Object.fromEntries(formData);
+  
+  if(!name || !email || !message) throw new Error("Missing required fields");
+
+  const res = await resend.emails.send({
+    from: "Contact Form <onboarding@resend.dev>",
+    to: ["dressify.bahaaabouzahr@gmail.com"],
+    subject:"New contact form submission",
+    text: `
+      Name: ${name}
+      Email: ${email}
+      ${number ? `Number: ${number}` : ""}
+
+      Message:
+      ${message}
+    `,
+  });
+
+}
+
+export async function signinAction(formData) {
+  console.log(formData);
+  const account = String(formData.get('account') || "").trim();
+  const password = String(formData.get("password") || "");
+  
+  if(!account || !password) {
+    return {ok: false, error: "Email and password are required"};
+  }
+
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.signInWithPassword({ 
+    email: account, 
+    password
+  })
+   if (error) {
+    console.log("SIGNIN ERROR:", error);
+    return { ok: false, error: error.message };
+  }
+  redirect("/profile");
+
+}
+export async function singupAction(formData) {
+
+  const email = String(formData.get('email') || "").trim();
+  const password = String(formData.get("password") || "");
+  const fullName = String(formData.get('fullName') || "").trim();
+  const username = String(formData.get('username') || "").trim();
+
+  if(!email || !password) {
+    return {ok: false, error: "Email and password are required"};
+  }
+  if(password.length < 6) {
+    return {ok: false, error: "Password must be at least 6 characters"}
+  }
+
+  const supabase = await createClient();
+
+  const { data, error } = await supabase.auth.signUp({
+    email, password,
+    options: {
+      data: {
+        full_name: fullName,
+        username: username,
+      }
+    }
+  })
+
+  if (error) {
+    console.log("SIGNUP ERROR:", error);
+    return { ok: false, error: error.message };
+  }
+  // Debug: see what came back
+  console.log("SIGNUP OK:", {
+    userId: data.user?.id,
+    email: data.user?.email,
+    meta: data.user?.user_metadata,
+    hasSession: !!data.session,
+  });
+
+  redirect("/profile");
+}
+
+/*
+export async function signInGoogle() {
   await signIn('google', {redirectTo: '/account'});
 }
 
 export async function signOutAction() {
   await signOut({redirectTo: '/'});
 }
+  */

@@ -1,7 +1,7 @@
 import AddToCart from "@/app/_components/AddToCart";
 import AddToWishlistButton from "@/app/_components/AddToWishlistButton";
 import ProductPhotos from "@/app/_components/ProductPhotos";
-import { auth } from "@/app/_lib/auth";
+import { createClient } from "@/app/_lib/supabase/server";
 
 import { getProduct } from "@/app/_lib/data-service";
 
@@ -12,7 +12,9 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function page({ params }) {
-  const session = await auth();
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
   const { productId } = await params;
   const {productName, photos, description, price, itemsize, quantity_available} = await getProduct(productId);
 
@@ -35,8 +37,8 @@ export default async function page({ params }) {
         </div>
 
         <div className="flex flex-col gap-2">
-          {session ? <AddToWishlistButton productId={productId} session={session} location="products" /> : '' }
-          <AddToCart session={session} productName={productName} productId={productId} price={price} photos={photos} />
+          {userId ? <AddToWishlistButton productId={productId} userId={userId} location="products" /> : '' }
+          <AddToCart userId={userId} productName={productName} productId={productId} price={price} photos={photos} />
         </div>
         
       </div>

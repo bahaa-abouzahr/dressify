@@ -1,6 +1,6 @@
 "use client"
 
-import { createContext, useContext, useEffect, useState } from "react"
+import { createContext, useContext, useEffect, useRef, useState } from "react"
 
 const CartContext = createContext();
 
@@ -8,6 +8,9 @@ export function CartProvider({ children }) {
   const [cart, setCart] = useState([]);
   const [initialized, setInitialized] = useState(false);
   const [totalPrice, setTotalPrice] = useState(null)
+
+  // prevents duplicate effect runs in React Strict Mode, and flag for Cart Merge and Signin
+  const syncComplete = useRef(false);
   
   // Load Cart from Local Storage on mount
   useEffect(() => {
@@ -51,7 +54,7 @@ export function CartProvider({ children }) {
   if (!initialized) return null;
 
   return (
-    <CartContext.Provider value={{ cart, setCart, addToCart, removeFromCart, clearCart, totalPrice, setTotalPrice }}>
+    <CartContext.Provider value={{ cart, setCart, addToCart, removeFromCart, clearCart, totalPrice, setTotalPrice, syncComplete }}>
       {children}
     </CartContext.Provider>
   );
