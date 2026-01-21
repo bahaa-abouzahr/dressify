@@ -5,6 +5,7 @@ import { deleteFromWishlist } from "../_lib/actions"
 import { useWishlist } from "./WishlistContext"
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import EmptyWishlist from "./EmptyWishlist";
 
 function WishlistPageComponent({ wishlist }) {
   const {localWishlist, setLocalWishlist} = useWishlist();
@@ -26,12 +27,7 @@ function WishlistPageComponent({ wishlist }) {
   }
 
   if(!localWishlist.length)
-    return (
-    <div>
-      <span className="text-md text-(--gray-text) font-bold">
-        Your Wishlist is empty
-      </span>
-    </div>)
+    return (<EmptyWishlist />)
 
   return (
     <div className="flex flex-col gap-4 mr-2">

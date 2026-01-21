@@ -2,6 +2,7 @@
 
 import Image from "next/image"
 import { useEffect, useState } from "react";
+import { PRODUCTS_IMAGE_BASE } from "../_lib/constants";
 
 function ProductPhotos({ photos, productName }) {
 
@@ -16,7 +17,7 @@ function ProductPhotos({ photos, productName }) {
     <div className="flex flex-col gap-4 ">
         <div className="relative w-full aspect-square md2:rounded-2xl overflow-hidden ">
           <Image
-            src={photos[activePhoto]}
+            src={`${PRODUCTS_IMAGE_BASE}${photos[activePhoto]}`}
             alt={productName}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
@@ -35,7 +36,7 @@ function ProductPhotos({ photos, productName }) {
               ${activePhoto === ind ? "opacity-60" : ""}`}
             >
               <Image 
-                src={photo}
+                src={`${PRODUCTS_IMAGE_BASE}${photo}`}
                 fill
                 sizes="80px"
                 alt={productName}

@@ -11,7 +11,7 @@ function SideNavigation({ categoryFilter, typeFilter }) {
           <Link 
             href={`/products/${cat}?category=${addCategory}`}
             key={cat}
-            className={`category-link text-(--gray-text)  ${cat === typeFilter ? 'underline font-bold' : ''}`} 
+            className={`category-link text-(--gray-text)  ${cat === typeFilter ? 'underline underline-offset-8 font-semibold' : ''}`} 
           >
             {cat}
           </Link>

@@ -2,6 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { FaRegTrashAlt } from "react-icons/fa";
 import AnimatedTrashButton from "./AnimatedTrashButton";
+import { PRODUCTS_IMAGE_BASE } from "../_lib/constants";
 
 
 function WishlistPreviewItem({ item, ind, listLength, handleDelete, setWishlistToggle }) {
@@ -14,7 +15,7 @@ function WishlistPreviewItem({ item, ind, listLength, handleDelete, setWishlistT
         onClick={() => setWishlistToggle(false)}
       >
         <Image 
-          src={item["wishlistItem"].photos[0]}
+          src={`${PRODUCTS_IMAGE_BASE}${item["wishlistItem"].photos[0]}`}
           alt={item.product_id}
           width={80}
           height={80}

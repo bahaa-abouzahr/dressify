@@ -2,7 +2,8 @@
 
 import { useFormStatus } from "react-dom"
 
-function UpdateProfileButton({ children }) {
+function UpdateProfileButton({ children}) {
+
   const { pending } = useFormStatus();
   return (
     <button 

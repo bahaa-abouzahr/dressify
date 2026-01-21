@@ -13,7 +13,7 @@ import { createClient } from '@/app/_lib/supabase/client';
 //   return data;
 // }
 
-// get all products
+
 export async function getAllProducts() {
   const supabase = createClient();
   const {data, error } = await supabase.from("products").select('*')
@@ -188,3 +188,20 @@ export async function getFaqQuestions() {
 
     return data;
 }
+
+export async function getAvatar(userId) {
+  if(!userId) throw new Error('You must be logged in')
+
+    const supabase = createClient();
+
+    const filePath = `${userId}/avatar.jpeg`;
+
+    const { data, error } = await supabase
+      .storage
+      .from("avatars")
+      .getPublicUrl(filePath);
+
+
+      return data.publicUrl;
+}
+

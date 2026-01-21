@@ -1,17 +1,16 @@
-import Link from "next/link"
+import Link from "next/link";
 
-function EmptyOrdersHistory() {
+function EmptyWishlist() {
   return (
     <div className="flex flex-col items-center justify-center py-5 text-center mr-12 md2:mr-50">
-      <div className="mb-4 text-6xl">📦</div>
+      <div className="mb-4 text-6xl">🤍</div>
 
       <h2 className="text-xl font-semibold mb-2">
-        No orders yet
+        Your wishlist is empty
       </h2>
 
       <p className="text-gray-500 mb-6 max-w-sm">
-        Looks like you haven’t placed any orders yet.  
-        When you do, they’ll appear here.
+        Save items you like to your wishlist so you can easily find them later.
       </p>
 
       <Link
@@ -21,6 +20,7 @@ function EmptyOrdersHistory() {
         Start shopping
       </Link>
     </div>
-  )}
+  );
+}
 
-export default EmptyOrdersHistory
+export default EmptyWishlist;

@@ -8,6 +8,7 @@ import { FaRegTrashAlt } from "react-icons/fa";
 import { deleteCartItem } from "@/app/_lib/actions";
 import { useCart } from "./CartContext";
 import AnimatedTrashButton from "./AnimatedTrashButton";
+import { PRODUCTS_IMAGE_BASE } from "../_lib/constants";
 
 function CartPreviewItem({ product, userId, setCartToggle }) {
   const {product_id, quantity, productName, price, photos} = product;
@@ -35,7 +36,7 @@ function CartPreviewItem({ product, userId, setCartToggle }) {
         onClick={() => setCartToggle(false)}
       >
         <Image
-          src={photos[0]} 
+          src={`${PRODUCTS_IMAGE_BASE}${photos[0]}`} 
           alt={productName}
           width={40}
           height={40}

@@ -10,7 +10,7 @@ import { useRouter } from "next/navigation"
 import toast from "react-hot-toast"
 
 function AddToCart({ userId, productName, productId, price, photos }) {
-  const { addToCart, clearCart } = useCart();
+  const { addToCart } = useCart();
   const [loading, setLoading] = useState(false);
   const [quantity, setQuantity] = useState(1);
 

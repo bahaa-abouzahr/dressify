@@ -10,6 +10,13 @@ export function PreviewStateProvider({ children }) {
   const [navigationToggle, setNavigationToggle] = useState(false);
   const [wishlistToggle, setWishlistToggle] = useState(false);
 
+  function closeAll() {
+    setProfileToggle(false);
+    setCartToggle(false);
+    setNavigationToggle(false);
+    setWishlistToggle(false);
+  }
+
   return (
     <PreviewStateContext.Provider 
       value={{ 
@@ -21,6 +28,7 @@ export function PreviewStateProvider({ children }) {
         setNavigationToggle,
         wishlistToggle,
         setWishlistToggle,
+        closeAll
       }}>
       {children}
     </PreviewStateContext.Provider>

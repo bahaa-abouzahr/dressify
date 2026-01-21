@@ -9,6 +9,7 @@ import { WishlistProvider } from './_components/WishlistContext';
 
 import { Toaster } from "react-hot-toast"
 import { notFound } from 'next/navigation';
+import Footer from './_components/Footer';
 
 notFound
 export const metadata = {
@@ -37,6 +38,7 @@ export default function RootLayout({ children, params }) {
               <main className='mx-auto w-full mt-10'>
                 { children }
               </main>
+              <Footer />
 
             <Toaster 
               postiion="top-center"

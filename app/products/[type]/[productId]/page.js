@@ -17,7 +17,7 @@ export default async function page({ params }) {
   const userId = user?.id;
   const { productId } = await params;
   const {productName, photos, description, price, itemsize, quantity_available} = await getProduct(productId);
-
+  console.log(photos);
   // SIZE NOT ADDED YET!!!
   
   return (

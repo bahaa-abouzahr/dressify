@@ -22,7 +22,7 @@ const navLinks = [
   },
   
   {
-    name: 'Whishlist',
+    name: 'Wishlist',
     href: '/profile/wishlist',
     icon: <HeartIcon className="h-5 w-5" />
   },

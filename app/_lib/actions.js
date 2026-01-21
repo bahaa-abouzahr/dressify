@@ -263,20 +263,36 @@ export async function getProfile(userId) {
 }
 
 export async function updateProfileAction(formData){
+  // 1) check Authentication
   const supabase = await createClient();
   const {data: { user }} = await supabase.auth.getUser();
 
   if(!user) throw new Error('You must be logged in');
 
+  // 2) get Form Data
   const profileUser = await getProfile(user.id);
 
   const full_name = formData.get('fullName');
   let [nationality, countryFlag] = formData.get('nationality').split('%');
+  const avatar = formData.get('avatar');
 
-  // if updated data
-  if(profileUser.full_name === full_name && profileUser.nationality === nationality)
+  // 3) validate data for any change or if an image was uploaded
+  if(profileUser.full_name === full_name && profileUser.nationality === nationality && (avatar.size === 0 || avatar.name === "undefined"))
     return "no change";
 
+  // 4) upload to supabase
+  // 4.1) upload avatar
+  const filePath = `${user.id}/avatar.jpeg`;
+
+  const { error: uploadError } = await supabase.storage
+    .from("avatars")
+    .upload(filePath, avatar, {
+      upsert: true, // replace if already exists
+    });
+
+  if (uploadError) return uploadError.message;
+
+  // 4.2) upload profile data
   if(nationality === "") countryFlag = "";
   const updateData = {full_name, nationality, countryFlag};
  
@@ -284,12 +300,12 @@ export async function updateProfileAction(formData){
     .from("profiles")
     .update(updateData)
     .eq('id', user.id)
-  
-  // if (error) throw new Error("User Profile couldn't be updated");
+
   if (error) return error.message;
 
+
   // on success revalidate path, and return true
-  revalidatePath('/account')
+  revalidatePath('/profile')
   return { ok: true};
 }
 

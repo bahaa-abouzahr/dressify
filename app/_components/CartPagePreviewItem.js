@@ -3,6 +3,8 @@ import Link from "next/link";
 import AddToWishlistButton from "./AddToWishlistButton";
 import { useCart } from "./CartContext";
 import { deleteCartItem } from "../_lib/actions";
+import { PRODUCTS_IMAGE_BASE } from "../_lib/constants";
+import { FaMinus, FaPlus } from "react-icons/fa";
 
 function CartPagePreviewItem({ item, ind, session}) {
   const {cart, setCart} = useCart();
@@ -25,15 +27,15 @@ function CartPagePreviewItem({ item, ind, session}) {
 
   return (
     <div className={`
-      grid md2:grid-cols-[8fr_2fr_1fr] grid-cols-[8fr_2fr_auto] justify-around md2:gap-4 max-md2:text-xs
+      grid md2:grid-cols-[8fr_2fr_1fr_1fr] grid-cols-[8fr_2fr_auto_auto] justify-around md2:gap-4 max-md2:text-xs
       
       border-b-2 border-(--gray-bg) pb-2 border-spacing-y-10
     `}>
       <div className="flex flex-row md2:gap-5 gap-2 ">
         <Link href={`/products/all/${product_id}`}>
           <Image 
-            src={item.photos[0]}
-            alt={item.productName}
+            src={`${PRODUCTS_IMAGE_BASE}${photos[0]}`}
+            alt={productName}
             height={300}
             width={300}
             className="rounded-2xl md2:h-35 md2:w-35 h-20 w-20 object-cover object-top"
@@ -55,6 +57,21 @@ function CartPagePreviewItem({ item, ind, session}) {
           </div>
         </div>
 
+      </div>
+
+      <div className="flex flex-col text-left gap-1 pt-1 pl-5">
+        <span>Quantity</span>
+        <div className="flex gap-2 items-center">
+          <button onClick={() => handleMinus()} className="cursor-pointer hover:text-(--orange-secondary) text-lg">
+            -
+          </button>
+          <span className="font-bold">{quantity}</span>
+
+          <button onClick={() => handlePlus()} className="cursor-pointer hover:text-(--orange-secondary) text-lg">
+            +
+          </button>
+
+        </div>
       </div>
 
       <div className="flex flex-col text-left gap-1 pt-1 pl-5">

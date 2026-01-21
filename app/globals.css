@@ -74,6 +74,26 @@ body {
   
 }
 
+#logo {
+  background-image: url("/images/bg-text.jpeg");
+  background-size: 100% 200%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+  -webkit-text-fill-color: transparent;
+
+  animation: moveBg 8s linear infinite;
+}
+
+@keyframes moveBg {
+  from {
+    background-position: 0% 0%;
+  }
+  to {
+    background-position: 0% 100%;
+  }
+}
+
 .nav {
   position: relative;
   display: inline-block;
@@ -105,7 +125,7 @@ body {
 .category-link {
   width: 100%;
   text-align: left;
-  text-underline-offset: 4px;
+  text-underline-offset: 5px;
 }
 .category-link:hover {
   text-decoration-line: underline;

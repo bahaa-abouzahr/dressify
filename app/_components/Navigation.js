@@ -25,12 +25,11 @@ async function Navigation() {
     <nav className='flex justify-between items-center border-b border-gray-200 px-4 max-md2:sticky max-md2:top-0 max-md2:z-100 max-md2:bg-(--cream-secondary) h-16 '>
       <div className="flex gap-12 items-center max-md2:gap-6">
         <MenuToggle />
-        <h3 className="font-medium text-(--gray-text) max-md2:font-bold max-md2:text-md">Fashion is Here!</h3>
-        <div className='flex justify-between gap-8 text-(--gray-text) max-md2:hidden'>
+        <h3 id="logo" className="font-medium text-(--gray-text) max-md2:font-bold max-md2:text-md text-3xl">Dressify</h3>
+        <div className='flex justify-between gap-8 text-(--gray-text) max-md2:hidden text-lg'>
           <Link className='nav' href="/">Home</Link>
           <Link className='nav' href="/products/all">Collection</Link>
           <Link className='nav' href="/about">About</Link>
-          <Link className='nav' href="/contact">Contact</Link>
         </div>
       </div>
 
@@ -38,18 +37,10 @@ async function Navigation() {
 
         {user && <WishlistMenu userId={userId} wishlist={wishlist} />}
 
-        <CartMenu userId={userId} dbCart={cart} />
+        <CartMenu userId={userId} dbCart={cart} />Ö
 
-        {user ? (
-          <AccountMenu user={user} />
-        ) :
-          <Link 
-            className="nav text-gray-500"
-            href="/account/login"
-          >
-            Login
-          </Link>
-          }
+        <AccountMenu user={user} />
+        
       </div>
 
     </nav>

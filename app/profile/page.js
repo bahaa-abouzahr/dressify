@@ -22,14 +22,14 @@ export default async function page() {
   const country = profileUser?.nationality || '';
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 pl-0.5 pr-1">
       <SyncGuest />
-      <h1 className="xs:text-xl text-lg">Update your Profile</h1>
+      <h1 className="xs:text-xl text-lg pl-2 mb-1">Update your Profile</h1>
       <UpdateProfileForm profileUser={profileUser}>
         <SelectCountry
           name="nationality"
           id="nationality"
-          className="profileFormInput shadow-sm"
+          className="profileFormInput shadow-sm md2:text-base text-sm"
           defaultCountry={country}
         />
       </UpdateProfileForm>

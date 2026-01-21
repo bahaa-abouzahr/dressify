@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { PRODUCTS_IMAGE_BASE } from "../_lib/constants";
 
 function ProductCard({ product }) {
   const {id, productName, photos, price, category} = product;
@@ -12,7 +13,7 @@ function ProductCard({ product }) {
       className="relative aspect-square hover:border-2 hover:border-(--orange-main) overflow-hidden "
     >
       <Image 
-        src={photos[0]}
+        src={`${PRODUCTS_IMAGE_BASE}${photos[0]}`}
         fill
         sizes="(max-width: 768px) 100vw, 50vw"
         alt={productName}

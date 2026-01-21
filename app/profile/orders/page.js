@@ -16,7 +16,7 @@ async function page() {
   const {data: { user }} = await supabase.auth.getUser();
 
   const orders = await getOrders(user.id);
-  if(!orders) return <EmptyOrdersHistory />
+  if(orders.length < 1) return <EmptyOrdersHistory />
 
   const length = orders.length
 

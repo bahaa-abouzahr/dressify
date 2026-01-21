@@ -6,6 +6,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 
 import AnimatedTrashButton from "./AnimatedTrashButton";
+import { PRODUCTS_IMAGE_BASE } from "../_lib/constants";
 
 function WishlistItemDetails({ product, handleDelete, created_at }) {
   const {id, description, photos, price, productName} = product;
@@ -20,7 +21,7 @@ function WishlistItemDetails({ product, handleDelete, created_at }) {
         href={`/products/all/${id}`} 
       >
         <Image
-          src={photos[0]} 
+          src={`${PRODUCTS_IMAGE_BASE}${photos[0]}`} 
           alt={productName}
           width={60}
           height={60}

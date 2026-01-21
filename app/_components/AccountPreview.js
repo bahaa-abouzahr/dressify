@@ -17,7 +17,7 @@ function AccountPreview() {
 
   return (
     <>
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1.5 text-[13px]">
         <Link href="/profile" className="category-link" onClick={() => handleCloseToggle()}>Your Profile</Link>
         <Link href="/profile/orders" className="category-link" onClick={() => handleCloseToggle()}>Orders</Link>
         <Link href="/profile/wishlist" className="category-link" onClick={() => handleCloseToggle()}>Wishlist</Link>

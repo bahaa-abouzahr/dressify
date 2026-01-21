@@ -18,7 +18,7 @@ function SignInButtonGoogle() {
   return (
         <button 
           onClick={signInGoogle}
-          className="border px-5 py-2 rounded-2xl flex items-center gap-2 text-xs font-medium cursor-pointer"
+          className="border px-5 py-2 rounded-2xl flex items-center gap-2 text-sm font-medium cursor-pointer"
         >
           <Image
             src='https://authjs.dev/img/providers/google.svg'

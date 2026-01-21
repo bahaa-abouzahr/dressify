@@ -3,6 +3,7 @@
 import { format } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
+import { PRODUCTS_IMAGE_BASE } from "../_lib/constants";
 
 function OrderHistoryPreviewItem({ item, deliveryDate }) {
   const currentDate = new Date();
@@ -11,7 +12,7 @@ function OrderHistoryPreviewItem({ item, deliveryDate }) {
   const returnDate = new Date(deliveryDate.getTime() + FOURTEEN_DAYS_MS)
 
   const { product_id, photo, product_name_at_purchase, quantity, selectedOptions } = item;
-
+  console.log(photo);
   return (
     <div className="grid grid-cols-[1fr_6fr_auto_auto] gap-5 md2:text-base xs:text-sm text-xs">
       <Link 
@@ -20,7 +21,7 @@ function OrderHistoryPreviewItem({ item, deliveryDate }) {
         onClick={() => setCartToggle(false)}
       >
         <Image
-          src={photo} 
+          src={`${PRODUCTS_IMAGE_BASE}${photo}`} 
           alt={product_name_at_purchase}
           width={80}
           height={80}

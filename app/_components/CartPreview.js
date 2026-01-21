@@ -5,9 +5,11 @@ import CartPreviewItem from "./CartPreviewItem";
 
 import { IoMdClose } from "react-icons/io";
 import { usePreviewState } from "./PreviewStateContext";
+import { calcCartPrices } from "./calcCartPrices";
 
 function CartPreview({ cart, userId }) {
 const { cartToggle, setCartToggle } = usePreviewState();
+const {total, freeDelivery, finalPrice} = calcCartPrices(cart);
 
   if (!cart.length) 
     return (
@@ -48,6 +50,15 @@ const { cartToggle, setCartToggle } = usePreviewState();
             : <div key={item.productId}>Loading...</div>
         })}
       </div>
+
+      <div className="flex flex-col justify-around items-center">
+        {freeDelivery 
+        ? <span className="text-xs italic">Eligible for free Delivery</span>
+        : <span>Delivery fee €3.5</span>
+        }
+        <span className="font-semibold">Final Price: ${finalPrice}</span>
+      </div>
+  
 
       <Link 
         href="/cart"
