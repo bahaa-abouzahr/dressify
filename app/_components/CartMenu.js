@@ -9,11 +9,10 @@ import { usePreviewState } from "./PreviewStateContext";
 import { usePathname } from "next/navigation";
 
 function CartMenu({ userId, dbCart }) {
-  
   const [width, setWidth] = useState(null)
   const pathname = usePathname();
   const isProfilePage = pathname === '/profile';
-
+  
   const { cart, setCart, syncComplete } = useCart();
   const { cartToggle, setCartToggle, setNavigationToggle, setProfileToggle, setWishlistToggle } = usePreviewState();
 

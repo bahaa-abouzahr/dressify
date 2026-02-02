@@ -11,28 +11,34 @@ import AnimatedTrashButton from "./AnimatedTrashButton";
 import { PRODUCTS_IMAGE_BASE } from "../_lib/constants";
 
 function CartPreviewItem({ product, userId, setCartToggle }) {
-  const {product_id, quantity, productName, price, photos} = product;
   const { cart, setCart } = useCart();
+  const {product_id, quantity, productName, price, photos, category, product_variants, slug} = product;
+  const {size, sale_percentage, sku} = product_variants;
+  const salePrice = sale_percentage ? price * (1 - sale_percentage/100) : price;
 
-  async function handleDelete(product_id) {
-    let res;
+  async function handleDelete(product_id, sku) {
+
     if(!userId) {
-      const updatedCart = cart.filter(cartItem => cartItem.product_id !== product_id);
-      setCart(updatedCart)
+
+      const updatedCart = cart.filter((cartItem) => 
+        // keep different products + same products with different size
+        cartItem.product_id !== product_id || (cartItem.product_id === product_id && cartItem.product_variants.sku !== sku)
+      )
+      setCart(updatedCart);
       toast.success("Removed from Cart")
     }
     else {
-      res = await deleteCartItem(product_id);
+      const res = await deleteCartItem(product_id, sku);
       if(res.ok) toast.success("Removed from Cart")
       else toast.error(`Remove Unsuccessfull: ${res}`)
     }
   }
   
   return (
-    <div className="grid grid-cols-[1fr_2fr_1fr_auto] items-center w-full">
+    <div className="grid grid-cols-[1fr_2fr_1fr_1fr_auto] items-center w-full">
       <Link 
         className="relative w-10 h-10 md2:w-12 md2:h-12"
-        href={`/products/all/${product_id}`} 
+        href={`/products/${category}/${slug}`} 
         onClick={() => setCartToggle(false)}
       >
         <Image
@@ -44,17 +50,19 @@ function CartPreviewItem({ product, userId, setCartToggle }) {
         />
       </Link>
 
-      <Link href={`/products/all/${product_id}`} 
-        className="font-medium"
+      <Link href={`/products/${category}/${slug}`} 
+        className="font-medium pr-2"
         onClick={() => setCartToggle(false)}
       >
         {productName}
       </Link>
 
+      <span>Size: <strong>{size}</strong></span>
 
-      <span>{price}$ x {quantity}</span>
 
-      <AnimatedTrashButton handleDelete={handleDelete} id={product_id} />
+      <p className="md2:text-[11px] text-[10px]"><span className={`${sale_percentage ? "text-red-600 font-bold" : ""}`}>{salePrice}$</span> x {quantity}</p>
+
+      <AnimatedTrashButton handleDelete={handleDelete} id={product_id} sku={sku} />
     </div>
   )
 }

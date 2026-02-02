@@ -26,20 +26,38 @@ export function CartProvider({ children }) {
       localStorage.setItem("cart", JSON.stringify(cart))
   }, [cart, initialized]);
 
-  function addToCart(productName, productId, price, quantity = 1, photos) {
+  function addToCart(productName, productId, quantity = 1, sku, size, price, stock, sale_percentage, photos, category, slug) {
+
+    // check if currently added product reached the stock limit
+    const currentProduct = cart.find(item => 
+      item.product_id === productId && item.product_variants.sku === sku
+    )
+    if(currentProduct?.quantity === stock) return {max: true}
+
     setCart(prev => {
       // check if item already in cart, if yes add the quantity
 
-      const existing = prev.find(item => item.product_id === productId);
-
+      const existing = prev.find(item => item.product_id === productId && item.product_variants.size === size);
+      
       if(existing) {
         return prev.map(item => 
-          item.product_id === productId ? {...item, quantity: item.quantity + quantity}
+          item.product_id === productId && item.product_variants.size === size 
+            // to not allow to add to cart more that what is available in stock
+            ? {...item, quantity: Math.min(item.quantity + quantity, stock)} 
           : item)
       }
       else
-        return [...prev, {productName, product_id:productId , quantity, productName, price, photos}]
-    })
+        return [...prev, {
+          productName, 
+          product_id:productId, 
+          price, 
+          photos, 
+          quantity,  
+          category,
+          slug,
+          product_variants: {sale_percentage, size, sku}}
+      ]})
+      return {max: false}
   }
 
   function removeFromCart(id) {

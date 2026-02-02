@@ -11,10 +11,10 @@ function OrderHistoryPreviewItem({ item, deliveryDate }) {
   const FOURTEEN_DAYS_MS = 14*24*60*60*1000;
   const returnDate = new Date(deliveryDate.getTime() + FOURTEEN_DAYS_MS)
 
-  const { product_id, photo, product_name_at_purchase, quantity, selectedOptions } = item;
-  console.log(photo);
+  const { product_id, photo, product_name_at_purchase, quantity, size_at_purchase } = item;
+
   return (
-    <div className="grid grid-cols-[1fr_6fr_auto_auto] gap-5 md2:text-base xs:text-sm text-xs">
+    <div className="grid md2:grid-cols-[1fr_6fr_2fr_2fr] grid-cols-[1fr_6fr_auto_auto] gap-5 md2:text-base xs:text-sm text-xs">
       <Link 
         className="relative w-14 h-14 md2:w-18 md2:h-20"
         href={`/products/all/${product_id}`} 
@@ -41,7 +41,11 @@ function OrderHistoryPreviewItem({ item, deliveryDate }) {
 
         </div>
 
+      </div>
 
+      <div className="flex flex-col text-center md2:text-sm xs:text-xs text-[9px]">
+        <span>Size:</span>
+        <strong>{size_at_purchase}</strong>
       </div>
 
       <div className="flex flex-col text-center md2:text-sm xs:text-xs text-[9px]">
@@ -49,9 +53,6 @@ function OrderHistoryPreviewItem({ item, deliveryDate }) {
         <strong>{quantity}</strong>
       </div>
 
-      <div>
-        <span>{selectedOptions}</span>
-      </div>
     </div>
   )
 }

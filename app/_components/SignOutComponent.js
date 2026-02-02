@@ -8,16 +8,19 @@ function SignOutComponent({children}) {
   const router = useRouter();
   const supabase = createClient();
 
+  
   async function handleSignOut() {
     const { error } = await supabase.auth.signOut();
     
     if(!error) {
       syncComplete.current = false;
-      setCart([]);
       router.push("/");
       router.refresh();
       toast.success("Signed Out Successfully")
-
+      setTimeout(()=> {
+        setCart([]);
+      }, 1000)
+      
     }
     else toast.error("SignOut Failed")
   }

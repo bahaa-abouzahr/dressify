@@ -2,27 +2,55 @@ import Image from "next/image"
 import Link from "next/link";
 import AddToWishlistButton from "./AddToWishlistButton";
 import { useCart } from "./CartContext";
-import { deleteCartItem } from "../_lib/actions";
+import { adjustCartItemQuantity, deleteCartItem } from "../_lib/actions";
 import { PRODUCTS_IMAGE_BASE } from "../_lib/constants";
 import { FaMinus, FaPlus } from "react-icons/fa";
+import { LuMinus, LuPlus } from "react-icons/lu";
+import toast from "react-hot-toast";
+import { getProductVariants } from "../_lib/data-service";
 
-function CartPagePreviewItem({ item, ind, session}) {
+function CartPagePreviewItem({ handleDeleteCartItem, item, session}) {
   const {cart, setCart} = useCart();
-  const {productName, quantity, price, photos, product_id} = item;
+  const {productName, quantity, price, photos, product_id, product_variants, category, slug} = item;
+  const {size, sale_percentage, sku, stock} = product_variants;
+  
+  const salePrice = sale_percentage ? price * (1 - sale_percentage/100) : price;
 
+  const itemFinalPrice = (salePrice * quantity).toFixed(2)
   const deliveryDate = new Date().toLocaleDateString("en-GB", {
     weekday: "short",
     day: "2-digit",
     month: "short",
   })
 
-  function handleDeleteCartItem(product_id) {
+
+  async function handleQuantity(action,) {
+    // Get latest stock quantity
+      const {stock} = await getProductVariants(sku);
+
     if(!session) {
-      const updatedCart = cart.filter(cartItem => cartItem.product_id !== product_id);
-      setCart(updatedCart)
+      const updatedCart = cart.map(cartItem => {
+        if(cartItem.product_id === product_id && cartItem.product_variants.sku === sku && cartItem.quantity < stock && action === "inc") 
+          return {...cartItem, quantity: quantity + 1}
+        if(cartItem.product_id === product_id && cartItem.product_variants.sku === sku && cartItem.quantity > 1 && action === "dec") 
+          return {...cartItem, quantity: quantity - 1}
+        return cartItem
+      })
+      setCart(updatedCart);
     }
-    else
-      deleteCartItem(product_id);
+    else {
+      const res = await adjustCartItemQuantity(product_id, sku, action);
+      if(res.max || res.min) return;
+      if (!res?.ok) return toast.error("Update failed");
+
+      setCart(prev =>
+        prev.map(ci =>
+          ci.product_id === product_id && ci.product_variants.sku === sku
+            ? { ...ci, quantity: res.quantity }
+            : ci
+        )
+      );
+    }
   }
 
   return (
@@ -31,26 +59,26 @@ function CartPagePreviewItem({ item, ind, session}) {
       
       border-b-2 border-(--gray-bg) pb-2 border-spacing-y-10
     `}>
-      <div className="flex flex-row md2:gap-5 gap-2 ">
-        <Link href={`/products/all/${product_id}`}>
+      <div className="grid grid-cols-[1.2fr_3fr] md2:gap-5 gap-2 ">
+        <Link href={`/products/${category}/${slug}`}>
           <Image 
             src={`${PRODUCTS_IMAGE_BASE}${photos[0]}`}
             alt={productName}
             height={300}
             width={300}
-            className="rounded-2xl md2:h-35 md2:w-35 h-20 w-20 object-cover object-top"
+            className="rounded-lg md2:h-35 md2:w-35 h-20 w-20 object-cover object-top"
           />
         </Link>
 
         <div className="flex flex-col gap-1">
-          <Link href={`/products/all/${product_id}`} className="font-semibold md2:text-lg text-base">{productName}</Link>
-          <span className="text-xs">Expected Delivery - {deliveryDate}</span>
-          <span className="text-sm">Size: <strong>L</strong></span>
+          <Link href={`/products/${category}/${slug}`} className="font-semibold md2:text-lg text-base">{productName}</Link>
+          <span className="md2:text-xs text-[9px]">Expected Delivery: {deliveryDate}</span>
+          <span className="text-sm">Size: <strong>{size}</strong></span>
           <div className="flex gap-3 text-xs text-blue-600">
             {session ? <AddToWishlistButton productId={product_id} session={session} location={"cart"} /> : '' }
             <button 
               className="cursor-pointer hover:underline underline-offset-2"
-              onClick={() => handleDeleteCartItem(product_id)}
+              onClick={() => handleDeleteCartItem(product_id, sku)}
             >
               Delete
             </button>  
@@ -61,22 +89,25 @@ function CartPagePreviewItem({ item, ind, session}) {
 
       <div className="flex flex-col text-left gap-1 pt-1 pl-5">
         <span>Quantity</span>
-        <div className="flex gap-2 items-center">
-          <button onClick={() => handleMinus()} className="cursor-pointer hover:text-(--orange-secondary) text-lg">
-            -
+        <div className="relative flex gap-2 items-center">
+          <button onClick={() => handleQuantity("dec")} className="cursor-pointer hover:text-(--orange-secondary) text-base">
+            <LuMinus />
           </button>
-          <span className="font-bold">{quantity}</span>
+          <span className="font-bold ">{quantity}</span>
 
-          <button onClick={() => handlePlus()} className="cursor-pointer hover:text-(--orange-secondary) text-lg">
-            +
+          <button onClick={() => handleQuantity("inc")} className="cursor-pointer hover:text-(--orange-secondary) text-base">
+            <LuPlus />
           </button>
+          <div>
+            {stock === quantity ? <span className=" absolute top-6 left-0 text-[8px] max-md2:w-30 text-red-500">Stock limit reached</span> : ''}
 
+          </div>
         </div>
       </div>
 
-      <div className="flex flex-col text-left gap-1 pt-1 pl-5">
+      <div className="flex flex-col text-center gap-1 pt-1 pl-5 min-w-20">
         <span>Price</span>
-        <span className="font-bold">${price}</span>
+        <span className={`font-bold ${sale_percentage ? "text-red-600" : ""}`}>{itemFinalPrice}$</span>
       </div>
     </div>
   )

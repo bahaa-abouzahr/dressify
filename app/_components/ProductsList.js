@@ -1,10 +1,8 @@
 import ProductCard from "@/app/_components/ProductCard";
 import { getAllProducts, getProducts } from "@/app/_lib/data-service";
 
-async function ProductsList({ typeFilter, categoryFilter, search }) {
-
-  const products = typeFilter === "all" ? await getAllProducts() : await getProducts(typeFilter);
-
+async function ProductsList({ typeFilter, products, categoryFilter, search }) {
+ 
   const filteredProducts = categoryFilter === "all" ? products : products.filter(item => item.category === categoryFilter)
 
   const displayedProducts = filteredProducts.filter(product => product["productName"].toLowerCase().includes(search))

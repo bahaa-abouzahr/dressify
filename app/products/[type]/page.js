@@ -4,6 +4,8 @@ import CategoryFilter from "@/app/_components/CategoryFilter";
 import ProductsSearchBar from "@/app/_components/ProductsSearchBar";
 import { Suspense } from "react";
 import Spinner from "@/app/_components/Spinner";
+import ProductsPagination from "@/app/_components/ProductsPagination";
+import { getAllProducts, getProducts } from "@/app/_lib/data-service";
 
 async function page({ params, searchParams }) {
 
@@ -14,9 +16,11 @@ async function page({ params, searchParams }) {
   const categoryFilter = awaitedSearchParams?.category ?? "all";
 
   // filter for choosing type of items ex. shoes, shirts...
-  const awaitedParams = await params;
-  const typeFilter = awaitedParams.type;
+  const typeFilter = (await params).type;
+ 
+  const currentPage = Number(awaitedSearchParams?.page ?? 1);
 
+  const {products, totalPages} = await getProducts(currentPage, typeFilter) 
 
   return (
     <div className="grid grid-cols-[4.5rem_1fr] max-[640px]:grid-cols-[4rem_1fr] h-full gap-4 px-2 mb-10">
@@ -31,9 +35,18 @@ async function page({ params, searchParams }) {
           </div>
         </div>
         <Suspense fallback={<Spinner />} key={typeFilter}>
-          <ProductsList typeFilter={typeFilter} categoryFilter={categoryFilter} search={search} />
+          <ProductsList 
+            products={products}
+            typeFilter={typeFilter} 
+            categoryFilter={categoryFilter} 
+            search={search} 
+          />
         </Suspense>
-
+        <ProductsPagination 
+          products_number={products.length} 
+          currentPage={currentPage} 
+          totalPages={totalPages} 
+        />
       </div>
     </div>
   )

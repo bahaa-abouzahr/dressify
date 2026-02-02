@@ -4,16 +4,17 @@ import { AnimatePresence, motion } from "framer-motion"
 import { useState } from "react";
 import { FaRegTrashAlt, FaTruck } from "react-icons/fa"
 
-function AnimatedTrashButton({ handleDelete, id}) {
+function AnimatedTrashButton({ handleDelete, id, sku}) {
   const [animating, setAnimating] = useState(false);
 
-  function handleTrashClick(id) {
+  function handleTrashClick(id, sku) {
+
     if(animating) return;
     setAnimating(true);
 
     // after the truck "takes it away", run delete
     setTimeout(() => {
-      handleDelete(id);
+      handleDelete(id, sku);
     }, 700);
   }
 
@@ -22,7 +23,7 @@ function AnimatedTrashButton({ handleDelete, id}) {
         type="button" 
         disabled={animating} 
         className="cursor-pointer flex justify-center hover:scale-120 disabled:opacity-60" 
-        onClick={() => handleTrashClick(id)}
+        onClick={() => handleTrashClick(id, sku)}
         aria-label="Remove from wishlist"
       >
         <div className="relative w-6 h-6">

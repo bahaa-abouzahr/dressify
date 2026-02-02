@@ -11,13 +11,17 @@ export async function proxy(request) {
     },
   });
 
+  
   // Redirect products -> products/all
   if(pathname === '/products') {
     return NextResponse.redirect(new URL('/products/all', request.url))
   }
+  
+  // Protect /profile route
+  const isProtected =
+    pathname.startsWith("/profile") || pathname.startsWith("/checkout");
 
-   // Protect /profile route
-  if (pathname.startsWith('/profile')) {
+  if (isProtected) {
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
       process.env.NEXT_PUBLIC_SUPABASE_KEY,
@@ -70,6 +74,8 @@ export async function proxy(request) {
     if (!session) {
       return NextResponse.redirect(new URL('/account/login', request.url));
     }
+
+
   }
 
   // Allow everything else
@@ -79,6 +85,7 @@ export async function proxy(request) {
 export const config = {
   matcher: [
     '/products', 
-    "/profile/:path*"
+    "/profile/:path*",
+    '/checkout'
   ]
 }

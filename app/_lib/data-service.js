@@ -1,44 +1,64 @@
 import { createClient } from '@/app/_lib/supabase/client';
+import { PAGE_SIZE } from '../_utils/constants';
 
 
-// export async function createUser(newUser) {
-//   const supabase = createClient();
-//   const { data, error } = await supabase.from('users').insert([newUser]);
+export async function getProducts(page = 1, type) {
 
-//   if(error) {
-//     console.error(error);
-//     throw new Error('User could not be created');
-//   }
-
-//   return data;
-// }
-
-
-export async function getAllProducts() {
   const supabase = createClient();
-  const {data, error } = await supabase.from("products").select('*')
+  const from = (page - 1) * PAGE_SIZE;
+  const to = from + PAGE_SIZE - 1;
+
+  let query = supabase
+    .from("products")
+    .select(`
+        *,
+        product_variants(*)
+      `,
+      { count: "exact"}
+    )
+    
+  // if Type specified, query based on type
+  if (type !== "all") {
+    query = query.eq("type", type);
+  }
+
+  const { data, error, count } = await query.range(from,to);
 
   if(error) {
     console.error(error);
+    return {products: data || [], total: count || 0 , totalPages: 0}
   }
+  const totalPages = Math.ceil((count || 0) / PAGE_SIZE);
 
-  return data;
+
+  return {
+    products: data || [], 
+    total: count || 0, totalPages
+  };
 }
 
-// get products filtered by type (like shoes, jackets...)
-export async function getProducts(type) {
+
+
+export async function getProduct(slug) {
   const supabase = createClient();
 
   const {data, error } = await supabase
     .from("products")
-    .select('*')
-    .eq('type', type)
+    .select(`
+      *,
+      product_variants(*)
+    `)
+    .eq('slug', slug)
+    .order("size_order", { referencedTable: "product_variants", ascending: true })
+    .single();
 
-  if(error) {
-    console.error(error);
-  }
-  return data;
+    if(error) {
+      console.error(error);
+    }
+
+    return data;
 }
+
 
 // getCartProducts for logged in user
 export async function getCartProducts(userId) {
@@ -51,7 +71,8 @@ export async function getCartProducts(userId) {
     .select(`
       product_id,
       quantity,
-      product:products ( productName, price, photos )
+      product:products ( productName, price, photos ),
+      product_variants(*)
     `)
     .eq('user_id', userId);
 
@@ -65,24 +86,48 @@ export async function getCartProducts(userId) {
       quantity: item.quantity,
       productName: item.product.productName,
       price: item.product.price,
-      photos: item.product.photos
+      photos: item.product.photos,
+      product_variants:item.product_variants
     }))
 
     return flattened;
 }
 
-export async function getProduct(id) {
+export async function getCartProduct(userId, sku) {
+  if(!userId) return null;
+
   const supabase = createClient();
 
-  const {data, error } = await supabase
-    .from("products")
-    .select('*')
-    .eq('id', id)
+  const { data: quantity, error } = await supabase
+    .from('cart_items')
+    .select(`quantity`)
+    .eq('user_id', userId)
+    .eq('sku', sku)
     .single();
 
     if(error) {
       console.error(error);
     }
+
+    return quantity;
+}
+export async function getProductVariants(sku) {
+  if(!sku) return;
+
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from("product_variants")
+    .select(`
+        product_id,
+        size,
+        stock,
+        sale_percentage,
+        product_details: products(productName, photos, price)
+      `)
+    .eq("sku", sku)
+    .single();
+
+    if(error) return {ok: false};
 
     return data;
 }
@@ -201,7 +246,7 @@ export async function getAvatar(userId) {
       .from("avatars")
       .getPublicUrl(filePath);
 
-
       return data.publicUrl;
 }
+
 

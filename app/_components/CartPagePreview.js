@@ -7,9 +7,26 @@ import Image from "next/image";
 
 import empty_cart from "@/public/images/empty_cart.svg"
 import { CgSmileSad } from "react-icons/cg";
+import toast from "react-hot-toast";
+import { deleteCartItem } from "../_lib/actions";
 
 function CartPagePreview({session}) {
-  const {cart} = useCart();
+  const {cart, setCart} = useCart();
+
+  async function handleDeleteCartItem(product_id, sku) {
+    if(!session) {
+      const updatedCart = cart.filter(cartItem => 
+        cartItem.product_id !== product_id || 
+        (cartItem.product_id === product_id && cartItem.product_variants.sku !== sku) );
+      setCart(updatedCart)
+      toast.success("Removed from Cart")
+    }
+    else{
+      const res = await deleteCartItem(product_id, sku);
+      if(res.ok) toast.success("Removed from Cart")
+      else toast.error(`Remove Unsuccessfull: ${res}`)
+    }
+  }
 
   if(!cart.length)
     return (
@@ -47,7 +64,7 @@ function CartPagePreview({session}) {
       <div className="flex flex-col gap-5 mt-2">
         {cart.map((item, ind) => {
 
-          return <CartPagePreviewItem item={item} ind={ind} key={item.product_id} session={session} />
+          return <CartPagePreviewItem item={item} handleDeleteCartItem={handleDeleteCartItem} key={item.product_variants.sku} session={session} />
         })}
 
       </div>

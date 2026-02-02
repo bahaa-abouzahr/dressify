@@ -14,7 +14,7 @@ function CartFinalPrice({ location }) {
 
 
   return (
-    <div className="flex flex-col gap-3 p-2 md2:mt-10 md2:ml-5 bg-gray-300 w-fit h-fit rounded-xl">
+    <div className="flex flex-col gap-3 p-2 md2:mt-10 md2:ml-5 bg-gray-300 w-fit h-fit rounded-xl mx-auto min-w-60">
    {/* <div className="flex flex-col gap-3 items-start pl-3 md2:pt-10 md2:border-l-4 max-md2:border-t-4 border-(--gray-bg) md2:-translate-y-10 "> */}
       <div className="md:text-base md2:text-sm flex flex-col gap-1 mt-4 ">
         <span>Subtotal ({cart.length} items): <strong>€{total}</strong></span>

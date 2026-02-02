@@ -4,9 +4,12 @@ import { useState } from "react";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import SignButton from "./SignButton";
 import { singupAction } from "../_lib/actions";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 
 function SignInForm() {
+  const router = useRouter();
 
   const [passInput, setPassInput] = useState("");
   const [passRevealed, setPassRevealed] = useState(false);
@@ -14,10 +17,24 @@ function SignInForm() {
   const [confirmPassInput, setConfirmPassInput] = useState("");
   const [confirmPassRevealed, setConfirmPassRevealed] = useState("");
 
+  const [registrationError, setRegistrationError] = useState(null);
+
+  async function handleSignUp(formData) {
+    const res = await singupAction(formData);
+
+    if(!res.ok) {
+      setRegistrationError(res.error);
+      return;
+    }
+    setRegistrationError(null);
+    toast.success("Registration Successfull!");
+    router.push("/profile");
+  }
+
   return (
     <form
       id="signup-form"
-      action={singupAction}
+      action={handleSignUp}
       onSubmit={(e) => {
         const pass1 = e.currentTarget.password;
         const pass2 = e.currentTarget.password2;
@@ -73,10 +90,12 @@ function SignInForm() {
         <div className="signin">
           <input
             name="password"
-            id="password"
+            id="password1"
             type={passRevealed ? "text" : "password"}
             required
             placeholder=" "
+            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}"
+            title="8+ chars, upper/lowercase, number required"
             value={passInput}
             onChange={(e) => setPassInput(e.target.value)}
           />
@@ -100,6 +119,8 @@ function SignInForm() {
             type={confirmPassRevealed ? "text" : "password"}
             required
             placeholder=" "
+            pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9]).{8,}"
+            title="8+ chars, upper/lowercase, number required"
             value={confirmPassInput}
             onChange={(e) => {
               setConfirmPassInput(e.target.value);
@@ -118,6 +139,11 @@ function SignInForm() {
             </div> 
           : ""}
         </div>
+
+        {/* if registration fails display error message */}
+        <p className="text-red-500 text-[10px] h-3 px-1  text-center">
+          {registrationError ?? ""}
+        </p>
 
         <div className="flex justify-center">
           <SignButton buttonAction={"signup-form"}>

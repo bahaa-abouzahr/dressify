@@ -2,7 +2,6 @@ import SelectCountry from "../_components/SelectCountry";
 import SyncGuest from "../_components/SyncGuest"
 import UpdateProfileForm from "../_components/UpdateProfileForm"
 import { getProfile } from "../_lib/actions";
-import ProfilePageServer from "./ProfilePageServer"
 
 import { createClient } from '@/app/_lib/supabase/server';
 

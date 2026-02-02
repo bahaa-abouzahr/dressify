@@ -5,17 +5,33 @@ import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import SignButton from "./SignButton";
 import { signIn } from "@/app/_lib/auth";
 import { signinAction } from "@/app/_lib/actions";
+import { useRouter } from "next/navigation";
 
 
 function SignInForm() {
+  const router = useRouter();
 
   const [passInput, setPassInput] = useState("");
   const [passRevealed, setPassRevealed] = useState(false);
+  const [loginError, setLoginError] = useState(null);
+
+  async function handleSignIn(formData){
+    const res = await signinAction(formData);
+
+    if(!res.ok) {
+      setLoginError(res.message);
+      setPassInput("");
+      return;
+    }
+
+    setLoginError(null);
+    router.push("/profile")
+  }
   
   return (
     <form
       id="signin-form"
-      action={signinAction}
+      action={handleSignIn}
     >
       <div className="flex flex-col gap-3">
 
@@ -54,6 +70,11 @@ function SignInForm() {
           : ""}
         
         </div>
+
+        {/* if login fails display error message */}
+        <p className="text-red-500 text-xs h-3 px-1  text-center">
+          {loginError ?? ""}
+        </p>
 
         <div className="flex justify-center">
           <SignButton buttonAction="signin-form">

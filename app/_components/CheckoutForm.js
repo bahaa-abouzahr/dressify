@@ -26,7 +26,7 @@ function form() {
       <h1 className="font-bold">Personal Info</h1>
       <div className="text-base grid gap-2 sm:grid-cols-2 grid-cols-1 mt-3">
         <div className="flex flex-col sm:max-w-90 gap-1">
-          <label>First Name *</label>
+          <label>First Name <span className="text-[9px]">(required)</span></label>
           <input
               name="firstName"
               required
@@ -35,7 +35,7 @@ function form() {
         </div>
 
         <div className="flex flex-col sm:max-w-90 gap-1">
-          <label>Last Name *</label>
+          <label>Last Name <span className="text-[9px]">(required)</span></label>
           <input
               name="lastName"
               required
@@ -60,7 +60,7 @@ function form() {
       <h1 className="mt-6 font-bold">Address</h1>
       <div className="text-base grid gap-2 sm:grid-cols-2 grid-cols-1 mt-3">
         <div className="flex flex-col sm:max-w-90 gap-1">
-          <label>Street *</label>
+          <label>Street <span className="text-[9px]">(required)</span></label>
           <input
               name="street"
               required
@@ -77,13 +77,13 @@ function form() {
         </div>
 
         <div className="flex flex-col sm:max-w-90 gap-1">
-          <label>Postcode *</label>
+          <label>Postcode <span className="text-[9px]">(required)</span></label>
           <input
               name="postcode"
               required
               type="text"
               inputMode="numeric"
-              pattern="[0-9]*"
+              pattern="[0-9]+$"
               placeholder="54321"
               className="formInput shadow-sm"
               onInvalid={(e) => {
@@ -96,7 +96,7 @@ function form() {
         </div>
 
         <div className="flex flex-col sm:max-w-90 gap-1">
-          <label>City *</label>
+          <label>City <span className="text-[9px]">(required)</span></label>
           <input
               name="city"
               required

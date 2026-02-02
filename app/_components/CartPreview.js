@@ -8,8 +8,9 @@ import { usePreviewState } from "./PreviewStateContext";
 import { calcCartPrices } from "./calcCartPrices";
 
 function CartPreview({ cart, userId }) {
-const { cartToggle, setCartToggle } = usePreviewState();
-const {total, freeDelivery, finalPrice} = calcCartPrices(cart);
+
+  const { cartToggle, setCartToggle } = usePreviewState();
+  const { freeDelivery, finalPrice} = calcCartPrices(cart);
 
   if (!cart.length) 
     return (
@@ -45,7 +46,7 @@ const {total, freeDelivery, finalPrice} = calcCartPrices(cart);
       <div className="flex flex-col justify-end items-center gap-3">
         {cart.map(product => {
           return product ? 
-            <CartPreviewItem product={product} userId={userId} setCartToggle={setCartToggle} key={product.productName} /> 
+            <CartPreviewItem product={product} userId={userId} setCartToggle={setCartToggle} key={product.product_variants.sku} /> 
             //: null
             : <div key={item.productId}>Loading...</div>
         })}
