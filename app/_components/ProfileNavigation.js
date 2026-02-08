@@ -1,60 +1,16 @@
-"use client"
+import { isAdmin } from "../_lib/actions";
+import { createClient } from "../_lib/supabase/server";
+import ProfileNavigationClient from "./ProfileNavigationClient";
 
-import { usePathname } from "next/navigation"
 
-import { UserIcon, HeartIcon, ShoppingBagIcon } from '@heroicons/react/24/outline';
-import Link from "next/link";
-import SignOutProfileButton from "./SignOutProfileButton";
-import AccountNavItem from "./AccountNavItem";
-import SignOutComponent from "./SignOutComponent";
+export default async function ProfileNavigation() {
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const userId = user?.id;
 
-const navLinks = [
-  {
-    name: 'Profile',
-    href: '/profile',
-    icon: <UserIcon className='h-5 w-5' />,
-  },
+  const is_admin = await isAdmin(userId);
   
-  {
-    name: 'Orders History',
-    href: '/profile/orders',
-    icon: <ShoppingBagIcon className='h-5 w-5' />,
-  },
-  
-  {
-    name: 'Wishlist',
-    href: '/profile/wishlist',
-    icon: <HeartIcon className="h-5 w-5" />
-  },
-]
 
-function ProfileNavigation() {
-  const pathName = usePathname();
-
-  return (
-    <nav>
-      <ul className="flex flex-col gap-4 font-semibold w-full px-2 ">
-        {navLinks.map((link) => (
-          <AccountNavItem key={link.name} pathName={pathName} href={link.href} >
-            <Link 
-              href={link.href}
-              className={`group flex gap-3 hover:text-(--hover-buttons-text) `}
-            >
-              {link.icon}
-              <span className="hidden md2:block">{link.name}</span>
-            </Link>
-          </AccountNavItem>
-        ))}
-
-        <AccountNavItem>
-          <SignOutComponent>
-            <SignOutProfileButton />
-          </SignOutComponent>
-        </AccountNavItem>
-
-      </ul>
-    </nav>
-  )
+  return <ProfileNavigationClient isAdmin={is_admin} />;
 }
-
-export default ProfileNavigation
+  

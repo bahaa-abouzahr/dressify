@@ -12,7 +12,7 @@ import { getAvatar } from "../_lib/data-service"
 import { useEffect, useRef, useState } from "react"
 import Link from "next/link"
 
-function AccountMenu({ user }) {
+function AccountMenu({ user, is_admin }) {
   const { profileToggle, setProfileToggle, setNavigationToggle, setCartToggle, setWishlistToggle } = usePreviewState();
   const [avatar, setAvatar] = useState("");
  
@@ -71,7 +71,7 @@ if(!user)
       {profileToggle && 
         <div className="absolute top-full right-8 mt-1 z-50"> 
           <Preview width={6} zIndex={60}>
-            <AccountPreview />
+            <AccountPreview is_admin={is_admin} />
           </Preview>
         </div>
       }

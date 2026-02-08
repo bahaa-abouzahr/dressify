@@ -7,9 +7,10 @@ import SignOutMenuButton from "./SignOutMenuButton";
 import { useCart } from "./CartContext";
 
 
-function AccountPreview() {
+function AccountPreview({is_admin}) {
   const {setCart} = useCart();
   const {setProfileToggle} = usePreviewState();
+  
 
   function handleCloseToggle() {
     setProfileToggle(false)
@@ -22,6 +23,10 @@ function AccountPreview() {
         <Link href="/profile/orders" className="category-link" onClick={() => handleCloseToggle()}>Orders</Link>
         <Link href="/profile/wishlist" className="category-link" onClick={() => handleCloseToggle()}>Wishlist</Link>
 
+        {is_admin && 
+          <Link href="/profile/admin" className="category-link" onClick={() => handleCloseToggle()}>Admin</Link>
+        
+        }
         <SignOutComponent setCart={setCart}>
           <SignOutMenuButton />
         </SignOutComponent>
