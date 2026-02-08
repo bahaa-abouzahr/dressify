@@ -5,8 +5,6 @@ import { Resend } from "resend";
 import { getCartProduct, getCartProducts, getProductVariants } from "./data-service";
 
 import { createClient } from "@/app/_lib/supabase/server";
-import { redirect } from "next/navigation";
-
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -326,7 +324,7 @@ export async function checkoutAction(formData) {
   // 1) get needed Data
   const userId = session.user.id
   const cart = await getCartProducts(userId)
-  console.log("CARRTTTT", cart);
+
   const {firstName, lastName, number, ...shipping_address} =  Object.fromEntries(formData);
 
   const totalItemsPrice = Number(cart.reduce((acc, cur) => acc + cur.price , 0).toFixed(2));
@@ -465,6 +463,124 @@ export async function updateProfileAction(formData){
   revalidatePath('/profile')
   return { ok: true};
 }
+
+export async function uploadProductAction(formData){
+
+  // 1) check Authentication
+  const supabase = await createClient();
+  const {data: { user }} = await supabase.auth.getUser();
+
+  if(!user) throw new Error('You must be logged in');
+
+  // 2) check Authorization 
+  const is_admin = await isAdmin(user.id);
+  if(!is_admin) return null;
+
+  // 3) get Form Data
+
+  // 3.1) get product details + variant details
+  const { 
+    productName, 
+    slug, 
+    description,  
+    price, 
+    type, 
+    category ,
+    variants
+  } = Object.fromEntries(formData);
+
+  // 3.2) get Variants
+  let parsedVariants;
+  try {
+    parsedVariants = JSON.parse(variants || "[]");
+  } catch {
+    return { ok: false, error: "Invalid variants JSON" };
+  }
+  
+  // 3.3) get photos
+  const photos = formData.getAll("photos");
+  const photoFiles = photos.filter((f) => f instanceof File && f.size > 0);
+
+  // 4) data Guard
+
+  if (!productName || !slug || !description || photoFiles.length === 0 || parsedVariants.length === 0)
+    return "Missing Data";
+
+  // 3.2) create object for products table
+  // photos will be added later after upload and id retrieval
+  const priceNum = Number(price);
+  if (!Number.isFinite(priceNum) || priceNum <= 0) return "Invalid price";
+
+  const product = { productName, slug, description,  price: priceNum, type, category };
+
+  // 5) Upload Product Details
+
+  const { data,  error: detailsUploadError} = await supabase
+    .from("products")
+    .insert(product)
+    .select("id")
+    .single()
+  
+  if(detailsUploadError) {
+    console.log("Upload ERROR:", detailsUploadError);
+    return { ok: false, error: detailsUploadError.message };
+  }
+
+  // 6) Upload Photos
+  const productId = data.id;
+  let photosPath = [];
+
+  // 6.1) upload photos
+  for (let i = 0; i < photoFiles.length; i++) {
+    const photo = photoFiles[i];
+    const ext = photo.name?.split(".").pop()?.toLowerCase() || "jpg";
+    const filePath = `${productId}/image${i+1}.${ext}`;
+
+    const { error: photoUploadError } = await supabase.storage
+      .from("products")
+      .upload(filePath, photo, { upsert: true});
+    
+    if(photoUploadError) {
+      console.log("Photo Upload ERROR:", photoUploadError);
+      return {ok: false, error: photoUploadError.message};
+    }
+    photosPath.push(filePath)
+  }
+
+  console.log("PATTHS:", photosPath);
+
+  // 6.2) update photos column in products table
+
+  const {error: photosColumnUpdateError } = await supabase
+    .from("products")
+    .update({ photos: photosPath})
+    .eq("id", productId)
+
+  if (photosColumnUpdateError) {
+    return { ok: false, error: photosColumnUpdateError.message };
+  }
+
+  // 7) upload variants
+  const variantsToInsert = parsedVariants.map((v) => ({
+    product_id: productId,
+    size_order: Number(v.size_order),
+    size: v.size,
+    sku: v.sku,
+    stock: Number(v.stock),
+    sale_percentage: Number(v.sale_percentage || 0),
+  }));
+
+  const { error: variantsErr } = await supabase
+    .from("product_variants")
+    .insert(variantsToInsert);
+
+  if (variantsErr) return { ok: false, error: variantsErr.message };
+
+  // on success revalidate path, and return true
+  revalidatePath('/profile/admin')
+  return { ok: true};
+}
+
 
 export async function sendContactEmail(formData) {
   const { name, email, number, message } = Object.fromEntries(formData);

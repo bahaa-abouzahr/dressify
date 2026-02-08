@@ -3,18 +3,38 @@ import { createServerClient } from '@supabase/ssr';
 
 export async function proxy(request) {
   const { pathname } = request.nextUrl
-
+  
   // Create a response object
   let response = NextResponse.next({
     request: {
       headers: request.headers,
     },
   });
-
   
   // Redirect products -> products/all
   if(pathname === '/products') {
     return NextResponse.redirect(new URL('/products/all', request.url))
+  }
+
+  // Redirect logged-in users away from login/Registration page
+  if (pathname.startsWith("/account")) {
+    const supabase = createServerClient(
+      process.env.NEXT_PUBLIC_SUPABASE_URL,
+      process.env.NEXT_PUBLIC_SUPABASE_KEY,
+      {
+        cookies: {
+          get: (name) => request.cookies.get(name)?.value,
+        },
+      }
+    );
+
+    const { data: { session } } = await supabase.auth.getSession();
+
+    if (session) {
+      return NextResponse.redirect(new URL("/profile", request.url));
+    }
+
+    return response;
   }
   
   // Protect /profile route
@@ -74,8 +94,6 @@ export async function proxy(request) {
     if (!session) {
       return NextResponse.redirect(new URL('/account/login', request.url));
     }
-
-
   }
 
   // Allow everything else
@@ -86,6 +104,7 @@ export const config = {
   matcher: [
     '/products', 
     "/profile/:path*",
-    '/checkout'
+    '/checkout',
+    '/account/:path'
   ]
 }

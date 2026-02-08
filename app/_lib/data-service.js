@@ -2,7 +2,7 @@ import { createClient } from '@/app/_lib/supabase/client';
 import { PAGE_SIZE } from '../_utils/constants';
 
 
-export async function getProducts(page = 1, type) {
+export async function getProducts({page = 1, type = "all", category = "all", latest=false}) {
 
   const supabase = createClient();
   const from = (page - 1) * PAGE_SIZE;
@@ -10,19 +10,46 @@ export async function getProducts(page = 1, type) {
 
   let query = supabase
     .from("products")
-    .select(`
-        *,
-        product_variants(*)
-      `,
-      { count: "exact"}
-    )
+    .select(`*, product_variants(*)`, { count: "exact"});
     
   // if Type specified, query based on type
-  if (type !== "all") {
-    query = query.eq("type", type);
+  if (type !== "all") query = query.eq("type", type);
+  if(category !== "all") query = query.eq("category", category);
+
+  // get latest products
+  if(latest) {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 1);
+
+    query = query
+     .gte("created_at", oneWeekAgo.toISOString()) 
+      .order('created_at', {ascending: false});
   }
 
-  const { data, error, count } = await query.range(from,to);
+  let { data, error, count } = await query.range(from, to);
+
+  if (latest && (!data || data.length === 0)) {
+    // fallback: same filters, just remove the last-week restriction
+    let fallbackQuery = supabase
+      .from("products")
+      .select(`*, product_variants(*)`, { count: "exact" });
+
+    if (type !== "all") fallbackQuery = fallbackQuery.eq("type", type);
+    if (category !== "all") fallbackQuery = fallbackQuery.eq("category", category); 
+
+    fallbackQuery = fallbackQuery.order("created_at", { ascending: false });
+
+    const fallback = await fallbackQuery.range(from, to);
+
+    if (fallback.error) {
+      console.error(fallback.error);
+      return { products: [], total: 0, totalPages: 0 };
+    }
+
+    data = fallback.data;
+    count = fallback.count;
+    error = null;
+  }
 
   if(error) {
     console.error(error);
