@@ -2,25 +2,15 @@
 
 import { usePreviewState } from "./PreviewStateContext"
 
-// to change between previews smoothly with one click and not letting overlays block the buttons
+// to close all previews when click on the background
 function ClientOverlay() {
-  const { cartToggle, setCartToggle, profileToggle, setProfileToggle, wishlistToggle, setWishlistToggle, closeAll } = usePreviewState();
+  const { cartToggle, profileToggle, wishlistToggle, openKey, closeAll } = usePreviewState();
 
   return (
     <>
-    {(cartToggle || profileToggle || wishlistToggle) && (
-      <div className="fixed inset-0 z-20" onClick={closeAll} />
-    )}
-
-      {/* {cartToggle && (
-        <div className="fixed inset-0 z-20" onClick={() => setCartToggle(false)}></div>
+      {(cartToggle || profileToggle || wishlistToggle || openKey) && (
+        <div className="fixed inset-0 z-20" onClick={closeAll} />
       )}
-      {profileToggle && (
-        <div className="fixed inset-0 z-20" onClick={() => setProfileToggle(false)}></div>
-      )}
-      {wishlistToggle && (
-        <div className="fixed inset-0 z-20" onClick={() => setWishlistToggle(false)}></div>
-      )} */}
     </>
   )
 }

@@ -5,6 +5,12 @@ import { getProfile } from "../_lib/actions";
 
 import { createClient } from '@/app/_lib/supabase/server';
 
+export const metadata = {
+  title: "Your Profile",
+  description:
+    "Manage your personal information, view order history, and update your account settings at Dressify.",
+};
+
 export default async function page() {
 
   const supabase = await createClient();

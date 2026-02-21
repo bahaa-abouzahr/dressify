@@ -6,11 +6,10 @@ import Link from "next/link";
 import { format } from "date-fns";
 
 import AnimatedTrashButton from "./AnimatedTrashButton";
-import { PRODUCTS_IMAGE_BASE } from "../_lib/constants";
+import { PRODUCTS_IMAGE_BASE } from "../_utils/constants";
 
 function WishlistItemDetails({ product, handleDelete, created_at }) {
   const {id, description, photos, price, productName} = product;
-
 
   const date = new Date(created_at);
 
@@ -25,7 +24,7 @@ function WishlistItemDetails({ product, handleDelete, created_at }) {
           alt={productName}
           width={60}
           height={60}
-          className="object-cover object-top w-15 h-15 hover:scale-120 focus:scale-120 rounded-lg "
+          className="object-contain p-1 bg-white w-15 h-15 hover:scale-120 focus:scale-120 rounded-lg "
           
         />
       </Link>

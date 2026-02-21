@@ -7,6 +7,7 @@ import { Suspense } from "react";
 
 export const metadata = {
   title: "Your Wishlist",
+  description: "Save and manage your favorite items.",
 }
 
 export default async function page() {

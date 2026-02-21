@@ -2,14 +2,14 @@ import OrderHistoryPreview from "@/app/_components/OrderHistoryPreview";
 import Spinner from "@/app/_components/Spinner";
 import { getOrders } from "@/app/_lib/data-service";
 
-import { Suspense } from "react";
-import { createClient } from "@/app/_lib/supabase/server";
-import Link from "next/link";
 import EmptyOrdersHistory from "@/app/_components/EmptyOrdersHistory";
+import { createClient } from "@/app/_lib/supabase/server";
+import { Suspense } from "react";
 
 export const metadata = {
-  title: "Your Orders",
-}
+  title: "Order History",
+  description: "View your past orders and track their status.",
+};
 
 async function page() {
   const supabase = await createClient();

@@ -8,10 +8,9 @@ import { useWishlist } from "./WishlistContext";
 import toast from "react-hot-toast";
 
 function AddToWishlistButton({ userId, productId, location }) {
-
   const [inWishlist, setInWishlist] = useState(false);
   const { localWishlist, setLocalWishlist} = useWishlist();
-  
+
   // initial load to check if exists in wishlist
   useEffect(() => {
     async function load() {
@@ -58,13 +57,14 @@ function AddToWishlistButton({ userId, productId, location }) {
   }
 
   return (
-    <button 
-      onClick={() => handleclick()}
-      className=
-        {`cursor-pointer ${location === "cart" ? "hover:underline underline-offset-2" :  "flex flex-row items-center justify-center gap-2 w-50 h-7 mb-2 rounded-md text-sm border-1 text-(--button-secondary)"}`}>
-      {location ==="cart" ? <span>{inWishlist ? "Already in Wishlist" : "Save for later" }</span> : <span>{inWishlist ? "Remove from wishlist" : "Add to your wishlist"}</span> }
-      {location === "products" ? (inWishlist ? <FaHeart /> : <FaRegHeart />) : null}
-    </button>
+  "test"
+    // <button 
+    //   onClick={() => handleclick()}
+    //   className=
+    //     {`cursor-pointer ${location === "products" && "flex flex-row items-center justify-center gap-2 w-50 h-7 mb-2 rounded-md text-sm border-1 text-(--button-secondary)"}`}>
+    //   {location ==="cart" ? <span className="link">{inWishlist ? "Remove from Wishlist" : "Save for later" }</span> : <span>{inWishlist ? "Remove from wishlist" : "Add to your wishlist"}</span> }
+    //   {location === "products" ? (inWishlist ? <FaHeart /> : <FaRegHeart />) : null}
+    // </button>
   )
 }
 

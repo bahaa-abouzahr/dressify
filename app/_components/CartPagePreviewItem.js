@@ -1,23 +1,32 @@
 import Image from "next/image"
 import Link from "next/link";
-import AddToWishlistButton from "./AddToWishlistButton";
-import { useCart } from "./CartContext";
-import { adjustCartItemQuantity, deleteCartItem } from "../_lib/actions";
-import { PRODUCTS_IMAGE_BASE } from "../_lib/constants";
-import { FaMinus, FaPlus } from "react-icons/fa";
-import { LuMinus, LuPlus } from "react-icons/lu";
 import toast from "react-hot-toast";
-import { getProductVariants } from "../_lib/data-service";
 
-function CartPagePreviewItem({ handleDeleteCartItem, item, session}) {
+import { useCart } from "./CartContext";
+import { adjustCartItemQuantity } from "../_lib/actions";
+import { getProductVariants } from "../_lib/data-service";
+import { PRODUCTS_IMAGE_BASE } from "../_utils/constants";
+
+import AddToWishlistButton from "./AddToWishlistButton";
+
+import { LuMinus, LuPlus } from "react-icons/lu";
+import CartWishlistLink from "./CartWishlistLink";
+
+function CartPagePreviewItem({ handleDeleteCartItem, item, userId}) {
+
+  console.log(userId);
   const {cart, setCart} = useCart();
   const {productName, quantity, price, photos, product_id, product_variants, category, slug} = item;
   const {size, sale_percentage, sku, stock} = product_variants;
+
   
   const salePrice = sale_percentage ? price * (1 - sale_percentage/100) : price;
 
   const itemFinalPrice = (salePrice * quantity).toFixed(2)
-  const deliveryDate = new Date().toLocaleDateString("en-GB", {
+  const after3days = new Date();
+  after3days.setDate(after3days.getDate() + 3);
+
+  const deliveryDate = after3days.toLocaleDateString("en-GB", {
     weekday: "short",
     day: "2-digit",
     month: "short",
@@ -28,7 +37,7 @@ function CartPagePreviewItem({ handleDeleteCartItem, item, session}) {
     // Get latest stock quantity
       const {stock} = await getProductVariants(sku);
 
-    if(!session) {
+    if(!userId) {
       const updatedCart = cart.map(cartItem => {
         if(cartItem.product_id === product_id && cartItem.product_variants.sku === sku && cartItem.quantity < stock && action === "inc") 
           return {...cartItem, quantity: quantity + 1}
@@ -66,7 +75,7 @@ function CartPagePreviewItem({ handleDeleteCartItem, item, session}) {
             alt={productName}
             height={300}
             width={300}
-            className="rounded-lg md2:h-35 md2:w-35 h-20 w-20 object-cover object-top"
+            className="rounded-lg md2:h-35 md2:w-35 h-20 w-20 object-contain p-4 bg-white"
           />
         </Link>
 
@@ -74,10 +83,10 @@ function CartPagePreviewItem({ handleDeleteCartItem, item, session}) {
           <Link href={`/products/${category}/${slug}`} className="font-semibold md2:text-lg text-base">{productName}</Link>
           <span className="md2:text-xs text-[9px]">Expected Delivery: {deliveryDate}</span>
           <span className="text-sm">Size: <strong>{size}</strong></span>
-          <div className="flex gap-3 text-xs text-blue-600">
-            {session ? <AddToWishlistButton productId={product_id} session={session} location={"cart"} /> : '' }
+          <div className="flex gap-3 text-xs w-fit">
+            {userId !== null ? <CartWishlistLink userId={userId} productId={product_id} /> : ''}
             <button 
-              className="cursor-pointer hover:underline underline-offset-2"
+              className="cursor-pointer link"
               onClick={() => handleDeleteCartItem(product_id, sku)}
             >
               Delete

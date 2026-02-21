@@ -1,38 +1,34 @@
 "use client"
-
-import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import Link from "next/link";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation"
 
 function TypeFilter() {
+  const params = useParams().gender;
   const searchParams = useSearchParams();
-  const router = useRouter();
-  const pathname = usePathname();
-
-  const activeFilter = searchParams.get('category') ?? "all";
-
-  function handleFilter(filter) {
-    const params = new URLSearchParams(searchParams);
-    params.set("category", filter);
-    router.replace(`${pathname}?${params.toString()}`, {scroll: false})
-  }
+  const category = searchParams.get('category') ?? "all";
 
   return (
-    <div className="border border-(--orange-main) flex shrink">
-      <Button filter='all' handleFilter={handleFilter} activeFilter={activeFilter}>All Categories</Button>
-      <Button filter='women' handleFilter={handleFilter} activeFilter={activeFilter}>Women</Button>
-      <Button filter='men' handleFilter={handleFilter} activeFilter={activeFilter}>Men</Button>
-      <Button filter='kids' handleFilter={handleFilter} activeFilter={activeFilter}>Kids</Button>
+    <div className="border border-(--orange-main) flex justify-around items-center lg2:min-w-lg ">
+      <CustomLink gender='all' category={category} params={params}>All Categories</CustomLink>
+      <CustomLink gender='women' category={category} params={params}>Women</CustomLink>
+      <CustomLink gender='men' category={category} params={params}>Men</CustomLink>
+      <CustomLink gender='kids' category={category} params={params}>Kids</CustomLink>
     </div>
   )
 }
 
-function Button({ filter, handleFilter, activeFilter, children}) {
+function CustomLink({ gender, category, params, children}) {
+
   return (
-    <button 
-      className={`px-4 py-2 max-[400px]:text-[9px] max-[640px]:text-[10px] text-(--gray-text) hover:bg-(--cream-secondary) cursor-pointer ${filter === activeFilter ? 'bg-(--cream-secondary)' : ''}`}
-      onClick={() => handleFilter(filter)}
+    <Link 
+      href={`/products/${gender}?category=${category}`}
+      className={`
+        py-2 xs:px-2 text-xs sm:text-sm font-medium text-(--gray-text) 
+        hover:bg-(--cream-secondary) cursor-pointer w-full text-center
+        ${gender === params ? 'bg-(--cream-secondary) text-black' : ''}`}
     >
       {children}
-    </button>
+    </Link>
   )
 }
 

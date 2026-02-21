@@ -2,7 +2,8 @@
 
 import Image from "next/image"
 import { useEffect, useState } from "react";
-import { PRODUCTS_IMAGE_BASE } from "../_lib/constants";
+import { PRODUCTS_IMAGE_BASE } from "../_utils/constants";
+
 
 function ProductPhotos({ photos, productName }) {
 
@@ -21,7 +22,7 @@ function ProductPhotos({ photos, productName }) {
             alt={productName}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-cover object-top"
+            className="object-contain p-4 bg-white object-top"
             priority
           />
         </div>
@@ -40,7 +41,7 @@ function ProductPhotos({ photos, productName }) {
                 fill
                 sizes="80px"
                 alt={productName}
-                className="object-cover object-top"
+                className="object-contain object-top"
                 onClick={() => handleThumbnailClick(ind)}
                 
               />

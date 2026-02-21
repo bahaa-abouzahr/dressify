@@ -3,7 +3,7 @@
 import { format } from "date-fns";
 import Image from "next/image";
 import Link from "next/link";
-import { PRODUCTS_IMAGE_BASE } from "../_lib/constants";
+import { PRODUCTS_IMAGE_BASE } from "../_utils/constants";
 
 function OrderHistoryPreviewItem({ item, deliveryDate }) {
   const currentDate = new Date();
@@ -25,7 +25,7 @@ function OrderHistoryPreviewItem({ item, deliveryDate }) {
           alt={product_name_at_purchase}
           width={80}
           height={80}
-          className="object-cover object-top w-20 md2:h-18 h-15"
+          className="object-contain p-1 bg-white w-20 md2:h-18 h-15"
         />
       </Link>
 

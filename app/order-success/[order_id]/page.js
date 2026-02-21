@@ -2,6 +2,11 @@ import ClearCartState from "../../_components/ClearCartState"
 
 import { FaCheck } from "react-icons/fa";
 
+export const metadata = {
+  title: "Order Confirmed",
+  description: "Your order has been placed successfully.",
+};
+
 async function page({ params }) {
   const { order_id } = await params;
 

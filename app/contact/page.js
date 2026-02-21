@@ -2,6 +2,13 @@ import ContactForm from "../_components/ContactForm";
 import FaqPreview from "../_components/FaqPreview";
 import { getFaqQuestions } from "../_lib/data-service";
 
+
+export const metadata = {
+  title: "Contact Us",
+  description:
+    "Have a question or need assistance? Reach out to the Dressify team and let us help you with orders, products, or anything else you need.",
+};
+
 async function page() {
 
   const faqQuestions = await getFaqQuestions();

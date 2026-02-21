@@ -4,8 +4,10 @@ import about1 from "@/public/About/about1.jpg"
 import about2 from "@/public/About/about2.jpeg"
 
 export const metadata = {
-  title: "About",
-}
+  title: "About Us",
+  description:
+    "Learn more about Dressify — a brand built for strength, confidence, and everyday resilience. Discover our mission, values, and the vision behind our collection.",
+};
 
 
 function page() {

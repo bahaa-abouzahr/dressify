@@ -1,5 +1,10 @@
 import UploadProductForm from "@/app/_components/UploadProductForm";
 
+export const metadata = {
+  title: "Admin Dashboard",
+  description: "Manage products, orders, and store settings.",
+};
+
 function page() {
   
   return (

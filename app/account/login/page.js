@@ -3,9 +3,11 @@ import Link from "next/link"
 import SignInButtonGoogle from "@/app/_components/SignInButtonGoogle"
 import SignInForm from "@/app/_components/SignInForm"
 
-export const metdata = {
-  title: 'Login'
-}
+export const metadata = {
+  title: "Login",
+  description:
+    "Sign in to your Dressify account to manage orders, view your cart, and access your personal profile.",
+};
 
 function page() {
   return (

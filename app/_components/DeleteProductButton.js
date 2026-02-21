@@ -25,7 +25,7 @@ function DeleteProductButton({product_id}) {
 
   return (
     <button 
-      className="px-4 py-3 w-fit bg-red-500 hover:bg-red-400 text-[#252324] text-lg font-bold cursor-pointer"
+      className="mt-3 rounded-lg px-4 py-3 w-fit bg-red-500 hover:bg-red-400 text-[#252324] text-lg font-bold cursor-pointer"
       onClick={handleDeleteProduct}
     >
       Delete Product

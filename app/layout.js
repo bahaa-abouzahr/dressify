@@ -11,11 +11,9 @@ import { Toaster } from "react-hot-toast"
 import { notFound } from 'next/navigation';
 import Footer from './_components/Footer';
 
-notFound
 export const metadata = {
   title: {
-    template: "%s - Shopify",
-    default: "Welcome to Shopify"
+    default: "Dressify"
   },
   description: 
   "Ecommerce website for shopping cloth"
@@ -26,7 +24,7 @@ export default function RootLayout({ children, params }) {
 
   return (
     <html lang="en">
-      <body className="relative min-h-screen mx-auto max-w-6xl md2:px-4">
+      <body className="relative min-h-screen mx-auto max-w-[1600px] md2:px-4">
         <CartProvider>
           <PreviewStateProvider>
             <WishlistProvider>

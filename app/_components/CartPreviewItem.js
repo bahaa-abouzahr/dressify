@@ -4,17 +4,20 @@ import Image from "next/image";
 import Link from "next/link";
 
 import toast from "react-hot-toast";
-import { FaRegTrashAlt } from "react-icons/fa";
-import { deleteCartItem } from "@/app/_lib/actions";
+
 import { useCart } from "./CartContext";
+import { deleteCartItem } from "@/app/_lib/actions";
+import { PRODUCTS_IMAGE_BASE } from "../_utils/constants";
+
 import AnimatedTrashButton from "./AnimatedTrashButton";
-import { PRODUCTS_IMAGE_BASE } from "../_lib/constants";
+
 
 function CartPreviewItem({ product, userId, setCartToggle }) {
   const { cart, setCart } = useCart();
+
   const {product_id, quantity, productName, price, photos, category, product_variants, slug} = product;
   const {size, sale_percentage, sku} = product_variants;
-  const salePrice = sale_percentage ? price * (1 - sale_percentage/100) : price;
+  const salePrice = sale_percentage ? Number(price * (1 - sale_percentage/100)).toFixed(2) : price;
 
   async function handleDelete(product_id, sku) {
 
@@ -46,18 +49,18 @@ function CartPreviewItem({ product, userId, setCartToggle }) {
           alt={productName}
           width={40}
           height={40}
-          className="object-cover object-top w-10 h-10 hover:scale-120"
+          className="object-contain p-1 bg-white  object-top w-10 h-10 hover:scale-120"
         />
       </Link>
 
       <Link href={`/products/${category}/${slug}`} 
-        className="font-medium pr-2"
+        className="font-medium pr-2 line-clamp-1"
         onClick={() => setCartToggle(false)}
       >
         {productName}
       </Link>
 
-      <span>Size: <strong>{size}</strong></span>
+      <span className="flex flex-col">Size: <strong className="text-[10px]">{size}</strong></span>
 
 
       <p className="md2:text-[11px] text-[10px]"><span className={`${sale_percentage ? "text-red-600 font-bold" : ""}`}>{salePrice}$</span> x {quantity}</p>

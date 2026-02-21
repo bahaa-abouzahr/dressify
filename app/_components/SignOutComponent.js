@@ -1,3 +1,5 @@
+"use client"
+
 import { useRouter } from "next/navigation";
 import { createClient } from "../_lib/supabase/client";
 import toast from "react-hot-toast";

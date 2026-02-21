@@ -8,20 +8,24 @@ import { createClient } from "@/app/_lib/supabase/server";
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-export async function addCartItem(productId, quantity, sku) {
+export async function addCartItem(productId, quantity, sku, category, slug) {
   // 1) Authentication
   const supabase = await createClient();
   const { data: { session } } = await supabase.auth.getSession();
   if(!session) throw new Error("You must be logged in");
 
   const userId = session?.user?.id;
-  
+
   const newCartItem = {
     product_id:productId,
     quantity,
     user_id:userId,
     sku,
+    category,
+    slug
   }
+
+  console.log(newCartItem);
 
   // 2) getting latest stock availability update
   const {data: { stock }, error} = await supabase

@@ -7,7 +7,7 @@ import { SlArrowLeft, SlArrowRight } from "react-icons/sl";
 import { RiArrowLeftSLine, RiArrowRightSLine } from "react-icons/ri";
 import { PAGE_SIZE } from "../_utils/constants";
 function ProductsPagination({products_number, currentPage, totalPages}) {
-
+  
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathname = usePathname();

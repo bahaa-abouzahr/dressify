@@ -11,7 +11,6 @@ import { getProductVariants } from "../_lib/data-service"
 
 function AddToCart({ userId, productId, selectedVariant, awaitedSearchParams, category, slug }) {
   const { size, stock, sku } = selectedVariant;
-
   const { addToCart } = useCart();
   const [loading, setLoading] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -37,7 +36,7 @@ function AddToCart({ userId, productId, selectedVariant, awaitedSearchParams, ca
       }
       // Logged-in: add Cart Item to DB
       else {
-        const res = await addCartItem(productId, quantity, sku)
+        const res = await addCartItem(productId, quantity, sku, category, slug)
 
         if(res.ok) toast.success("Added Successfully")
         else if(res.max) toast(`Already added all available in stock!`);

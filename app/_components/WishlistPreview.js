@@ -8,13 +8,11 @@ import { useWishlist } from "./WishlistContext";
 import WishlistPreviewItem from "./WishlistPreviewItem";
 import toast from "react-hot-toast";
 
-
 function WishlistPreview() {
 const { wishlistToggle, setWishlistToggle } = usePreviewState();
 const { localWishlist, setLocalWishlist} = useWishlist();
 
 const listLength = localWishlist.length;
-
 
 async function handleDelete(productId) {
   const res = await deleteFromWishlist(productId);
@@ -75,11 +73,11 @@ if (!localWishlist.length)
       </div>
 
       <Link 
-        href="/account/wishlist"
+        href="/profile/wishlist"
         className="flex justify-center font-semibold text-sm"
         onClick={() => setWishlistToggle(false)}
       >
-        <span className="border-b-2 border-transparent hover:border-current transition-all">
+        <span className="link">
           Check all Items in your wishlist
         </span>
       </Link>

@@ -32,7 +32,7 @@ function CartMenu({ userId, dbCart }) {
     if(!cart.length)
       setWidth(10)
     else
-      setWidth(20)
+      setWidth(22)
   }, [cart])
 
  
@@ -51,7 +51,7 @@ function CartMenu({ userId, dbCart }) {
       {cartToggle && ( 
 
           <div className="absolute top-full mt-1">
-            <Preview width={width} translate={75} zIndex={60}>
+            <Preview width={width} translate={74} zIndex={60}>
               <CartPreview cart={cart} userId={userId} />
             </Preview>
           </div>

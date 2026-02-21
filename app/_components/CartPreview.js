@@ -66,11 +66,12 @@ function CartPreview({ cart, userId }) {
         className="flex justify-center font-semibold text-sm"
         onClick={() => setCartToggle(false)}
       >
-        <span className="border-b-2 border-transparent hover:border-current transition-all">
+        <span className="link">
           Go to Cart Page
 
         </span>
       </Link>
+
 
     </div>
   )
@@ -83,4 +84,4 @@ export default CartPreview
 <pre className="text-[10px] break-all">
   {JSON.stringify(cart, null, 2)}
 </pre>
-*/
+ */

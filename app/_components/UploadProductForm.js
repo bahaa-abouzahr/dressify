@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { uploadProductAction } from "../_lib/actions";
 import UploadProductButton from "./UploadProductButton";
 import { useMemo, useState } from "react";
+import { SIZE_ORDER_MAP } from "../_utils/constants";
 
 const emptyVariant = () => ({
   size: "",
@@ -13,32 +14,6 @@ const emptyVariant = () => ({
   sku: "",
 })
 
-const SIZE_ORDER_MAP = {
-  xs: 1,
-  s: 2,
-  m: 3,
-  l: 4,
-  xl: 5,
-  xxl: 6,
-  "one": 100,
-  "7": 7,
-  "8": 8,
-  "9": 9,
-  "10": 10,
-  "11": 11,
-  "12": 12,
-  35: 35,
-  36: 36,
-  37: 37,
-  38: 38,
-  39: 39,
-  40: 40,
-  41: 41,
-  42: 42,
-  43: 43,
-  44: 44,
-  45: 45,
-};
 
 function UploadProductForm() {
   const [variants, setVariants] = useState([emptyVariant()]);
