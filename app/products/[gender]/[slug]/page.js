@@ -42,6 +42,9 @@ export default async function page({ params, searchParams }) {
   // convert size value to a better displayed size label
   const label = SIZE_LABEL_BY_VALUE[selectedVariant.size] ?? selectedVariant.size;
 
+  // check if product inStock
+  const inStock = product_variants?.filter(variant => variant.stock > 0).length || null;
+
   return (
     <div className="md2:grid md2:grid-cols-2 flex flex-col md2:gap-20 mx-auto mb-6 md2:items-center md2:w-[90%] w-full max-md2:-translate-y-10">
       
@@ -55,15 +58,17 @@ export default async function page({ params, searchParams }) {
           <p className="text-(--orange-main) font-bold text-xl text-md">Dressify</p>
           <h1 className="font-bold text-4xl ">{productName}</h1>
           <p className="text-2xl text-gray-500">{description}</p>
+          
+          {/* Display price based if on sale or not */}
           <div className="h-10">
             {salePercentage 
               ?
-              <p className="font-bold text-2xl text-red-600">
-                <span>${salePrice} </span>
-                <span className="line-through text-gray-400 text-base">${price}</span>
-              </p> 
+                <p className="font-bold text-2xl text-red-600">
+                  <span>${salePrice} </span>
+                  <span className="line-through text-gray-400 text-base">${price}</span>
+                </p> 
               :
-              <p className="font-bold text-2xl">${price}</p> 
+                <p className="font-bold text-2xl">${price}</p> 
             }
             {salePercentage ? <p className="bg-gray-400 w-fit px-1.5">%{salePercentage} SALE</p> : ''}
           </div>
@@ -75,7 +80,7 @@ export default async function page({ params, searchParams }) {
         </div>
 
         <div className="flex flex-col gap-2">
-          {userId ? <ProductWishlistButton userId={userId} productId={product_id} /> : '' }
+          {userId ? <ProductWishlistButton userId={userId} productId={product_id} inStock={inStock} />  : '' }
 
           <AddToCart 
             userId={userId} 

@@ -9,14 +9,16 @@ export function PreviewStateProvider({ children }) {
   const [cartToggle, setCartToggle] = useState(false);
   const [navigationToggle, setNavigationToggle] = useState(false);
   const [wishlistToggle, setWishlistToggle] = useState(false);
-  const [openKey, setOpenKey] = useState(null);
+  const [openFilters, setOpenFilters] = useState(null);
+  const [openCategory, setOpenCategory] = useState(null)
 
   function closeAll() {
     setProfileToggle(false);
     setCartToggle(false);
     setNavigationToggle(false);
     setWishlistToggle(false);
-    setOpenKey(false);
+    setOpenFilters(false);
+    setOpenCategory(false);
   }
 
   return (
@@ -30,8 +32,10 @@ export function PreviewStateProvider({ children }) {
         setNavigationToggle,
         wishlistToggle,
         setWishlistToggle,
-        openKey,
-        setOpenKey,
+        openFilters,
+        setOpenFilters,
+        openCategory,
+        setOpenCategory,
         closeAll
       }}>
       {children}

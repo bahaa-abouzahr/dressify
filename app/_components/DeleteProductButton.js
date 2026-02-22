@@ -13,7 +13,7 @@ function DeleteProductButton({product_id}) {
     if(!ok) return;
 
     const res = await deleteProduct(product_id)
-
+    console.log(res);
     if(!res.ok) {
       toast.error("Product Deletion Failed", res.message);
       return;

@@ -1,9 +1,9 @@
 export const PRODUCTS_IMAGE_BASE =
   "https://ounyoarjnuaqqyrtwkuh.supabase.co/storage/v1/object/public/products/";
 
-  
 
 export const PAGE_SIZE = 12;
+
 
 export const SIZE_ORDER_MAP = {
   xs: 150,
@@ -70,6 +70,35 @@ export const SIZE_ORDER_MAP = {
   "38w x 32l": 3832,
   "38w x 34l": 3834,
 };
+
+const FILTER_DEFS = [
+  {
+    key: "sort",
+    label: "Sort by",
+    kind: "single",
+    param: "sort",
+    options: [
+      { value: "popular", label: "Most Popular" },
+      { value: "newest", label: "Newest" },
+      { value: "price_asc", label: "Lowest Price" },
+      { value: "price_desc", label: "Highest Price" }
+    ],
+  },
+  {
+    key: "size",
+    label: "Size",
+    kind: "multi",
+    param: "size",
+  },
+  {
+    key: "price",
+    label: "Price",
+    kind: "range",
+    paramMin: "min",
+    paramMax: "max",
+  },
+
+];
 
 export const SIZE_OPTIONS = [
   // Kids Options

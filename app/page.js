@@ -5,13 +5,14 @@ import bg1 from "@/public/Home/bg-1.webp"
 import women from "@/public/Home/women.avif"
 import kids from "@/public/Home/kids.avif"
 import men from "@/public/Home/men.avif"
+import ProductPreviewRow from "./_components/ProductPreviewRow";
 
 export default async function Page() {
   
   return (
     <>
-      <div className="flex flex-col gap-10">
-        <div className="relative h-[350px] bg-cover bg-center">
+      <div className="flex flex-col xs:gap-20 gap-7 max-w-7xl mx-auto">
+        <div className="relative  bg-cover bg-center bg-red-200">
           <Image 
             src={bg1}
             alt="Home-page photo"
@@ -27,64 +28,68 @@ export default async function Page() {
 
         </div>
 
-        <div>
-          <h1 className="text-center text-2xl font-medium text-gray-500 mb-6">
-            Who do you want to shop for
+        <div className="md2:px-20">
+          <h1 className="text-center text-2xl font-medium text-gray-500 xs:mb-10 mb-6">
+            Start Shopping!
           </h1>
           
-          <div className="grid grid-cols-3 max-xs:grid-cols-1 gap-4">
+          <div className="grid grid-cols-3 gap-4 place-items-center">
             <Link 
               href="/products/all?category=women" 
-              className="relative w-full h-[450px]"
+              className="relative h-[140px] xs:h-[400px] max-w-2xs w-full"
               scroll={false}
             >
               <Image 
                 src={women}
                 alt="Home-page photo"
-                className="max-h-100 xs:object-cover"
+                className="object-cover"
                 fill
-                sizes="(max-width: 768px) 100vw, 50vw"
+                sizes="(max-width: 768px) 33vw, 50vw"
               />
-                <h3 className="absolute inset-x-[40%] inset-y-[50%] text-white font-bold text-2xl">
+                <h3 className="absolute inset-0 flex items-center justify-center text-white font-bold xs:text-2xl">
                   Women
                 </h3>
             </Link>
 
             <Link 
               href="/products/all?category=kids" 
-              className="relative w-full h-[450px]"
+              className="relative h-[140px] xs:h-[400px] max-w-2xs w-full"
               scroll={false}
             >
               <Image 
                 src={kids}
                 alt="Home-page kids"
-                className="w-full max-h-100 xs:object-cover"
+                className="object-cover"
                 fill
-                sizes="(max-width: 768px) 80vw, 50vw"
+                sizes="(max-width: 768px) 33vw, 50vw"
               />
-                <h3 className="absolute inset-x-[40%] inset-y-[50%] text-white font-bold text-2xl">
+                <h3 className="absolute inset-0 flex items-center justify-center text-white font-bold xs:text-2xl">
                   Kids
                 </h3>
             </Link>
 
             <Link 
               href="/products/all?category=men" 
-              className="relative w-full h-[450px]"
+              className="relative h-[140px] xs:h-[400px] max-w-2xs w-full"
               scroll={true}
             >
               <Image 
                 src={men}
                 alt="Home-page men"
-                className="w-full max-h-100 xs:object-cover"
+                className="object-cover"
                 fill
-                sizes="(max-width: 768px) 80vw, 50vw"
+                sizes="(max-width: 768px) 33vw, 50vw"
               />
-                <h3 className="absolute inset-x-[40%] inset-y-[50%] text-white font-bold text-2xl">
+                <h3 className="absolute inset-0 flex items-center justify-center text-white font-bold xs:text-2xl">
                   Men
                 </h3>
             </Link>
           </div>
         </div>
+
+        <ProductPreviewRow title="Newest Collection!" sort={"newest"} limit={12} />
+        <ProductPreviewRow title="ON SALE!" sort={"onSale"} limit={12} />
+
       </div>
     </>
   )

@@ -1,19 +1,18 @@
 import Link from "next/link"
 import { getProducts } from "../_lib/data-service"
-import Image from "next/image";
-import { PRODUCTS_IMAGE_BASE } from "../_utils/constants";
 import HorizontalProductRow from "./HorizontalProductRow";
 
-async function LatestProducts() {
-  const {products} = await getProducts({ latest: true, limit:12});
+async function ProductPreviewRow({ title, sort="", onSale=false, limit }) {
+
+  const {products} = await getProducts({sort, onSale, limit});
 
   return (
     <div className="flex flex-col gap-5">
       <div className="flex items-baseline gap-2">
-        <h1 className="font-medium text-(--gray-text) text-xl">Recently Added</h1>
+        <h1 className="font-medium text-(--gray-text) text-xl">{title}</h1>
         <Link 
-          href="/products/all?sort=latest" 
-          className="link text-[11px]"
+          href={`/products/all?${sort ? `sort=${sort}` : ""}`}
+          className="link text-xs"
         >
           See More
         </Link>
@@ -25,4 +24,4 @@ async function LatestProducts() {
   )
 }
 
-export default LatestProducts
+export default ProductPreviewRow

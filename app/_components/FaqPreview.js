@@ -9,13 +9,13 @@ function FaqPreview({ faqQuestions }) {
 
   function handleToggle(id) {
     if(openId === id) {
-      // clicking opened one -> close it and remember
+      // clicking opened one -> close it and remember it
       setOpenId(null);
       setLastClosedId(id)
     } else {
       // clicking another one -> reset hover blockage
-      setOpenId(id);
       setLastClosedId(null);
+      setOpenId(id);
     }
   }
 

@@ -4,11 +4,11 @@ import { usePreviewState } from "./PreviewStateContext"
 
 // to close all previews when click on the background
 function ClientOverlay() {
-  const { cartToggle, profileToggle, wishlistToggle, openKey, closeAll } = usePreviewState();
+  const { cartToggle, profileToggle, wishlistToggle, openFilters, openCategory, closeAll } = usePreviewState();
 
   return (
     <>
-      {(cartToggle || profileToggle || wishlistToggle || openKey) && (
+      {(cartToggle || profileToggle || wishlistToggle || openFilters || openCategory) && (
         <div className="fixed inset-0 z-20" onClick={closeAll} />
       )}
     </>

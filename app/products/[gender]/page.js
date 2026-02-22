@@ -30,6 +30,7 @@ async function page({ params, searchParams }) {
   const selectedSizes = awaitedSearchParams?.s?.split("_") ?? [];// converting to array
   const minPrice = awaitedSearchParams?.min ?? "";
   const maxPrice = awaitedSearchParams?.max ?? "";
+  const onSale = awaitedSearchParams?.onSale ?? "";
 
   // filter for choosing type of items ex. shoes, shirts...
   const gender = (await params).gender;
@@ -48,7 +49,8 @@ async function page({ params, searchParams }) {
       sort,
       selectedSizes,
       minPrice,
-      maxPrice
+      maxPrice,
+      onSale
     }) 
  
   // getting current products sizes available based on choosed category and type

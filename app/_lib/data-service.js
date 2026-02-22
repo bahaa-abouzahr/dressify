@@ -6,13 +6,13 @@ export async function getProducts({
   page = 1, 
   gender = "all", 
   category = "all", 
-  latest = false, 
   limit = null,
   search = "",
   sort = "",
   selectedSizes = [],
   minPrice = 0,
-  maxPrice = 9999
+  maxPrice = 9999,
+  // onSale = false
 }) {
 
   const supabase = createClient();
@@ -29,11 +29,15 @@ export async function getProducts({
   if (search && search.length > 0) {
     query = query.ilike("productName", `%${search}%`);
   }
-
+  // if (sort === "onSale")
+  //   query = query.gt("product_variants.sale_percentage", 0);
+  
   // Get products Sorted based on newest/price
   if(sort.length > 0) {
     if(sort === "newest") {
       query = query.order('created_at', {ascending: false});
+    } else if (sort === "onSale"){
+      query = query.gt("product_variants.sale_percentage", 0);
     } else {
       const [value, direction] = sort.split("_");
       query = query.order('price', {ascending: direction === "asc" ? true : false})

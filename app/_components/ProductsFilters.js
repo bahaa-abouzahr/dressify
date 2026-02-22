@@ -21,7 +21,8 @@ const FILTER_DEFS = [
       { value: "popular", label: "Most Popular" },
       { value: "newest", label: "Newest" },
       { value: "price_asc", label: "Lowest Price" },
-      { value: "price_desc", label: "Highest Price" }
+      { value: "price_desc", label: "Highest Price" },
+      { value: "onSale", label:"On Sale"}
     ],
   },
   {
@@ -45,7 +46,7 @@ function ProductsFilters({ products_sizes }) {
   const pathname = usePathname();
   const sp = useSearchParams();
 
-  const {openKey, setOpenKey} = usePreviewState();
+  const {openFilters, setOpenFilters} = usePreviewState();
   const [pendingSizes, setPendingSizes] = useState([]);
   const [minRange, setMinRange] = useState(sp.get("min") ?? "");
   const [maxRange, setMaxRange] = useState(sp.get("max") ?? "");
@@ -94,7 +95,7 @@ function ProductsFilters({ products_sizes }) {
 
     params.set("s", finalSizes)
     pushParams(params);
-    setOpenKey(null)
+    setOpenFilters(null)
   }
   
   function resetSizes(){
@@ -102,7 +103,7 @@ function ProductsFilters({ products_sizes }) {
     params.delete("s")
     pushParams(params);
     
-    setOpenKey(null)
+    setOpenFilters(null)
     setPendingSizes([])
   }
   
@@ -117,7 +118,7 @@ function ProductsFilters({ products_sizes }) {
     else params.set("max", String(maxRange));
 
     params.set("page", "1");
-    setOpenKey(null)
+    setOpenFilters(null)
     router.push(`${pathname}?${params.toString()}`, { scroll: false });
   }
 
@@ -131,7 +132,7 @@ function ProductsFilters({ products_sizes }) {
     params.delete("min");
     params.delete("max");
 
-    setOpenKey(null)
+    setOpenFilters(null)
     pushParams(params);
   }
 
@@ -144,7 +145,7 @@ function ProductsFilters({ products_sizes }) {
     setPendingSizes([]);
     setMinRange("");
     setMaxRange("");
-    setOpenKey(null);
+    setOpenFilters(null);
 
     // reset URL
     const params = new URLSearchParams(sp.toString());
@@ -163,8 +164,8 @@ function ProductsFilters({ products_sizes }) {
         <ProductsFilterDropdown 
           key={def.key}
           label={def.label}
-          isOpen={openKey === def.key}
-          onToggle={() => setOpenKey(openKey === def.key ? null : def.key)}
+          isOpen={openFilters === def.key}
+          onToggle={() => setOpenFilters(openFilters === def.key ? null : def.key)}
         >
             {def.kind === "single" && (
               <div>
@@ -173,10 +174,13 @@ function ProductsFilters({ products_sizes }) {
                     <li key={opt.value}>
                       <button 
                         type="button" 
-                        className={`h-10 w-full text-left p-3 hover:bg-(--cream-secondary) ${selectedSort === opt.value ? "font-semibold" : ""}`}
+                        className={
+                          `h-10 w-full text-left p-3 hover:bg-(--cream-secondary) cursor-pointer
+                          ${selectedSort === opt.value ? "font-semibold" : ""}
+                        `}
                         onClick={() => {
                           setSingle(def.param, opt.value);
-                          setOpenKey(null);
+                          setOpenFilters(null);
                         }}
                       >
                         {opt.label}
@@ -191,19 +195,22 @@ function ProductsFilters({ products_sizes }) {
               <div className="flex flex-col">
               <div className="max-h-70 overflow-y-auto ">
                 <ul className="">
-                  {def.options.map((opt, ind) => {
-                    const checked = selectedSizes.includes(opt.value) || pendingSizes.includes(opt.value);
+                  {def.options.map((opt) => {
+                    const checked = pendingSizes.includes(opt.value);
                     const label = SIZE_OPTIONS.find(s => s.value === opt.value)?.label ?? opt.label;
 
                     return (
                       <li 
                         key={opt.value} 
-                        className={`flex items-center justify-between m border-b border-(--gray-bg) h-10 text-left hover:bg-(--cream-secondary) ${checked && "font-bold"}`}
+                        className={`
+                          flex items-center justify-between m border-b border-(--gray-bg) h-10 text-left 
+                           hover:bg-(--cream-secondary) ${checked && "font-bold"}
+                        `}
                       >
                         <button 
                           type="button" 
                           onClick={() => toggleMulti(def.param, opt.value)}
-                          className={`w-full h-full text-left text-sm mx-2 `}
+                          className={`w-full h-full text-left text-sm mx-2 cursor-pointer`}
                         >
                           {label}
                         </button>
