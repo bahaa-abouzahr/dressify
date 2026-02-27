@@ -13,6 +13,9 @@ export const SIZE_ORDER_MAP = {
   xl: 154,
   xxl: 155,
   "one": 100,
+  "4": 4,
+  "5": 5,
+  "6": 6,
   "7": 7,
   "8": 8,
   "9": 9,
@@ -102,6 +105,9 @@ const FILTER_DEFS = [
 
 export const SIZE_OPTIONS = [
   // Kids Options
+  { label: "4 Years", value: "4y" },
+  { label: "5 Years", value: "5y" },
+  { label: "6 Years", value: "6y" },
   { label: "7 Years", value: "7y" },
   { label: "8 Years", value: "8y" },
   { label: "9 Years", value: "9y" },
