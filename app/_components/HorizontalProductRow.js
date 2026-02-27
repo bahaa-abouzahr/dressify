@@ -9,6 +9,7 @@ import { HiChevronRight, HiChevronLeft } from "react-icons/hi";
 
 export default function HorizontalProductRow({ products }) {
   const ref = useRef(null);
+  console.log(products[0]);
 
   const scroll = (dir) => {
     const el = ref.current;
@@ -45,6 +46,7 @@ export default function HorizontalProductRow({ products }) {
             key={p.id}
             href={`/products/p.category/${p.slug}`}
             className="relative shrink-0 h-40 w-30 mx-1"
+            aria-label={`Go to ${p.productName} Page`}
           >
             <Image
               src={`${PRODUCTS_IMAGE_BASE}${p.photos[0]}`} // adjust field name

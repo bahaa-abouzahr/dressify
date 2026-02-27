@@ -13,6 +13,7 @@ async function ProductPreviewRow({ title, sort="", onSale=false, limit }) {
         <Link 
           href={`/products/all?${sort ? `sort=${sort}` : ""}`}
           className="link text-xs"
+          aria-label={`Check ${sort} products `}
         >
           See More
         </Link>
