@@ -37,6 +37,7 @@ function CartPreview({ cart, userId }) {
         <button 
           onClick={() => setCartToggle(false)}
           className="absolute top-5 right-5 text-lg"
+          aria-label="Close Cart Preview"
         >
           <IoMdClose />
         </button>

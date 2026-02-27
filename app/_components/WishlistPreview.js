@@ -29,6 +29,7 @@ if (!localWishlist.length)
       <button 
         onClick={() => setWishlistToggle(false)}
         className="absolute top-2.5 right-2 text-lg"
+        aria-label="Close wishlist preview"
       >
         <IoMdClose />
       </button>
@@ -47,6 +48,7 @@ if (!localWishlist.length)
         <button 
           onClick={() => setWishlistToggle(false)}
           className="absolute top-5 right-5 text-lg"
+          aria-label="Close wishlist preview"
         >
           <IoMdClose />
         </button>

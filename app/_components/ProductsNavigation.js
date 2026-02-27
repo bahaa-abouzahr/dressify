@@ -22,6 +22,7 @@ function ProductsNavigation() {
     const params = new URLSearchParams(sp);
 
     params.set("category", filter === "All Products" ? "all" : filter);
+    params.delete("page");
     router.replace(`${pathname}?${params.toString()}`, {scroll: false})
   }
 

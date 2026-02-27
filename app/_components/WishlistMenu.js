@@ -43,7 +43,11 @@ function WishlistMenu({ userId, wishlist}) {
 
   return (
     <div className="relative z-30">
-      <button onClick={() => toggleOpen()} className="transition-transform duration-300 hover:scale-140 text-(--gray-text) z-30">
+      <button 
+        onClick={() => toggleOpen()} 
+        className="transition-transform duration-300 hover:scale-140 text-(--gray-text) z-30"
+        aria-label="Open Wishlist Preview"
+      >
         <span>{wishlistToggle ? <FaHeart /> : <FaRegHeart />}</span>
       </button>
       
