@@ -15,7 +15,7 @@ function ProductsWishlistButton({ userId, productId }) {
         e.stopPropagation();  // stops bubbling to Link
         toggleWishlist();
       }}
-      className="absolute right-1 top-1 z-20 text-xl text-(--button-secondary)"
+      className="absolute right-1 top-1 p-1 z-20 text-xl text-(--button-secondary)"
       aria-label={inWishlist ? "Remove from wishlist" : "Add to wishlist"}
     >
       {inWishlist ? <FaHeart /> : <FaRegHeart />}

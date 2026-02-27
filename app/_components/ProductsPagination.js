@@ -34,6 +34,7 @@ function ProductsPagination({products_number, currentPage, totalPages}) {
           enabled:hover:bg-(--orange-main) enabled:hover:text-white
           disabled:opacity-40 disabled:cursor-default
         `}
+        aria-label="Go to previous page"
       >
         <RiArrowLeftSLine />
       </button>
@@ -49,6 +50,7 @@ function ProductsPagination({products_number, currentPage, totalPages}) {
           enabled:hover:bg-(--orange-main) enabled:hover:text-white
           disabled:opacity-40 disabled:cursor-default
         `}
+        aria-label="Go to next page"
       >
         <RiArrowRightSLine />
       </button>

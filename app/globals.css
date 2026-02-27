@@ -54,7 +54,8 @@ input[type="number"] {
 
 
 :root {
-  --gray-text: #6B7280;
+  /* --gray-text: #6B7280; */
+  --gray-text: #6b6d75;
   --gray-bg: #ccd2df;
   --link-text: #155dfc;
   --link-hover: #42A5F5;

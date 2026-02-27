@@ -54,7 +54,7 @@ function ProductCard({ product, userId }) {
         <div className="mt-1 flex items-center gap-1 justify-between">
           <div className="flex flex-row gap-1 items-center">
             <p className={`text-sm font-bold ${highest_percentage ?  " text-red-600" : "text-gray-900"}`}>{salePrice}$</p>
-            {highest_percentage ? <p className="xs:text-xs text-[10px] line-through text-gray-400 font-semibold ">${price}</p> : ''}
+            {highest_percentage ? <p className="xs:text-xs text-[10px] line-through text-gray-500 font-semibold ">${price}</p> : ''}
           </div>
 
           {highest_percentage ? <p className="bg-gray-400 text-gray-700 rounded-sm w-fit xs:text-xs text-[10px] xs:px-2 p-0.5 px-1">%{highest_percentage} SALE</p> : ''}
