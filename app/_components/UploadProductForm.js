@@ -129,9 +129,9 @@ function UploadProductForm() {
               />
             </Field>
 
-            <Field label="Type">
+            <Field label="Category">
               <select
-                name="type"
+                name="category"
                 required
                 className="profileFormInput shadow-sm md2:text-base text-sm"
               >
@@ -143,9 +143,9 @@ function UploadProductForm() {
               </select>
             </Field>
 
-            <Field label="Category">
+            <Field label="Gender">
               <select
-                name="category"
+                name="gender"
                 required
                 className="profileFormInput shadow-sm md2:text-base text-sm"
               >

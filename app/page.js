@@ -35,7 +35,7 @@ export default async function Page() {
           
           <div className="grid grid-cols-3 gap-4 place-items-center">
             <Link 
-              href="/products/all?category=women" 
+              href="/products/women?category=all" 
               className="relative h-[140px] xs:h-[400px] max-w-2xs w-full"
               scroll={false}
             >
@@ -52,7 +52,7 @@ export default async function Page() {
             </Link>
 
             <Link 
-              href="/products/all?category=kids" 
+              href="/products/kids?category=all" 
               className="relative h-[140px] xs:h-[400px] max-w-2xs w-full"
               scroll={false}
             >
@@ -69,7 +69,7 @@ export default async function Page() {
             </Link>
 
             <Link 
-              href="/products/all?category=men" 
+              href="/products/men?category=all" 
               className="relative h-[140px] xs:h-[400px] max-w-2xs w-full"
               scroll={true}
             >

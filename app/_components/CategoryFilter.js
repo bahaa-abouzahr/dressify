@@ -1,11 +1,12 @@
 "use client"
 import Link from "next/link";
-import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation"
+import { useParams,  useSearchParams } from "next/navigation"
 
 function TypeFilter() {
   const params = useParams().gender;
   const searchParams = useSearchParams();
   const category = searchParams.get('category') ?? "all";
+
 
   return (
     <div className="border border-(--orange-main) flex justify-around items-center lg2:min-w-lg ">

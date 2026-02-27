@@ -469,11 +469,11 @@ export async function updateProfileAction(formData){
 }
 
 export async function uploadProductAction(formData){
-
+  console.log("FORMDATA:", formData);
   // 1) check Authentication
   const supabase = await createClient();
   const {data: { user }} = await supabase.auth.getUser();
-
+  console.log("USER:", user);
   if(!user) throw new Error('You must be logged in');
 
   // 2) check Authorization 
@@ -488,7 +488,7 @@ export async function uploadProductAction(formData){
     slug, 
     description,  
     price, 
-    type, 
+    gender, 
     category ,
     variants
   } = Object.fromEntries(formData);
@@ -515,8 +515,8 @@ export async function uploadProductAction(formData){
   const priceNum = Number(price);
   if (!Number.isFinite(priceNum) || priceNum <= 0) return "Invalid price";
 
-  const product = { productName, slug, description,  price: priceNum, type, category };
-
+  const product = { productName, slug, description,  price: priceNum, gender, category };
+  console.log("PRODUCT:", product);
   // 5) Upload Product Details
 
   const { data,  error: detailsUploadError} = await supabase
@@ -632,6 +632,8 @@ export async function signinAction(formData) {
 
   return { ok:true };
 }
+
+
 export async function singupAction(formData) {
   console.log(formData);
   const email = String(formData.get('email') || "").trim();
@@ -679,3 +681,24 @@ export async function singupAction(formData) {
 
   return { ok: true}
 }
+
+export async function passwordResetAction(formData, origin) {
+  const email = String(formData.get('email') || "").trim();
+  
+  if(!email) return {ok: false}
+
+  const supabase = await createClient();
+
+  const { error } = supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: `${origin}/account/update-password`
+  });
+
+  if(error) {
+    console.error("Reset error:", error);
+    return { ok: false, error: error.message };
+  }
+
+  return {ok: true};
+}
+
+// dressify.bahaaabouzahr@gmail.com

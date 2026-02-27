@@ -66,18 +66,21 @@ function UpdateProfileForm({ profileUser, children }) {
   }
 
   return (
+    <>
     <form
       id="updateProfile-form"
       action={clientAction}
       className="bg-(--cream-secondary) py-4 px-6 flex flex-col md2:gap-6 gap-3 max-w-130 mb-10 rounded-2xl text-base"
-    >
+      >
+      <h3 className="text-lg font-semibold mb-4">Update your Profile</h3>
+      
       <div className="max-w-120 flex flex-col gap-1">
         <label className="md2:text-base text-sm pl-1">Full Name</label>
         <input 
           defaultValue={fullName}
           name="fullName"
           className="profileFormInput shadow-sm md2:text-base text-sm"
-        />
+          />
       </div>
 
       <div className="max-w-120">
@@ -87,7 +90,7 @@ function UpdateProfileForm({ profileUser, children }) {
           name="email"
           className="profileFormInput shadow-sm md2:text-base text-sm disabled:cursor-not-allowed disabled:bg-gray-600"
           disabled
-        />
+          />
       </div>
       
 
@@ -100,7 +103,7 @@ function UpdateProfileForm({ profileUser, children }) {
             width={30}
             height={20}
             className="h-5 mb-1"
-          /> : <CiFlag1 />}
+            /> : <CiFlag1 />}
         </div>
         {children}
       </div>
@@ -112,7 +115,7 @@ function UpdateProfileForm({ profileUser, children }) {
           role="button"
           tabIndex={0}
           className="profileFormInput shadow-sm md2:text-base text-sm disabled:cursor-not-allowed disabled:bg-gray-600"
-        >
+          >
           {!fileName ? "Upload Profile Image" : (
             <div className="flex gap-2 items-center">
               <span className="truncate max-w-[180px]">{fileName}</span>
@@ -125,17 +128,17 @@ function UpdateProfileForm({ profileUser, children }) {
         <input 
           id="avatar" type="file" name="avatar" accept="image/*" hidden 
           onChange={async (e) => {
-
+            
             const file = e.target.files?.[0];
             if (!file) return;
-
+            
             const compressed = await compressAvatar(file);
             const dt = new DataTransfer();
             dt.items.add(compressed);
             e.target.files = dt.files
             setFileName(`${file.name}`)
           }}
-        />
+          />
       </div> 
       
       <div className="flex justify-end">
@@ -144,6 +147,7 @@ function UpdateProfileForm({ profileUser, children }) {
         </UpdateProfileButton>
       </div>
     </form>
+  </>
   )
 }
 

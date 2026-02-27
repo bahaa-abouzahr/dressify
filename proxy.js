@@ -17,7 +17,8 @@ export async function proxy(request) {
   }
 
   // Redirect logged-in users away from login/Registration page
-  if (pathname.startsWith("/account")) {
+  // Except for /account/update-password
+  if (pathname.startsWith("/account") && pathname !== "/account/update-password") {
     const supabase = createServerClient(
       process.env.NEXT_PUBLIC_SUPABASE_URL,
       process.env.NEXT_PUBLIC_SUPABASE_KEY,
@@ -105,6 +106,6 @@ export const config = {
     '/products', 
     "/profile/:path*",
     '/checkout',
-    '/account/:path'
+    '/account/:path*'
   ]
 }

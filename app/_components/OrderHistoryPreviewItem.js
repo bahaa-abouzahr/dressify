@@ -6,8 +6,7 @@ import Link from "next/link";
 import { PRODUCTS_IMAGE_BASE } from "../_utils/constants";
 
 function OrderHistoryPreviewItem({ item, deliveryDate }) {
-  const currentDate = new Date();
-  
+
   const FOURTEEN_DAYS_MS = 14*24*60*60*1000;
   const returnDate = new Date(deliveryDate.getTime() + FOURTEEN_DAYS_MS)
 

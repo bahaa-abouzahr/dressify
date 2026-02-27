@@ -48,9 +48,9 @@ function SignInForm() {
         }
       }}
     >
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col items-center gap-3">
 
-        <div className="signin">
+        <div className="signin w-2xs">
           <input
             name="fullName"
             id="fullName"
@@ -62,7 +62,7 @@ function SignInForm() {
           </label>
         </div>
 
-        <div className="signin">
+        <div className="signin w-2xs">
           <input
             name="username"
             id="username"
@@ -74,12 +74,12 @@ function SignInForm() {
           </label>
         </div>
 
-        <div className="signin">
+        <div className="signin w-2xs">
           <input
             name="email"
             id="email"
             type="email"
-            // required
+            required
             placeholder=" "
           />
           <label htmlFor="email">
@@ -87,7 +87,7 @@ function SignInForm() {
           </label>
         </div>
 
-        <div className="signin">
+        <div className="signin w-2xs">
           <input
             name="password"
             id="password1"
@@ -112,7 +112,7 @@ function SignInForm() {
           : ""}
         </div>
 
-        <div className="signin">
+        <div className="signin w-2xs">
           <input
             name="password2"
             id="password2"
@@ -145,7 +145,7 @@ function SignInForm() {
           {registrationError ?? ""}
         </p>
 
-        <div className="flex justify-center">
+        <div className="flex justify-center items-center center text-center w-[150px]">
           <SignButton buttonAction={"signup-form"}>
             Sign up
           </SignButton>

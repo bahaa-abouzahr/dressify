@@ -22,7 +22,7 @@ function ProductPhotos({ photos, productName }) {
             alt={productName}
             fill
             sizes="(max-width: 768px) 100vw, 50vw"
-            className="object-contain object-top p-4 bg-white"
+            className="object-contain p-4 bg-white"
             priority
           />
         </div>
@@ -41,7 +41,7 @@ function ProductPhotos({ photos, productName }) {
                 fill
                 sizes="80px"
                 alt={productName}
-                className="object-contain object-top p-1 bg-white"
+                className="object-contain p-1 bg-white"
                 onClick={() => handleThumbnailClick(ind)}
                 
               />

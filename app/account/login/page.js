@@ -11,7 +11,7 @@ export const metadata = {
 
 function page() {
   return (
-    <div className="flex flex-col gap-6 items-center mx-auto py-5  max-w-lg">
+    <div className="flex flex-col gap-6 items-center mx-auto py-5 max-w-lg">
 
       <div className="flex flex-col gap-6 items-center mx-auto py-5  xs:border border-(--gray-bg) xs:rounded-2xl xs:min-w-md max-w-lg">
         <h2 className="text-lg font-semibold">
@@ -29,7 +29,7 @@ function page() {
         <SignInButtonGoogle />
 
         <div className="text-gray-500 hover:underline font-semibold">
-          <Link href="/account/reset">
+          <Link href="/account/forgot-password">
             Forgot password?
           </Link>
         </div>

@@ -7,8 +7,6 @@ import { adjustCartItemQuantity } from "../_lib/actions";
 import { getProductVariants } from "../_lib/data-service";
 import { PRODUCTS_IMAGE_BASE } from "../_utils/constants";
 
-import AddToWishlistButton from "./AddToWishlistButton";
-
 import { LuMinus, LuPlus } from "react-icons/lu";
 import CartWishlistLink from "./CartWishlistLink";
 
@@ -19,7 +17,6 @@ function CartPagePreviewItem({ handleDeleteCartItem, item, userId}) {
   const {productName, quantity, price, photos, product_id, product_variants, category, slug} = item;
   const {size, sale_percentage, sku, stock} = product_variants;
 
-  
   const salePrice = sale_percentage ? price * (1 - sale_percentage/100) : price;
 
   const itemFinalPrice = (salePrice * quantity).toFixed(2)
@@ -75,12 +72,16 @@ function CartPagePreviewItem({ handleDeleteCartItem, item, userId}) {
             alt={productName}
             height={300}
             width={300}
-            className="rounded-lg md2:h-35 md2:w-35 h-20 w-20 object-contain p-4 bg-white"
+            className="rounded-lg md2:h-35 md2:w-35 h-20 w-20 object-contain p-2 bg-white"
           />
         </Link>
 
         <div className="flex flex-col gap-1">
-          <Link href={`/products/${category}/${slug}`} className="font-semibold md2:text-lg text-base">{productName}</Link>
+          <Link 
+            href={`/products/${category}/${slug}`} 
+            className="font-semibold md2:text-lg text-base hover:text-gray-500">
+              {productName}
+          </Link>
           <span className="md2:text-xs text-[9px]">Expected Delivery: {deliveryDate}</span>
           <span className="text-sm">Size: <strong>{size}</strong></span>
           <div className="flex gap-3 text-xs w-fit">

@@ -156,7 +156,15 @@ function ProductsFilters({ products_sizes }) {
     params.delete("page");
 
     router.push(`${pathname}?${params.toString()}`, { scroll: false });
-}
+  }
+
+  // To submit price range when Enter is clicked
+  function onPriceEnterKey(e) {
+    if(e.key === "Enter") {
+      e.preventDefault();
+      applyPrice();
+    }
+  }
   
   return (
     <div className="flex flex-wrap xs:gap-3 sm:justify-start justify-between z-40 bg-red ">
@@ -220,7 +228,7 @@ function ProductsFilters({ products_sizes }) {
                   </ul>
                 </div>
 
-                <ApplyResetButtons apply={applySizes} reset={resetSizes} />
+                <ApplyResetButtons apply={applySizes} onPriceEnterKey={onPriceEnterKey} reset={resetSizes} />
               </div>
             )}
             {/* <ApplyResetButtons apply={applyPrice} reset={resetPrice} /> */}
@@ -236,6 +244,7 @@ function ProductsFilters({ products_sizes }) {
                       className="max-w-25 border px-2 py-1"
                       value={minRange}
                       onChange={(e) => setMinRange(e.target.value)}
+                      onKeyDown={onPriceEnterKey}
                       />
                     <span className="absolute right-2 top-1.5 text-sm">$</span>
                   </div>
@@ -248,6 +257,7 @@ function ProductsFilters({ products_sizes }) {
                       className="max-w-25 border px-2 py-1"
                       value={maxRange}
                       onChange={(e) => setMaxRange(e.target.value)}
+                      onKeyDown={onPriceEnterKey}
                     />
                     <span className="absolute right-2 top-1.5 text-sm">$</span>
                   </div>

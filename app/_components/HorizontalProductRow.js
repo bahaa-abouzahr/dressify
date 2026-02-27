@@ -44,13 +44,13 @@ export default function HorizontalProductRow({ products }) {
           <Link
             key={p.id}
             href={`/products/p.category/${p.slug}`}
-            className="relative shrink-0 h-40 w-30"
+            className="relative shrink-0 h-40 w-30 mx-1"
           >
             <Image
               src={`${PRODUCTS_IMAGE_BASE}${p.photos[0]}`} // adjust field name
               alt=""
               fill
-              className="object-contain p-1 bg-white"
+              className="object-contain p-1 bg-white rounded-2xl gap-2"
               sizes="260px"
             />
           </Link>

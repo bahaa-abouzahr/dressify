@@ -33,9 +33,9 @@ function SignInForm() {
       id="signin-form"
       action={handleSignIn}
     >
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col items-center gap-3">
 
-        <div className="signin">
+        <div className="signin w-2xs">
           <input
             name="account"
             id="account"
@@ -47,7 +47,7 @@ function SignInForm() {
           </label>
         </div>
 
-        <div className="signin">
+        <div className="signin w-2xs">
           <input
             name="password"
             id="password"
@@ -76,7 +76,7 @@ function SignInForm() {
           {loginError ?? ""}
         </p>
 
-        <div className="flex justify-center">
+        <div className="flex justify-center w-[150px]">
           <SignButton buttonAction="signin-form">
             Sign in
           </SignButton>

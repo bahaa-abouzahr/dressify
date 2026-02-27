@@ -19,10 +19,6 @@ async function page() {
   if(orders.length < 1) return <EmptyOrdersHistory />
 
   const length = orders.length
-
-  const sortedOrders = [...orders].sort(
-    (a,b) => new Date(b.created_at) - new Date(a.created_at)
-  )
  
   return (
     <div className="flex flex-col gap-3 mb-10 mr-2">
