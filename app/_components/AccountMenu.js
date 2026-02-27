@@ -44,6 +44,7 @@ if(!user)
       className="nav text-gray-500 z-30"
       href="/account/login"
       onClick={toggleOpen}
+      aria-label="Go to Login Page"
     >
       Login
     </Link>

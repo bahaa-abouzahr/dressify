@@ -80,6 +80,7 @@ function UpdateProfileForm({ profileUser, children }) {
           defaultValue={fullName}
           name="fullName"
           className="profileFormInput shadow-sm md2:text-base text-sm"
+          aria-label="Full Name"
           />
       </div>
 
@@ -90,6 +91,7 @@ function UpdateProfileForm({ profileUser, children }) {
           name="email"
           className="profileFormInput shadow-sm md2:text-base text-sm disabled:cursor-not-allowed disabled:bg-gray-600"
           disabled
+          aria-label="Your Email account"
           />
       </div>
       

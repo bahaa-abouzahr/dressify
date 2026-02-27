@@ -14,6 +14,7 @@ async function SelectCountry({ defaultCountry, name, id, className }) {
       defaultValue={`${defaultCountry}%${flag}`}
       className={className}
       key={`${defaultCountry}-${flag}`}
+      aria-label="Select your Nationality"
     >
       <option value="">Select country...</option>
       {countries.map(c=> (
