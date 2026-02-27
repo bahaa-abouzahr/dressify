@@ -145,7 +145,7 @@ function SignInForm() {
           {registrationError ?? ""}
         </p>
 
-        <div className="flex justify-center items-center center text-center w-[150px]">
+        <div className="flex text-center w-[150px]">
           <SignButton buttonAction={"signup-form"}>
             Sign up
           </SignButton>

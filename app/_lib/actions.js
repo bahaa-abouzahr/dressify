@@ -695,7 +695,7 @@ export async function passwordResetAction(formData, origin) {
 
   if(error) {
     console.error("Reset error:", error);
-    return { ok: false, error: error.message };
+    return { ok: false, message: error.message };
   }
 
   return {ok: true};

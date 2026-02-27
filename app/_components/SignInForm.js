@@ -72,7 +72,7 @@ function SignInForm() {
         </div>
 
         {/* if login fails display error message */}
-        <p className="text-red-500 text-xs h-3 px-1  text-center">
+        <p className="text-red-500 text-xs h-3 px-1 text-center">
           {loginError ?? ""}
         </p>
 
