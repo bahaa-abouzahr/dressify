@@ -12,7 +12,7 @@ import { deleteCartItem } from "../_lib/actions";
 
 function CartPagePreview({userId}) {
   const {cart, setCart} = useCart();
-  console.log(cart);
+
 
   async function handleDeleteCartItem(product_id, sku) {
     if(!userId) {
@@ -56,15 +56,13 @@ function CartPagePreview({userId}) {
       </div>
     )
 
-
   return (
     <div className="flex flex-col md2:gap-10 gap-5 bg-(--cream-main) max-md2:mb-5 md2:pt-10 md2:border-r-4 border-(--gray-bg) md2:-translate-y-10 ">
       <h1 className="text-center text-2xl font-bold text-(--gray-text)">
         Items in your Cart
       </h1>
       <div className="flex flex-col gap-5 mt-2">
-        {cart.map((item, ind) => {
-
+        {cart.map((item) => {
           return <CartPagePreviewItem item={item} handleDeleteCartItem={handleDeleteCartItem} key={item.product_variants.sku} userId={userId} />
         })}
 

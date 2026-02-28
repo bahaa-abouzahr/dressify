@@ -12,7 +12,7 @@ export default async function Page() {
   return (
     <>
       <div className="flex flex-col xs:gap-20 gap-7 max-w-7xl mx-auto">
-        <div className="relative  bg-cover bg-center bg-red-200">
+        <div className="relative  bg-cover bg-center">
           <Image 
             src={bg1}
             alt="Home-page photo"

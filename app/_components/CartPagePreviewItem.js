@@ -12,9 +12,19 @@ import CartWishlistLink from "./CartWishlistLink";
 
 function CartPagePreviewItem({ handleDeleteCartItem, item, userId}) {
 
-  console.log(userId);
   const {cart, setCart} = useCart();
-  const {productName, quantity, price, photos, product_id, product_variants, category, slug} = item;
+
+  const {
+    productName, 
+    quantity, 
+    price, 
+    photos, 
+    product_id, 
+    product_variants, 
+    category, 
+    slug
+  } = item;
+
   const {size, sale_percentage, sku, stock} = product_variants;
 
   const salePrice = sale_percentage ? price * (1 - sale_percentage/100) : price;
@@ -89,6 +99,7 @@ function CartPagePreviewItem({ handleDeleteCartItem, item, userId}) {
             <button 
               className="cursor-pointer link"
               onClick={() => handleDeleteCartItem(product_id, sku)}
+              aria-label="Delete Cart Item"
             >
               Delete
             </button>  
@@ -100,16 +111,29 @@ function CartPagePreviewItem({ handleDeleteCartItem, item, userId}) {
       <div className="flex flex-col text-left gap-1 pt-1 pl-5">
         <span>Quantity</span>
         <div className="relative flex gap-2 items-center">
-          <button onClick={() => handleQuantity("dec")} className="cursor-pointer hover:text-(--orange-secondary) text-base">
+          <button 
+            onClick={() => handleQuantity("dec")} 
+            className="cursor-pointer hover:text-(--orange-secondary) text-base"
+            aria-label="Decrease Item Quantity from Cart"
+          >
             <LuMinus />
           </button>
           <span className="font-bold ">{quantity}</span>
 
-          <button onClick={() => handleQuantity("inc")} className="cursor-pointer hover:text-(--orange-secondary) text-base">
+          <button 
+            onClick={() => handleQuantity("inc")} 
+            className="cursor-pointer hover:text-(--orange-secondary) text-base"
+            aria-label="Increase Item Quantity from Cart"
+          >
             <LuPlus />
           </button>
           <div>
-            {stock === quantity ? <span className=" absolute top-6 left-0 text-[8px] max-md2:w-30 text-red-500">Stock limit reached</span> : ''}
+            {stock === quantity 
+              ? 
+                <span className=" absolute top-6 left-0 text-[8px] max-md2:w-30 text-red-500">
+                  Stock limit reached
+                </span> 
+              : ''}
 
           </div>
         </div>
@@ -117,7 +141,7 @@ function CartPagePreviewItem({ handleDeleteCartItem, item, userId}) {
 
       <div className="flex flex-col text-center gap-1 pt-1 pl-5 min-w-20">
         <span>Price</span>
-        <span className={`font-bold ${sale_percentage ? "text-red-600" : ""}`}>{itemFinalPrice}$</span>
+        <span className={`font-bold ${sale_percentage ? "text-(--button-secondary)" : ""}`}>{itemFinalPrice}$</span>
       </div>
     </div>
   )
